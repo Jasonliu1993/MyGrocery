@@ -1,10 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <title>Title</title>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="Page Description"/>
+    <meta name="author" content="Jason"/>
+    <title>Jason的杂货铺</title>
+
+    <!-- Bootstrap -->
+    <link href="css/bootstrap/css/bootstrap.css" rel="stylesheet"/>
+
+    <style>
+        .center-text {
+            margin-top: 300px;
+            font-size: 70px;
+        }
+
+        .body {
+            background: url('images/index-bg.jpg') no-repeat;
+        }
+    </style>
+
 </head>
-<body>
-Hello world!
+<body class="body">
+<div class="container-fluid">
+    <div th:include="header/header"></div>
+    <div class="row">
+        <div class="col-md-12">
+            <h3 class="text-center center-text">
+                Jason的杂货铺╰(￣▽￣)╭
+            </h3>
+        </div>
+    </div>
+</div>
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="js/jquery-3.1.1.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="js/bootstrap.js"></script>
 </body>
 </html>
