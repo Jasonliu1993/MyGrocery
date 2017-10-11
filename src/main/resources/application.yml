@@ -4,7 +4,7 @@ server:
 spring:
     datasource:
         name: Recruiting
-        url: jdbc:mysql://127.0.0.1:3306/Recruiting
+        url: jdbc:mysql://127.0.0.1:3306/GROCERY
         username: root
         password: root
         # 使用druid数据源
@@ -22,7 +22,7 @@ spring:
 
 mybatis:
   mapper-locations: classpath:mappers/*.xml
-  type-aliases-package: com.jason.recruitment.domain
+  type-aliases-package: com.grocery.domain
 
 #pagehelper
 pagehelper:

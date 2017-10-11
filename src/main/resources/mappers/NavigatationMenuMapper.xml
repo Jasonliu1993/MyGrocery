@@ -35,7 +35,7 @@
     from NAVIGATATION_MENU
     where ID = #{id,jdbcType=INTEGER}
   </select>
-  <select id="selectAll" resultType="com.grocery.domain.NavigatationMenu">
+  <select id="selectAll" resultMap="BaseResultMap">
     SELECT
      <include refid="Base_Column_List"/>
     FROM NAVIGATATION_MENU

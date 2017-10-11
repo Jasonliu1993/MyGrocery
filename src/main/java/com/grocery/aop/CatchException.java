@@ -12,11 +12,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * Created by Jason on 10/10/2017.
  */
 
-@ControllerAdvice
+//@ControllerAdvice
 public class CatchException {
 
-    @ExceptionHandler(value = RuntimeException.class)
-    @ResponseBody
+//    @ExceptionHandler(value = RuntimeException.class)
+//    @ResponseBody
     public Message catchException(RuntimeException runtimeException) {
 
         if (runtimeException instanceof ErrorException) {

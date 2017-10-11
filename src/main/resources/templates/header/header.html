@@ -1,8 +1,9 @@
-<ul class="nav nav-tabs" th:fragment="header">
-    <li class="active">
-        <a href="/index">主页</a>
+<ul class="nav nav-tabs" th:fragment="header" >
+
+    <li th:class="${Nav.getCustom1() eq  'Y'} ? 'active'" th:each="Nav,NavStat : ${Nav.data}">
+        <a th:href="@{${Nav.getInterlinkage()}}" th:text="${Nav.getMenuItemName()}">主页</a>
     </li>
-    <li>
+    <!--<li>
         <a href="#">文章分享</a>
     </li>
     <li>
@@ -20,7 +21,7 @@
     <li>
         <a href="#">美食分享</a>
     </li>
-    <!--<li class="disabled">
+    <li class="disabled">
         <a href="#">Messages</a>
     </li>-->
 </ul>

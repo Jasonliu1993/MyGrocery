@@ -24,7 +24,7 @@ public class LoggingMessage {
     @Around("pointCut()")
     public void around(ProceedingJoinPoint proceedingJoinPoint) {
 
-        System.out.println("This is before!");
+        logger.info(proceedingJoinPoint.getSignature().getDeclaringTypeName());
     }
 
 }
