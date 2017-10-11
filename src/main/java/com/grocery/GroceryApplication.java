@@ -5,7 +5,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-
+@MapperScan(value = "com.grocery.dao")
 public class GroceryApplication {
 
 	public static void main(String[] args) {

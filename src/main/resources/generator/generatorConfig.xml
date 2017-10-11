@@ -38,7 +38,7 @@
         </javaClientGenerator>
 
         <!-- !!!! Table Configurations !!!! -->
-        <table tableName="" enableCountByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
+        <table tableName="NAVIGATATION_MENU" enableCountByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
                enableUpdateByExample="false">
             <property name="useActualColumnNames" value="false"/>
         </table>
