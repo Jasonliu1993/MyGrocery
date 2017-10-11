@@ -24,4 +24,10 @@ public class CoreController {
         return "index";
     }
 
+    @GetMapping("/photography")
+    public String photography(ModelMap modelMap) {
+        modelMap.addAttribute("Nav",PackingInfo.changeData2Message(indexService.getNavMenu("/photography")));
+        return "/photography/photography_index";
+    }
+
 }
