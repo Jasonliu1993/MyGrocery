@@ -7,34 +7,40 @@
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <meta name="description" content="Page Description"/>
     <meta name="author" content="Jason"/>
-    <title>Jason的杂货铺</title>
+    <title>摄影分享</title>
 
     <!-- Bootstrap -->
     <link href="/css/bootstrap-3.3.7/css/bootstrap.css" rel="stylesheet"/>
+    <link href="/css/photography/photography_detail.css" rel="stylesheet"/>
 
     <style>
-        .center-text {
-            margin-top: 300px;
-            font-size: 70px;
-        }
 
-        .body {
-            background: url('images/index-bg.jpg') no-repeat;
-        }
     </style>
-
 </head>
-<body class="body">
+<body class="theme">
 <div class="container-fluid">
     <div th:include="common/header"></div>
-    <div class="row">
-        <div class="col-md-12">
-            <h3 class="text-center center-text">
-                Jason的杂货铺╰(￣▽￣)╭
-            </h3>
+    <div class="core-area">
+        <div class="large-img">
+            <img src="/images/index-bg.jpg" alt="image" />
+            <div class="descr">
+                <div class="header">
+                    珠穆拉玛峰
+                </div>
+                <div class="content">
+                    10月21日去的西藏。
+                </div>
+            </div>
+        </div>
+        <div class="left-button">
+            <a href="#" class="glyphicon glyphicon-menu-left"></a>
+        </div>
+        <div class="right-button">
+            <a href="#" class="glyphicon glyphicon-menu-right"></a>
         </div>
     </div>
 </div>
+
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <script src="/js/jquery-3.1.1.min.js"></script>
 <!-- Include all compiled plugins (below), or include individual files as needed -->
