@@ -22,8 +22,14 @@ public class PaginationUtility {
      */
     private String path;
 
+    /**
+     * 数据总行数
+     */
     private String dataRowCount;
 
+    /**
+     * 每页显示的数量
+     */
     private String pageDisplaySize;
 
     /**

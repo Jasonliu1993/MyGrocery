@@ -33,6 +33,6 @@ pagehelper:
 #自定义属性
 CustomProps:
     #设置分页时一个页面显示多少个数据
-    photographyDetailPageSize: 1
+    photographyDetailPageSize: 15
     #设置分页时导航条显示多少个页签
     paginationDisplayNum: 5
