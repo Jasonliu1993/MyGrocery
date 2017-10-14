@@ -49,7 +49,7 @@ public class CoreController {
         /**
          * 导航条
          */
-        modelMap.addAttribute("Nav", PackingInfo.changeData2Message(indexService.getNavMenu("/photography/")));
+//        modelMap.addAttribute("Nav", PackingInfo.changeData2Message(indexService.getNavMenu("/photography/")));
 
         /**
          * 分页导航显示

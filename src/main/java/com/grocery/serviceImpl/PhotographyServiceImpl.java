@@ -20,7 +20,6 @@ public class PhotographyServiceImpl implements PhotographyService {
 
     @Override
     public List<PhotographyDetail> getPhotographyDetailBypaging(Integer pageNum, Integer pageSize) {
-        System.out.println(pageNum);
         return photographyDetailMapper.selectPaging((pageNum - 1) * pageSize,pageSize);
     }
 

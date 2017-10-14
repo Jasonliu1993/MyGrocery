@@ -29,7 +29,7 @@ public class PhotographyController {
         /**
          * 导航条
          */
-        modelMap.addAttribute("Nav", PackingInfo.changeData2Message(indexService.getNavMenu("/photography/")));
+//        modelMap.addAttribute("Nav", PackingInfo.changeData2Message(indexService.getNavMenu("/photography/")));
 
         /**
          * 摄影详细页数据

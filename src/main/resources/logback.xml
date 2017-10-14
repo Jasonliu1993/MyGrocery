@@ -6,14 +6,14 @@
             </Pattern>
         </encoder>
     </appender>
-    <logger name="java.sql" level="DEBUG" >
-        <appender-ref ref="STDOUT" />
+    <logger name="java.sql" level="DEBUG">
+        <appender-ref ref="STDOUT"/>
     </logger>
 
-    <logger name="com.grocery" level="DEBUG"/>
-
+    <logger name="com.grocery.interceptor" level="DEBUG"/>
+        <!--<appender-ref ref="STDOUT"/>-->
     <root>
-        <level value="ERROR" />
-        <appender-ref ref="STDOUT" />
+        <level value="ERROR"/>
+        <appender-ref ref="STDOUT"/>
     </root>
 </configuration>
