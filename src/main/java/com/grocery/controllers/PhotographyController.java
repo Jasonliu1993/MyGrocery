@@ -1,7 +1,9 @@
 package com.grocery.controllers;
 
 import com.grocery.services.IndexService;
+import com.grocery.services.PhotographyService;
 import com.grocery.utilities.PackingInfo;
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -18,14 +20,21 @@ public class PhotographyController {
     @Autowired
     private IndexService indexService;
 
+    @Autowired
+    private PhotographyService photographyService;
+
     @GetMapping("/photography/detail/{id}")
-    public String photographyDetail(ModelMap modelMap, @PathVariable("id") String id) {
+    public String photographyDetail(ModelMap modelMap, @PathVariable("id") Integer id) {
 
-        System.out.println("id: " + id);
+        /**
+         * 导航条
+         */
+        modelMap.addAttribute("Nav", PackingInfo.changeData2Message(indexService.getNavMenu("/photography/")));
 
-        System.out.println("here");
-
-        modelMap.addAttribute("Nav", PackingInfo.changeData2Message(indexService.getNavMenu("/photography")));
+        /**
+         * 摄影详细页数据
+         */
+        modelMap.addAttribute("PhotographyDetail",PackingInfo.changeData2Message(photographyService.getPhotographyDetailById(id)));
 
         return "/photography/photography_detail";
     }

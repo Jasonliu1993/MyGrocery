@@ -22,21 +22,23 @@
     <div th:include="common/header"></div>
     <div class="core-area">
         <div class="large-img">
-            <img src="/images/index-bg.jpg" alt="image" />
+            <img th:src="@{'/image/photography/'+ ${PhotographyDetail.data.getPhotoRefId()}}" alt="imageDetail" />
             <div class="descr">
-                <div class="header">
-                    珠穆拉玛峰
+                <div class="header" th:text="${PhotographyDetail.data.getTheme()}">
+                    title
                 </div>
-                <div class="content">
-                    10月21日去的西藏。
+                <div class="content" th:text="${PhotographyDetail.data.getComments()}">
+                    comment
                 </div>
             </div>
         </div>
         <div class="left-button">
-            <a href="#" class="glyphicon glyphicon-menu-left"></a>
+            <a href="#" class="glyphicon glyphicon-menu-left"
+               th:href="@{'/photography/detail/' + ${PhotographyDetail.data.getId() - 1}}" th:if="${PhotographyDetail.data.getId() != 1}"></a>
         </div>
         <div class="right-button">
-            <a href="#" class="glyphicon glyphicon-menu-right"></a>
+            <a href="#" class="glyphicon glyphicon-menu-right"
+               th:href="@{'/photography/detail/' + ${PhotographyDetail.data.getId() + 1}}" th:if="${PhotographyDetail.data.getId() != PhotographyDetail.data.getCountRow()}"></a>
         </div>
     </div>
 </div>

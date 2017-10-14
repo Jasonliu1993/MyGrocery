@@ -38,9 +38,17 @@
         </javaClientGenerator>
 
         <!-- !!!! Table Configurations !!!! -->
-        <table tableName="NAVIGATATION_MENU" enableCountByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
+        <!--<table tableName="NAVIGATATION_MENU" enableCountByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
                enableUpdateByExample="false">
             <property name="useActualColumnNames" value="false"/>
         </table>
+        <table tableName="PHOTOGRAPHY_DETAIL" enableCountByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
+               enableUpdateByExample="false">
+            <property name="useActualColumnNames" value="false"/>
+        </table>
+        <table tableName="PHOTOGRAPHY_PHOTO" enableCountByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
+               enableUpdateByExample="false">
+            <property name="useActualColumnNames" value="false"/>
+        </table>-->
     </context>
 </generatorConfiguration>

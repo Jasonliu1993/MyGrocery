@@ -1,5 +1,5 @@
 server:
-  port: 8080
+    port: 8080
 
 spring:
     datasource:
@@ -21,11 +21,18 @@ spring:
 
 
 mybatis:
-  mapper-locations: classpath:mappers/*.xml
-  type-aliases-package: com.grocery.domain
+    mapper-locations: classpath:mappers/*.xml
+    type-aliases-package: com.grocery.domain
 
 #pagehelper
 pagehelper:
     helperDialect: mysql
     reasonable: true
     supportMethodsArguments: true
+
+#自定义属性
+CustomProps:
+    #设置分页时一个页面显示多少个数据
+    photographyDetailPageSize: 1
+    #设置分页时导航条显示多少个页签
+    paginationDisplayNum: 5

@@ -1,23 +1,11 @@
 <ul class="pagination" th:fragment="pagination">
-    <li>
-        <a href="#">Prev</a>
+    <li th:if="${Paginations.data.getPreButton() != '0'}">
+        <a th:href="@{${Paginations.data.getPath() + Paginations.data.getPreButton()}}">前一页</a>
     </li>
-    <li>
-        <a href="#">1</a>
+    <li th:class="${Paginations.data.getCurrentPage() eq  Pt} ? 'active'" th:each="Pt,PtStat : ${Paginations.data.getBarList()}">
+        <a href="#" th:href="@{${Paginations.data.getPath() + Pt}}" th:text="${Pt}"></a>
     </li>
-    <li>
-        <a href="#">2</a>
-    </li>
-    <li>
-        <a href="#">3</a>
-    </li>
-    <li>
-        <a href="#">4</a>
-    </li>
-    <li>
-        <a href="#">5</a>
-    </li>
-    <li>
-        <a href="#">Next</a>
+    <li th:if="${Paginations.data.getPostButton()  != 'MAX'}">
+        <a th:href="@{${Paginations.data.getPath() + Paginations.data.getPostButton()}}">后一页</a>
     </li>
 </ul>

@@ -28,7 +28,7 @@ public class IndexServiceImpl implements IndexService {
          * 标识是在哪个页面，将导航条设置成高亮
          */
         for(NavigatationMenu navigatationMenu : navigatationMenus) {
-            if (path.equals(navigatationMenu.getInterlinkage()))
+            if (path.contains(navigatationMenu.getInterlinkage()))
                 navigatationMenu.setCustom1("Y");
         }
 
