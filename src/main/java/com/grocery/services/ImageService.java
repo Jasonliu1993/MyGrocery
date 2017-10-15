@@ -6,5 +6,6 @@ package com.grocery.services;
 public interface ImageService {
 
     byte[] getPhotographyPhoto(Integer id);
+    byte[] getAvator(Integer id);
 
 }

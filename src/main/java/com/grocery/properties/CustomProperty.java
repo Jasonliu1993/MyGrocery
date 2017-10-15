@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 public class CustomProperty {
     private String photographyDetailPageSize;
     private String paginationDisplayNum;
+    private String messageBoardPageSize;
 
     public String getPhotographyDetailPageSize() {
         return photographyDetailPageSize;
@@ -27,5 +28,13 @@ public class CustomProperty {
 
     public void setPaginationDisplayNum(String paginationDisplayNum) {
         this.paginationDisplayNum = paginationDisplayNum;
+    }
+
+    public String getMessageBoardPageSize() {
+        return messageBoardPageSize;
+    }
+
+    public void setMessageBoardPageSize(String messageBoardPageSize) {
+        this.messageBoardPageSize = messageBoardPageSize;
     }
 }

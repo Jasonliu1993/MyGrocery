@@ -73,9 +73,9 @@ public class PaginationUtility {
 
         /**
          * 添加前一页按钮内容
-         * 如果当前页是第一页，则前一页会显示0，但是在前台会判断，如果是0的话会不显示前一页按钮
+         * 如果当前页是第一页，则前一页会显示MIN，但是在前台会判断，如果是MIN的话会不显示前一页按钮
          */
-        return currentPage == "1" ? "0" : String.valueOf(Integer.valueOf(currentPage) - 1);
+        return currentPage.equals("1") ? "MIN" : String.valueOf(Integer.valueOf(currentPage) - 1);
     }
 
     public String getPostButton() {

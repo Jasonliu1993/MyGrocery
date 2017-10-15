@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="Page Description"/>
+    <meta name="author" content="Jason"/>
+    <title>留言板</title>
+
+    <!-- Bootstrap -->
+    <link href="/css/bootstrap-3.3.7/css/bootstrap.css" rel="stylesheet"/>
+    <link href="/css/common/pagination.css" rel="stylesheet"/>
+
+    <style>
+        .theme {
+            background-color: #2e3032;
+        }
+
+        .custom-setting {
+            color: white;
+            border-left: none;
+        }
+
+        .col-center-block {
+            float: none;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .set-margin-top {
+            margin-top: 20px;
+        }
+
+        .border-setting {
+            width: 90%;
+            border: 1px solid white;
+            border-radius: 3px;
+            margin: 0 auto;
+            background-color: white;
+            /*box-shadow: 10px 10px 35px #c4c4c4;*/
+            -moz-box-shadow: 4px 4px 3px rgba(80%, 80%, 80%, 0.5);
+            -webkit-box-shadow: 4px 4px 3px rgba(80%, 80%, 80%, 0.5);
+            box-shadow: 4px 4px 3px rgba(80%, 80%, 80%, 0.5);
+        }
+
+        .pagination-setting {
+            width: 90%;
+            margin: 0 auto;
+        }
+
+        .fix {
+            clear: both;
+        }
+
+        .remove-style::before {
+            content: "";
+        }
+
+        .avator {
+            width: 25px;
+            height: 25px;
+            display: inline-block
+        }
+    </style>
+
+</head>
+<body class="theme">
+<div class="container-fluid">
+    <div th:include="common/header"></div>
+    <div class="row">
+        <div class="col-xs-12 col-md-12 col-center-block set-margin-top">
+            <div class="border-setting">
+                <div class="jumbotron">
+                    <h2>留言板</h2>
+                    <p>茫茫人海中，有你有我。</p>
+                    <!--<p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a></p>-->
+                    <p><a id="modal-127408" class="btn btn-primary btn-lg" href="#exampleModal" role="button"
+                          data-toggle="modal">留言</a></p>
+                </div>
+                <div class="col-md-12">
+                    <blockquote class="set-color" th:each="MessageBoard,MessageBoardStat : ${MessageBoards.data}">
+                        <small class="remove-style">
+                            <span class="avator">
+                                <a href="#">
+                                    <img th:src="@{'/image/avator/' + ${MessageBoard.getAvator()}}" alt="avator"
+                                         class="img-responsive"/>
+                                </a>
+                            </span>&nbsp;&nbsp;<span th:text="${MessageBoard.getUserName()}">未知用户</span>&nbsp;&nbsp;
+                            <button type="button" class="btn btn-primary btn-xs" data-toggle="modal"
+                                    data-target="#myModal">
+                                回复&nbsp;<span class="badge" th:text="${MessageBoard.getSubreplyCount()}">0</span>
+                                <input type="hidden" id="messageBoardId" th:value="${MessageBoard.getId()}">
+                                <input type="hidden" id="messageBoardUserId" th:value="${MessageBoard.getUserid()}">
+                            </button>
+                        </small>
+                        <p th:text="${MessageBoard.getContent()}">
+                            无评论内容
+                        </p>
+                    </blockquote>
+                </div>
+                <div class="fix"></div>
+            </div>
+            <!--导航条-->
+            <div class="pagination-setting">
+                <div th:include="common/pagination"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--回复弹出框-->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="leave-word-title">留言</h4>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="email-address" class="control-label">回复时接受邮件地址</label>
+                        <input type="email" class="form-control" id="email-address" placeholder="Email地址"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="reply-name" class="control-label">回复名</label>
+                        <input type="text" class="form-control" id="reply-name" placeholder="要显示的名称"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="reply-message" class="control-label">回复内容</label>
+                        <textarea class="form-control" id="reply-message" placeholder="回复内容"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" id="leave-btn">留言</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--回复留言弹出框-->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+            </div>
+            <div class="modal-body">
+                ...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+</script>
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="/js/jquery-3.1.1.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="/js/bootstrap-3.3.7/js/bootstrap.js"></script>
+</body>
+</html>

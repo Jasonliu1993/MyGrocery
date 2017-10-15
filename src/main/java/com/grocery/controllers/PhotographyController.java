@@ -27,11 +27,6 @@ public class PhotographyController {
     public String photographyDetail(ModelMap modelMap, @PathVariable("id") Integer id) {
 
         /**
-         * 导航条
-         */
-//        modelMap.addAttribute("Nav", PackingInfo.changeData2Message(indexService.getNavMenu("/photography/")));
-
-        /**
          * 摄影详细页数据
          */
         modelMap.addAttribute("PhotographyDetail",PackingInfo.changeData2Message(photographyService.getPhotographyDetailById(id)));

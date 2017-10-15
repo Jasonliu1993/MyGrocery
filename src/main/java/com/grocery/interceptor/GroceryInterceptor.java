@@ -27,6 +27,9 @@ public class GroceryInterceptor implements HandlerInterceptor {
 
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
+        /**
+         * 导航条
+         */
         request.setAttribute("Nav", PackingInfo.changeData2Message(indexService.getNavMenu(request.getRequestURI())));
     }
 

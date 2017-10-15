@@ -23,4 +23,9 @@ public class ImageController {
         return imageService.getPhotographyPhoto(id);
     }
 
+    @GetMapping("/avator/{id}")
+    public byte[] getAvator(@PathVariable("id") Integer id) {
+        return imageService.getAvator(id);
+    }
+
 }

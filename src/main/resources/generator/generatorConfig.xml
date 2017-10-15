@@ -50,5 +50,17 @@
                enableUpdateByExample="false">
             <property name="useActualColumnNames" value="false"/>
         </table>-->
+        <!--<table tableName="MESSAGE_BOARD" enableCountByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
+               enableUpdateByExample="false">
+            <property name="useActualColumnNames" value="false"/>
+        </table>-->
+        <!--<table tableName="MESSAGE_BOARD_SUBREPLY" enableCountByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
+               enableUpdateByExample="false">
+            <property name="useActualColumnNames" value="false"/>
+        </table>-->
+        <!--<table tableName="AVATOR" enableCountByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
+               enableUpdateByExample="false">
+            <property name="useActualColumnNames" value="false"/>
+        </table>-->
     </context>
 </generatorConfiguration>

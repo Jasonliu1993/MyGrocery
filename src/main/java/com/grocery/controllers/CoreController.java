@@ -3,6 +3,7 @@ package com.grocery.controllers;
 import com.grocery.properties.CustomProperty;
 import com.grocery.services.ImageService;
 import com.grocery.services.IndexService;
+import com.grocery.services.MessageBoardService;
 import com.grocery.services.PhotographyService;
 import com.grocery.utilities.PackingInfo;
 import com.grocery.utilities.PaginationUtility;
@@ -23,18 +24,13 @@ public class CoreController {
     private CustomProperty customProperty;
 
     @Autowired
-    private IndexService indexService;
+    private PhotographyService photographyService;
 
     @Autowired
-    private PhotographyService photographyService;
+    private MessageBoardService messageBoardService;
 
     @GetMapping("/index")
     public String index(ModelMap modelMap) {
-
-        /**
-         * 导航条
-         */
-        modelMap.addAttribute("Nav", PackingInfo.changeData2Message(indexService.getNavMenu("/index")));
         return "index";
     }
 
@@ -47,11 +43,6 @@ public class CoreController {
         modelMap.addAttribute("PhotographyDetail", PackingInfo.changeData2Message(photographyService.getPhotographyDetailBypaging(pageNum, Integer.valueOf(customProperty.getPhotographyDetailPageSize()))));
 
         /**
-         * 导航条
-         */
-//        modelMap.addAttribute("Nav", PackingInfo.changeData2Message(indexService.getNavMenu("/photography/")));
-
-        /**
          * 分页导航显示
          */
         modelMap.addAttribute("Paginations", PackingInfo.changeData2Message(new PaginationUtility(
@@ -61,6 +52,28 @@ public class CoreController {
                 String.valueOf(photographyService.getPhotographyDetailCount()),
                 customProperty.getPhotographyDetailPageSize())));
         return "/photography/photography_index";
+    }
+
+    @GetMapping("/messageBoard/{pageNum}")
+    public String messageBoard(ModelMap modelMap, @PathVariable("pageNum") Integer pageNum) {
+
+        /**
+         * 留言板数据分页
+         */
+
+        modelMap.addAttribute("MessageBoards",PackingInfo.changeData2Message( messageBoardService.getMessageBoardByPaging(pageNum,Integer.valueOf(customProperty.getMessageBoardPageSize()))));
+
+        /**
+         * 分页导航显示
+         */
+        modelMap.addAttribute("Paginations", PackingInfo.changeData2Message(new PaginationUtility(
+                pageNum.toString(),
+                customProperty.getPaginationDisplayNum(),
+                "/messageBoard",
+                String.valueOf(messageBoardService.getMessageBoardCount()),
+                customProperty.getMessageBoardPageSize())));
+
+        return "/message-board/message_board_index";
     }
 
 }
