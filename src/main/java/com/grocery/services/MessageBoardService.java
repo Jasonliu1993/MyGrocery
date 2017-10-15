@@ -2,6 +2,7 @@ package com.grocery.services;
 
 import com.grocery.domain.MessageBoard;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 /**
@@ -10,4 +11,5 @@ import java.util.List;
 public interface MessageBoardService {
     List<MessageBoard> getMessageBoardByPaging(Integer pageNum, Integer pageSize);
     Integer getMessageBoardCount();
+    void sendMessage(HttpSession session, String emailAddress, String replyName, String replyMessage);
 }

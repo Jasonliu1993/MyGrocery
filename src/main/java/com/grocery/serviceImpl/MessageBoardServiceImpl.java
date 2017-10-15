@@ -6,6 +6,7 @@ import com.grocery.services.MessageBoardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 /**
@@ -26,5 +27,16 @@ public class MessageBoardServiceImpl implements MessageBoardService{
     @Override
     public Integer getMessageBoardCount() {
         return messageBoardMapper.getCount();
+    }
+
+    /**
+     * 给留言板留言
+     * @param emailAddress 可以接受回复信息的地址
+     * @param replyName 回复者的
+     * @param replyMessage
+     */
+    @Override
+    public void sendMessage(HttpSession session, String emailAddress, String replyName, String replyMessage) {
+
     }
 }

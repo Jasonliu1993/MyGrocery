@@ -12,6 +12,7 @@
     <!-- Bootstrap -->
     <link href="/css/bootstrap-3.3.7/css/bootstrap.css" rel="stylesheet"/>
     <link href="/css/common/pagination.css" rel="stylesheet"/>
+    <link href="/css/common/common.css" rel="stylesheet"/>
 
     <style>
         .theme {
@@ -92,8 +93,8 @@
                             <button type="button" class="btn btn-primary btn-xs" data-toggle="modal"
                                     data-target="#myModal">
                                 回复&nbsp;<span class="badge" th:text="${MessageBoard.getSubreplyCount()}">0</span>
-                                <input type="hidden" id="messageBoardId" th:value="${MessageBoard.getId()}">
-                                <input type="hidden" id="messageBoardUserId" th:value="${MessageBoard.getUserid()}">
+                                <input type="hidden" id="messageBoardId" th:value="${MessageBoard.getId()}" />
+                                <input type="hidden" id="messageBoardUserId" th:value="${MessageBoard.getUserid()}" />
                             </button>
                         </small>
                         <p th:text="${MessageBoard.getContent()}">
@@ -122,17 +123,17 @@
             </div>
             <div class="modal-body">
                 <form>
-                    <div class="form-group">
-                        <label for="email-address" class="control-label">回复时接受邮件地址</label>
-                        <input type="email" class="form-control" id="email-address" placeholder="Email地址"/>
+                    <!--<div class="form-group">
+                        <label for="emailAddress" class="control-label">可接收回复信息的邮件地址</label>
+                        <input type="email" class="form-control" id="emailAddress" placeholder="Email地址"/>
                     </div>
                     <div class="form-group">
-                        <label for="reply-name" class="control-label">回复名</label>
-                        <input type="text" class="form-control" id="reply-name" placeholder="要显示的名称"/>
-                    </div>
+                        <label for="replyName" class="control-label">回复名</label>
+                        <input type="text" class="form-control" id="replyName" placeholder="要显示的名称"/>
+                    </div>-->
                     <div class="form-group">
-                        <label for="reply-message" class="control-label">回复内容</label>
-                        <textarea class="form-control" id="reply-message" placeholder="回复内容"></textarea>
+                        <label for="replyMessage" class="control-label">回复内容</label>
+                        <textarea class="form-control" id="replyMessage" placeholder="回复内容"></textarea>
                     </div>
                 </form>
             </div>

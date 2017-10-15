@@ -1,8 +1,10 @@
 package com.grocery.serviceImpl;
 
 import com.grocery.annotation.LogAnnotation;
+import com.grocery.dao.AuthenticationMapper;
 import com.grocery.dao.NavigatationMenuMapper;
 import com.grocery.domain.NavigatationMenu;
+import com.grocery.domain.SystemUser;
 import com.grocery.services.IndexService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,6 +22,9 @@ public class IndexServiceImpl implements IndexService {
     @Autowired
     private NavigatationMenuMapper navigatationMenuMapper;
 
+    @Autowired
+    private AuthenticationMapper authenticationMapper;
+
     @Override
     public List<NavigatationMenu> getNavMenu(String path) {
         List<NavigatationMenu> navigatationMenus = navigatationMenuMapper.selectAll();
@@ -33,5 +38,10 @@ public class IndexServiceImpl implements IndexService {
         }
 
         return navigatationMenus;
+    }
+
+    @Override
+    public SystemUser loginAuthentication(String userNameOrEmail, String password) {
+        return authenticationMapper.Auth(userNameOrEmail,password);
     }
 }
