@@ -19,11 +19,6 @@
             background-color: #2e3032;
         }
 
-        .custom-setting {
-            color: white;
-            border-left: none;
-        }
-
         .col-center-block {
             float: none;
             display: block;
@@ -41,7 +36,6 @@
             border-radius: 3px;
             margin: 0 auto;
             background-color: white;
-            /*box-shadow: 10px 10px 35px #c4c4c4;*/
             -moz-box-shadow: 4px 4px 3px rgba(80%, 80%, 80%, 0.5);
             -webkit-box-shadow: 4px 4px 3px rgba(80%, 80%, 80%, 0.5);
             box-shadow: 4px 4px 3px rgba(80%, 80%, 80%, 0.5);
@@ -55,16 +49,6 @@
         .fix {
             clear: both;
             margin-bottom: 20px;
-        }
-
-        .remove-style::before {
-            content: "";
-        }
-
-        .avator {
-            width: 25px;
-            height: 25px;
-            display: inline-block
         }
     </style>
 
@@ -86,16 +70,19 @@
 
                     <div class="media set-color" th:each="MessageBoard,MessageBoardStat : ${MessageBoards.data}">
                         <div class="media-left media-middle">
-                            <a href="#" class="pull-left"><img th:src="@{'/image/avator/' + ${MessageBoard.getAvator()}}" alt="avator" class="media-object" width="100"/></a>
+                            <a href="#" class="pull-left"><img
+                                    th:src="@{'/image/avator/' + ${MessageBoard.getAvator()}}" alt="avator"
+                                    class="media-object" width="60"/></a>
                         </div>
                         <div class="media-body">
                             <h4 class="media-heading">
                                 &nbsp;&nbsp;<span th:text="${MessageBoard.getUserName()}">未知用户</span>&nbsp;&nbsp;
                                 <button type="button" class="btn btn-primary btn-xs" data-toggle="modal"
-                                        data-target="#myModal">
+                                        data-target="#myModal" id="replyButton">
                                     回复&nbsp;<span class="badge" th:text="${MessageBoard.getSubreplyCount()}">0</span>
-                                    <input type="hidden" id="messageBoardId" th:value="${MessageBoard.getId()}" />
-                                    <input type="hidden" id="messageBoardUserId" th:value="${MessageBoard.getUserid()}" />
+                                    <input type="hidden" id="messageBoardId" th:value="${MessageBoard.getId()}"/>
+                                    <input type="hidden" id="messageBoardUserId"
+                                           th:value="${MessageBoard.getUserid()}"/>
                                 </button>
                             </h4>
                             <span th:text="${MessageBoard.getContent()}"></span>
@@ -121,25 +108,25 @@
                 </button>
                 <h4 class="modal-title" id="leave-word-title">留言</h4>
             </div>
-            <div class="modal-body">
-                <form>
-                    <!--<div class="form-group">
-                        <label for="emailAddress" class="control-label">可接收回复信息的邮件地址</label>
-                        <input type="email" class="form-control" id="emailAddress" placeholder="Email地址"/>
-                    </div>
+            <div class="modal-body" th:if="${#strings.isEmpty(session.User)}">请先登录</div>
+            <div class="modal-body" th:if="${!#strings.isEmpty(session.User)}">
+                <form action="/messageBoard/leaveMessage" method="post" id="replyForm">
                     <div class="form-group">
-                        <label for="replyName" class="control-label">回复名</label>
-                        <input type="text" class="form-control" id="replyName" placeholder="要显示的名称"/>
-                    </div>-->
-                    <div class="form-group">
-                        <label for="replyMessage" class="control-label">回复内容</label>
-                        <textarea class="form-control" id="replyMessage" placeholder="回复内容"></textarea>
+                        <label for="replyMessage" class="control-label">内容</label>
+                        <textarea class="form-control" id="replyMessage" name="replyMessage" placeholder="请输入内容..."></textarea>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                <button type="button" class="btn btn-primary" id="leave-btn">留言</button>
+                <button type="button" class="btn btn-primary" id="leaveBtn" th:if="${!#strings.isEmpty(session.User)}">
+                    留言
+                </button>
+                <script>
+                    $("#leaveBtn").on("click", function () {
+                        $("#replyForm").submit();
+                    })
+                </script>
             </div>
         </div>
     </div>
@@ -164,10 +151,6 @@
         </div>
     </div>
 </div>
-
-<script>
-
-</script>
 
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <script src="/js/jquery-3.1.1.min.js"></script>

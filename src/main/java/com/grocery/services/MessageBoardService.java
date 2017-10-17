@@ -11,5 +11,5 @@ import java.util.List;
 public interface MessageBoardService {
     List<MessageBoard> getMessageBoardByPaging(Integer pageNum, Integer pageSize);
     Integer getMessageBoardCount();
-    void sendMessage(HttpSession session, String emailAddress, String replyName, String replyMessage);
+    void sendMessage(HttpSession session, String replyMessage);
 }
