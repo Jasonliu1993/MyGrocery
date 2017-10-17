@@ -54,6 +54,7 @@
 
         .fix {
             clear: both;
+            margin-bottom: 20px;
         }
 
         .remove-style::before {
@@ -82,25 +83,24 @@
                           data-toggle="modal">留言</a></p>
                 </div>
                 <div class="col-md-12">
-                    <blockquote class="set-color" th:each="MessageBoard,MessageBoardStat : ${MessageBoards.data}">
-                        <small class="remove-style">
-                            <span class="avator">
-                                <a href="#">
-                                    <img th:src="@{'/image/avator/' + ${MessageBoard.getAvator()}}" alt="avator"
-                                         class="img-responsive"/>
-                                </a>
-                            </span>&nbsp;&nbsp;<span th:text="${MessageBoard.getUserName()}">未知用户</span>&nbsp;&nbsp;
-                            <button type="button" class="btn btn-primary btn-xs" data-toggle="modal"
-                                    data-target="#myModal">
-                                回复&nbsp;<span class="badge" th:text="${MessageBoard.getSubreplyCount()}">0</span>
-                                <input type="hidden" id="messageBoardId" th:value="${MessageBoard.getId()}" />
-                                <input type="hidden" id="messageBoardUserId" th:value="${MessageBoard.getUserid()}" />
-                            </button>
-                        </small>
-                        <p th:text="${MessageBoard.getContent()}">
-                            无评论内容
-                        </p>
-                    </blockquote>
+
+                    <div class="media set-color" th:each="MessageBoard,MessageBoardStat : ${MessageBoards.data}">
+                        <div class="media-left media-middle">
+                            <a href="#" class="pull-left"><img th:src="@{'/image/avator/' + ${MessageBoard.getAvator()}}" alt="avator" class="media-object" width="100"/></a>
+                        </div>
+                        <div class="media-body">
+                            <h4 class="media-heading">
+                                &nbsp;&nbsp;<span th:text="${MessageBoard.getUserName()}">未知用户</span>&nbsp;&nbsp;
+                                <button type="button" class="btn btn-primary btn-xs" data-toggle="modal"
+                                        data-target="#myModal">
+                                    回复&nbsp;<span class="badge" th:text="${MessageBoard.getSubreplyCount()}">0</span>
+                                    <input type="hidden" id="messageBoardId" th:value="${MessageBoard.getId()}" />
+                                    <input type="hidden" id="messageBoardUserId" th:value="${MessageBoard.getUserid()}" />
+                                </button>
+                            </h4>
+                            <span th:text="${MessageBoard.getContent()}"></span>
+                        </div>
+                    </div>
                 </div>
                 <div class="fix"></div>
             </div>
