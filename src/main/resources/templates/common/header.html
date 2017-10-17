@@ -146,6 +146,7 @@
                             <input type="password" class="form-control" id="password4Register" name="password4Register"
                                    placeholder="登录密码"/>
                         </div>
+                        <div id="errorPassword" class="register-error"></div>
                     </div>
                     <input type="hidden" id="currentURL4Register" name="currentURL4Register" value=""/>
                     <!--<div class="form-group">
@@ -185,6 +186,14 @@
                     return true;
                 }
 
+                function checkPasswordIsNotNull() {
+                    var password = $("#password4Register").val();
+                    if (password == null || password == undefined || password == '') {
+                        return false;
+                    }
+                    return true;
+                }
+
                 function authInfo(object, content) {
                     $.ajax({
                         url: '/authentication/registerCheck',
@@ -202,13 +211,17 @@
                                 if (json.code == 100) {
                                     $("#unknowError").text('');
                                     if (json.data.object == 'UserName') {
-                                        if (json.data.errorFlag == 'N')
+                                        if (json.data.errorFlag == 'N') {
                                             $("#errorMessageUser").text(json.data.errorMessage);
+                                            $("#doRegister").addClass("disabled");
+                                            $("#doRegister").unbind("click");
+                                            userNameFlag = 'N';
+                                        }
                                         else {
                                             $("#errorMessageUser").text('');
                                             userNameFlag = 'Y';
                                             /*<![CDATA[*/
-                                            if (userNameFlag == 'Y' && emailFlag == 'Y' && checkUserNameIsNotNull() && checkEmailIsNotNull()) {
+                                            if (userNameFlag == 'Y' && emailFlag == 'Y' && checkUserNameIsNotNull() && checkEmailIsNotNull() && checkPasswordIsNotNull()) {
                                                 $("#doRegister").removeClass("disabled");
                                                 $("button").delegate("#doRegister", "click", function () {
                                                     var currentURL = window.location.href;
@@ -223,13 +236,17 @@
                                         }
 
                                     } else if (json.data.object == 'Email') {
-                                        if (json.data.errorFlag == 'N')
+                                        if (json.data.errorFlag == 'N') {
                                             $("#errorMessageEmail").text(json.data.errorMessage);
+                                            $("#doRegister").addClass("disabled");
+                                            $("#doRegister").unbind("click");
+                                            emailFlag = 'N';
+                                        }
                                         else {
                                             $("#errorMessageEmail").text('');
-                                            emailFlag = 'Y'
+                                            emailFlag = 'Y';
                                             /*<![CDATA[*/
-                                            if (userNameFlag == 'Y' && emailFlag == 'Y' && checkUserNameIsNotNull() && checkEmailIsNotNull()) {
+                                            if (userNameFlag == 'Y' && emailFlag == 'Y' && checkUserNameIsNotNull() && checkEmailIsNotNull() && checkPasswordIsNotNull()) {
                                                 $("#doRegister").removeClass("disabled");
                                                 $("button").delegate("#doRegister", "click", function () {
                                                     var currentURL = window.location.href;
@@ -264,6 +281,8 @@
                         authInfo("UserName", $("#userName").val());
                     } else {
                         $("#errorMessageUser").text("用户名不能为空");
+                        $("#doRegister").addClass("disabled");
+                        $("#doRegister").unbind("click");
                     }
                 })
                 $("#activeEmail").on("blur", function () {
@@ -271,6 +290,23 @@
                         authInfo("Email", $("#activeEmail").val());
                     } else {
                         $("#errorMessageEmail").text("邮箱不能为空");
+                        $("#doRegister").addClass("disabled");
+                        $("#doRegister").unbind("click");
+                    }
+                })
+
+                $("#password4Register").on("blur", function () {
+                    if (checkPasswordIsNotNull()) {
+                        /*<![CDATA[*/
+                        if (userNameFlag == 'Y' && emailFlag == 'Y' && checkUserNameIsNotNull() && checkEmailIsNotNull() && checkPasswordIsNotNull()) {
+                            $("#errorPassword").text('');
+                            $("#doRegister").removeClass("disabled");
+                        }
+                        /*]]>*/
+                    } else {
+                        $("#errorPassword").text("密码不能为空");
+                        $("#doRegister").addClass("disabled");
+                        $("#doRegister").unbind("click");
                     }
                 })
             </script>
