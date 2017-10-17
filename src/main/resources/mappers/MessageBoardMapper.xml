@@ -83,9 +83,9 @@
         -->
         insert into MESSAGE_BOARD
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="id != null">
+            <!--<if test="id != null">
                 ID,
-            </if>
+            </if>-->
             <if test="version != null">
                 VERSION,
             </if>
@@ -127,9 +127,9 @@
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="id != null">
+            <!--<if test="id != null">
                 #{id,jdbcType=INTEGER},
-            </if>
+            </if>-->
             <if test="version != null">
                 #{version,jdbcType=INTEGER},
             </if>

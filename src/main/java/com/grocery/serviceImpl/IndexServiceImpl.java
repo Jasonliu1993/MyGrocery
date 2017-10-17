@@ -3,9 +3,12 @@ package com.grocery.serviceImpl;
 import com.grocery.annotation.LogAnnotation;
 import com.grocery.dao.AuthenticationMapper;
 import com.grocery.dao.NavigatationMenuMapper;
+import com.grocery.dao.SystemUserMapper;
+import com.grocery.domain.AuthInfo;
 import com.grocery.domain.NavigatationMenu;
 import com.grocery.domain.SystemUser;
 import com.grocery.services.IndexService;
+import com.grocery.utilities.DateUtility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +28,9 @@ public class IndexServiceImpl implements IndexService {
     @Autowired
     private AuthenticationMapper authenticationMapper;
 
+    @Autowired
+    private SystemUserMapper systemUserMapper;
+
     @Override
     public List<NavigatationMenu> getNavMenu(String path) {
         List<NavigatationMenu> navigatationMenus = navigatationMenuMapper.selectAll();
@@ -43,5 +49,53 @@ public class IndexServiceImpl implements IndexService {
     @Override
     public SystemUser loginAuthentication(String userNameOrEmail, String password) {
         return authenticationMapper.Auth(userNameOrEmail,password);
+    }
+
+    @Override
+    public SystemUser registerAuthentication(String userName, String password4Register, String activeEmail) {
+        SystemUser systemUser = new SystemUser();
+
+        systemUser.setUserName(userName);
+        systemUser.setPassword(password4Register);
+        systemUser.setType("custom");
+        systemUser.setEmail(activeEmail);
+        systemUser.setCreateDatetime(DateUtility.getCurrentDate());
+        systemUser.setLastLoginDatetime(DateUtility.getCurrentDate());
+
+        systemUserMapper.insertSelective(systemUser);
+
+        return systemUser;
+    }
+
+    @Override
+    public AuthInfo doAuthInfo(String object, String content) {
+
+        AuthInfo authInfo = new AuthInfo();
+
+        if ("UserName".equals(object)) {
+            if(systemUserMapper.checkUserName(content) > 0) {
+                authInfo.setObject("UserName");
+                authInfo.setErrorFlag("N");
+                authInfo.setErrorMessage("用户名已存在");
+            } else {
+                authInfo.setObject("UserName");
+                authInfo.setErrorFlag("Y");
+            }
+        } else if ("Email".equals(object)) {
+            if(systemUserMapper.checkEmail(content) > 0) {
+                authInfo.setObject("Email");
+                authInfo.setErrorFlag("N");
+                authInfo.setErrorMessage("邮箱已存在");
+            } else {
+                authInfo.setObject("Email");
+                authInfo.setErrorFlag("Y");
+            }
+        } else {
+            authInfo.setObject("Unkonw");
+            authInfo.setErrorFlag("N");
+            authInfo.setErrorMessage("未知错误");
+        }
+
+        return authInfo;
     }
 }

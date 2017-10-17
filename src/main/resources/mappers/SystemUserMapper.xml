@@ -38,6 +38,12 @@
     from SYSTEM_USER
     where ID = #{id,jdbcType=INTEGER}
   </select>
+  <select id="checkUserName" resultType="java.lang.Integer">
+    SELECT COUNT(*) FROM SYSTEM_USER WHERE USER_NAME = #{arg0}
+  </select>
+  <select id="checkEmail" resultType="java.lang.Integer">
+    SELECT COUNT(*) FROM SYSTEM_USER WHERE EMAIL = #{arg0}
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     <!--
       WARNING - @mbggenerated
@@ -69,9 +75,9 @@
     -->
     insert into SYSTEM_USER
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
+      <!--<if test="id != null">
         ID,
-      </if>
+      </if>-->
       <if test="version != null">
         VERSION,
       </if>
@@ -110,9 +116,9 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
+      <!--<if test="id != null">
         #{id,jdbcType=INTEGER},
-      </if>
+      </if>-->
       <if test="version != null">
         #{version,jdbcType=INTEGER},
       </if>

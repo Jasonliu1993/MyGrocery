@@ -52,4 +52,8 @@ public interface SystemUserMapper {
      * @mbggenerated
      */
     int updateByPrimaryKey(SystemUser record);
+
+    int checkUserName(String userName);
+
+    int checkEmail(String email);
 }
