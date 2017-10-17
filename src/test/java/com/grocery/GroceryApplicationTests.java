@@ -19,6 +19,8 @@ public class GroceryApplicationTests {
 
 	@Test
 	public void contextLoads() {
+        System.out.println("http://localhost:8080/error/loginFailed".contains("/error/loginFailed"));
+
 	}
 
 	@Test
@@ -31,7 +33,7 @@ public class GroceryApplicationTests {
 	@Test
 	public void testMD5() {
 
-		System.out.println(EncryptionUtility.encrypt4MD5("1"));
+//		System.out.println(EncryptionUtility.encrypt4MD5("1"));
 	}
 
 }

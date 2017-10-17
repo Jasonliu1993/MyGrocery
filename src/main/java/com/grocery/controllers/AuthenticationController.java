@@ -32,7 +32,6 @@ public class AuthenticationController {
         SystemUser user = null;
         if ((user = indexService.loginAuthentication(userNameOrEmail, EncryptionUtility.encrypt4MD5(password4log))) != null) {
             session.setAttribute("User", user);
-            System.out.println(currentURL4Login);
             if(currentURL4Login.contains("/error/loginFailed")) {
                 response.sendRedirect("/index");
             } else {
