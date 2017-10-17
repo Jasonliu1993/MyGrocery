@@ -1,6 +1,5 @@
 package com.grocery.serviceImpl;
 
-import com.grocery.annotation.LogAnnotation;
 import com.grocery.dao.AuthenticationMapper;
 import com.grocery.dao.NavigatationMenuMapper;
 import com.grocery.dao.SystemUserMapper;
@@ -12,7 +11,6 @@ import com.grocery.utilities.DateUtility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -48,7 +46,14 @@ public class IndexServiceImpl implements IndexService {
 
     @Override
     public SystemUser loginAuthentication(String userNameOrEmail, String password) {
-        return authenticationMapper.Auth(userNameOrEmail,password);
+        SystemUser systemUser = null;
+
+        if ((systemUser = authenticationMapper.Auth(userNameOrEmail,password)) != null ) {
+            systemUser.setLastLoginDatetime(DateUtility.getCurrentDate());
+            systemUserMapper.updateByPrimaryKeySelective(systemUser);
+        }
+
+        return systemUser;
     }
 
     @Override

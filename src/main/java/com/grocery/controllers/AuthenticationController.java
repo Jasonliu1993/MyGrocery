@@ -3,6 +3,7 @@ package com.grocery.controllers;
 import com.grocery.domain.Message;
 import com.grocery.domain.SystemUser;
 import com.grocery.services.IndexService;
+import com.grocery.utilities.EncryptionUtility;
 import com.grocery.utilities.PackingInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -29,9 +30,14 @@ public class AuthenticationController {
     @PostMapping("/login")
     public void login(String userNameOrEmail, String password4log, String currentURL4Login, HttpSession session, HttpServletResponse response) throws IOException {
         SystemUser user = null;
-        if ((user = indexService.loginAuthentication(userNameOrEmail, password4log)) != null) {
+        if ((user = indexService.loginAuthentication(userNameOrEmail, EncryptionUtility.encrypt4MD5(password4log))) != null) {
             session.setAttribute("User", user);
-            response.sendRedirect(currentURL4Login);
+            System.out.println(currentURL4Login);
+            if(currentURL4Login.contains("/error/loginFailed")) {
+                response.sendRedirect("/index");
+            } else {
+                response.sendRedirect(currentURL4Login);
+            }
         } else
             response.sendRedirect("/error/loginFailed");
     }
@@ -44,9 +50,13 @@ public class AuthenticationController {
 
     @PostMapping("/register")
     public void register(String userName, String password4Register, String activeEmail, String currentURL4Register, HttpSession session, HttpServletResponse response) throws IOException {
-        SystemUser user = indexService.registerAuthentication(userName,password4Register,activeEmail);
+        SystemUser user = indexService.registerAuthentication(userName,EncryptionUtility.encrypt4MD5(password4Register),activeEmail);
         session.setAttribute("User", user);
-        response.sendRedirect(currentURL4Register);
+        if(currentURL4Register.contains("/error/loginFailed")) {
+            response.sendRedirect("/index");
+        } else {
+            response.sendRedirect(currentURL4Register);
+        }
     }
 
     @PostMapping("/registerCheck")

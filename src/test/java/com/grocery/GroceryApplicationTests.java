@@ -1,6 +1,7 @@
 package com.grocery;
 
 import com.grocery.dao.NavigatationMenuMapper;
+import com.grocery.utilities.EncryptionUtility;
 import com.grocery.utilities.PaginationUtility;
 import org.junit.Assert;
 import org.junit.Test;
@@ -25,6 +26,12 @@ public class GroceryApplicationTests {
 //		Assert.assertEquals(navigatationMenuMapper.selectAll().get(0).getMenuItemName(),"主页");
 //		Assert.assertEquals(navigatationMenuMapper.selectAll().get(0).getInterlinkage(),"/index");
 
+	}
+
+	@Test
+	public void testMD5() {
+
+		System.out.println(EncryptionUtility.encrypt4MD5("1"));
 	}
 
 }
