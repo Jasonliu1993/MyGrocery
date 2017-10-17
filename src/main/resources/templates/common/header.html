@@ -223,7 +223,7 @@
                                             /*<![CDATA[*/
                                             if (userNameFlag == 'Y' && emailFlag == 'Y' && checkUserNameIsNotNull() && checkEmailIsNotNull() && checkPasswordIsNotNull()) {
                                                 $("#doRegister").removeClass("disabled");
-                                                $("button").delegate("#doRegister", "click", function () {
+                                                $("#doRegister").bind("click", function () {
                                                     var currentURL = window.location.href;
                                                     $("#currentURL4Register").val(currentURL);
                                                     $("#registerForm").submit();
@@ -248,7 +248,7 @@
                                             /*<![CDATA[*/
                                             if (userNameFlag == 'Y' && emailFlag == 'Y' && checkUserNameIsNotNull() && checkEmailIsNotNull() && checkPasswordIsNotNull()) {
                                                 $("#doRegister").removeClass("disabled");
-                                                $("button").delegate("#doRegister", "click", function () {
+                                                $("#doRegister").bind("click", function () {
                                                     var currentURL = window.location.href;
                                                     $("#currentURL4Register").val(currentURL);
                                                     $("#registerForm").submit();
@@ -301,6 +301,11 @@
                         if (userNameFlag == 'Y' && emailFlag == 'Y' && checkUserNameIsNotNull() && checkEmailIsNotNull() && checkPasswordIsNotNull()) {
                             $("#errorPassword").text('');
                             $("#doRegister").removeClass("disabled");
+                            $("#doRegister").bind("click", function () {
+                                var currentURL = window.location.href;
+                                $("#currentURL4Register").val(currentURL);
+                                $("#registerForm").submit();
+                            })
                         }
                         /*]]>*/
                     } else {
