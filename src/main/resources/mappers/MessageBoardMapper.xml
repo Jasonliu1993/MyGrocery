@@ -43,10 +43,10 @@
     <select id="selectPaging" resultMap="BaseResultMap">
         SELECT
         <include refid="Base_Column_List"/>
-        ,(SELECT COUNT(*) FROM MESSAGE_BOARD_SUBREPLY WHERE PARENT_REF_ID = ID) SUBREPLY_COUNT
-        FROM MESSAGE_BOARD
+        ,(SELECT COUNT(*) FROM MESSAGE_BOARD_SUBREPLY B WHERE B.PARENT_REF_ID = A.ID) SUBREPLY_COUNT
+        FROM MESSAGE_BOARD A
         ORDER BY
-        CREATE_DATETIME DESC
+        A.CREATE_DATETIME DESC
         LIMIT #{arg0}, #{arg1}
     </select>
     <select id="getCount" resultType="java.lang.Integer">

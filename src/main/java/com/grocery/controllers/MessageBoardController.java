@@ -37,4 +37,10 @@ public class MessageBoardController {
         return PackingInfo.changeData2Message(messageBoardService.firstLoadDetailReply(messageBoardId, messageBoardUserId, session));
     }
 
+    @PostMapping("/subReply")
+    @ResponseBody
+    public Message subReply(String messageBoardId, String messageBoardUserId, HttpSession session) {
+        return PackingInfo.changeData2Message(null);
+    }
+
 }

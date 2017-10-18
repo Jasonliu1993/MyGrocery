@@ -1,6 +1,7 @@
 package com.grocery;
 
 import com.grocery.dao.NavigatationMenuMapper;
+import com.grocery.services.MessageBoardService;
 import com.grocery.utilities.EncryptionUtility;
 import com.grocery.utilities.PaginationUtility;
 import org.junit.Assert;
@@ -15,12 +16,12 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class GroceryApplicationTests {
 
 	@Autowired
-	private NavigatationMenuMapper navigatationMenuMapper;
+	private MessageBoardService messageBoardService;
 
 	@Test
 	public void contextLoads() {
-        System.out.println("http://localhost:8080/error/loginFailed".contains("/error/loginFailed"));
-
+//        System.out.println("http://localhost:8080/error/loginFailed".contains("/error/loginFailed"));
+		messageBoardService.getMessageBoardByPaging(1,15);
 	}
 
 	@Test

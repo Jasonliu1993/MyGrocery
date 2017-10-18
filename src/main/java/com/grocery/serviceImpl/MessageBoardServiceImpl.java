@@ -70,6 +70,13 @@ public class MessageBoardServiceImpl implements MessageBoardService{
 
         List<MessageBoardSubreply> messageBoardSubreplies = messageBoardSubreplyMapper.selectpaging(0,Integer.valueOf(customProperty.getSubReply()));
 
+        for (MessageBoardSubreply messageBoardSubreply : messageBoardSubreplies) {
+            /**
+             * 获取头像的ID
+             */
+            messageBoardSubreply.setCustom1(personalInfoMapper.selectByPrimaryKey(messageBoardSubreply.getUserid()).getAvator().toString());
+        }
+
         messageBoard.setMessageBoardSubreply(messageBoardSubreplies);
         Integer subReplyCount = messageBoardSubreplyMapper.getCountByMessageBoardId(messageBoardId);
         if ( subReplyCount <= Integer.valueOf(customProperty.getSubReply())) {
@@ -80,6 +87,7 @@ public class MessageBoardServiceImpl implements MessageBoardService{
         } else {
             messageBoard.setCustom1("Y");
         }
+
 
         return messageBoard;
     }

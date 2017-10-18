@@ -59,7 +59,7 @@
             console.log(varMessageBoardUserId);
 
             $.ajax({
-                url: '/ajax/getLoadButtonFlag.do',
+                url: '/messageBoard/loadReplyDetail',
                 type: "POST",//请求方式：get或post
                 scriptCharset: 'utf-8',
                 dataType: "json",//数据返回类型：xml、json、script
@@ -70,11 +70,84 @@
                 },//自定义提交的数据
                 success: function (json) {
                     if (json !== null || json !== undefined || json !== '') {
-                        if (json.flag == 'Y') {
-                        } else {
-                            reloadBar.remove();
-                        }
+                        var masterArea = '<div class="media-left">' +
+                            '<a href="#">' +
+                            '<img class="media-object" src="/image/avator/' + json.data.avator + '" alt="avator"/>' +
+                            '</a>' +
+                            '</div>' +
+                            '<div class="media-body">' +
+                            '<h4 class="media-heading">' + json.data.userName +
+                        '&nbsp;<button type="button" class="btn btn-primary btn-xs replyButtonClass" id="replyButtonInModel">' +
+                            '回复&nbsp;' +
+                    '<input type="hidden" id="messageBoardIdInModel" value="' + json.data.id + '"/>' +
+                            '<input type="hidden" id="messageBoardUserIdInModel" value="' + json.data.userid + '"/>' +
+                            '</button>' +
+                            '</h4>' +
+                            '<div>' + json.data.content +
+                    '</div>' +
+                        '</div>';
+                        $(".master-area").append(masterArea);
                     }
+
+                    var subReplyArea = '<ul class="nav nav-tabs" role="tablist">' +
+                        '<li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">回复</a></li>' +
+                        '</ul>' +
+                        '<div class="tab-content" style="overflow: scroll">' +
+                        '<div role="tabpanel" class="tab-pane active" id="home" style="padding-top: 20px">';
+                    /*<![CDATA[*/
+                    for (var i = 0; i < json.data.messageBoardSubreply.length; i++) {
+                        subReplyArea = subReplyArea +
+                        '<div class="media">' +
+                        '<div class="media-left">' +
+                        '<a href="#">' +
+                        '<img class="media-object" src="/image/avator/' + json.data.messageBoardSubreply[i].custom1 + '" alt="avator" width="60"/>' +
+                        '</a>' +
+                        '</div>' +
+                        '<div class="media-body">' +
+                        '<h4 class="media-heading">';
+                        if (json.data.messageBoardSubreply[i].replyUserId !== null) {
+                            subReplyArea = subReplyArea +  json.data.messageBoardSubreply[i].userName + '&nbsp;>&nbsp;' + json.data.messageBoardSubreply[i].replyUserName + '&nbsp;';
+                        } else {
+                            subReplyArea = subReplyArea +  json.data.messageBoardSubreply[i].userName + '&nbsp;';
+                        }
+
+                        subReplyArea = subReplyArea + '<button type="button" class="btn btn-primary btn-xs replyButtonClass" id="subReplyButtonInModel">' +
+                        '&nbsp;回复&nbsp;' +
+                        '<input type="hidden" id="subReplyMessageBoardIdInModel" value="' + json.data.messageBoardSubreply[i].id + '"/>' +
+                        '<input type="hidden" id="subReplyMessageBoardUserIdInModel" value="' + json.data.messageBoardSubreply[i].userid + '"/>' +
+                        '</button>' +
+                        '</h4>' +
+                        '<div>' + json.data.messageBoardSubreply[i].content +'</div>' +
+                        '</div>' +
+                        '</div>'
+                    }
+                    /*]]>*/
+                    subReplyArea = subReplyArea + '<div class="set-margin-top next-btn">' ;
+                    if(json.data.custom1 == 'Y') {
+
+                        subReplyArea = subReplyArea + '<button type="button" class="btn btn-primary btn-block">下一页</button>' +
+                        '<input type="hidden" id="nextPage" value="2"/>' +
+                        '<!--<input type="hidden" id="totalPage" value=""/>-->' +
+                        '<!--<input type="hidden" id="PageSize" value=""/>-->';
+                    }
+                    subReplyArea = subReplyArea +'</div>' +
+
+                        '</div>' +
+                        '</div>';
+
+                    $(".subReply-area").append(subReplyArea);
+
+
+                    var replyArea = '<form action="/messageBoard/subReply" method="post">' +
+                        '<div class="form-group">' +
+                        '<label for="message-text" class="control-label">回复:</label>' +
+                    '<textarea class="form-control" id="message-text"></textarea>' +
+                        '<input type="hidden" id="replyTo" name="replyTo" value=""/>' +
+                        '<input type="hidden" id="messageBoardId4Reply" name="messageBoardId4Reply" value="' + json.data.id + '"/>' +
+                        '</div>' +
+                        '</form>';
+
+                    $(".reply-area").append(replyArea);
                 },
                 error: function (json) {
                     alert("Request Error!")
@@ -85,7 +158,7 @@
         $(document).ready(function () {
 
             $(".replyButtonClass").on("click", function () {
-//                loadSubReply($(this).children("#messageBoardId").val(), $(this).children("#messageBoardUserId").val());
+                firstLoadDetailReply($(this).children("#messageBoardId").val(), $(this).children("#messageBoardUserId").val());
 
 
                 $("#subReplyModel").modal({
@@ -94,9 +167,9 @@
             })
 
             $("#subReplyModel").on("hidden.bs.modal", function () {
-
-//                alert('嘿，我听说您喜欢模态框...');
-
+                $(".master-area").html('');
+                $(".subReply-area").html('');
+                $(".reply-area").html('');
             });
 
         })
@@ -196,95 +269,14 @@
             </div>
             <div class="modal-body">
                 <div class="media master-area">
-                    <div class="media-left">
-                        <a href="#">
-                            <img class="media-object" src="/image/avator/1" alt="avator"/>
-                        </a>
-                    </div>
-                    <div class="media-body">
-                        <h4 class="media-heading">Media heading
-                            <button type="button" class="btn btn-primary btn-xs replyButtonClass"
-                                    id="replyButtonInModel">
-                                回复&nbsp;
-                                <input type="hidden" id="messageBoardIdInModel" value=""/>
-                                <input type="hidden" id="messageBoardUserIdInModel"
-                                       value=""/>
-                            </button>
-                        </h4>
-                        <div>
-                            史时期，“现代化”都被赋予着不同的含义。今天，段子手朱广权搭上嘻哈说唱，别样风格聊聊“现代化”。
-                            百年前，孙中山在《建国方略》中描绘了现代化的蓝图：
-                        </div>
-                    </div>
+
                 </div>
                 <div class="set-margin-top subReply-area">
 
-                    <!-- Nav tabs -->
-                    <ul class="nav nav-tabs" role="tablist">
-                        <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab"
-                                                                  data-toggle="tab">回复</a></li>
-                    </ul>
-                    <!-- Tab panes -->
-                    <div class="tab-content" style="overflow: scroll">
-                        <div role="tabpanel" class="tab-pane active" id="home" style="padding-top: 20px">
-                            <div class="media">
-                                <div class="media-left">
-                                    <a href="#">
-                                        <img class="media-object" src="/image/avator/1" alt="avator"
-                                             width="60"/>
-                                    </a>
-                                </div>
-                                <div class="media-body">
-                                    <h4 class="media-heading">Media heading
-                                        <button type="button" class="btn btn-primary btn-xs replyButtonClass"
-                                                id="subReplyButtonInModel">
-                                            回复&nbsp;
-                                            <input type="hidden" id="subReplyMessageBoardIdInModel" value=""/>
-                                            <input type="hidden" id="subReplyMessageBoardUserIdInModel"
-                                                   value=""/>
-                                        </button>
-                                    </h4>
-                                    <div>这是一个测试</div>
-                                </div>
-                            </div>
-                            <div class="media">
-                                <div class="media-left">
-                                    <a href="#">
-                                        <img class="media-object" src="/image/avator/1" alt="avator"
-                                             width="60"/>
-                                    </a>
-                                </div>
-                                <div class="media-body">
-                                    <h4 class="media-heading">Media heading
-                                        <button type="button" class="btn btn-primary btn-xs replyButtonClass"
-                                                id="subReplyButtonInModel">
-                                            回复&nbsp;
-                                            <input type="hidden" id="subReplyMessageBoardIdInModel" value=""/>
-                                            <input type="hidden" id="subReplyMessageBoardUserIdInModel"
-                                                   value=""/>
-                                        </button>
-                                    </h4>
-                                    <div>这是一个测试2</div>
-                                </div>
-                            </div>
-                            <div class="set-margin-top">
-                                <button type="button" class="btn btn-primary btn-block">下一页</button>
-                                <input type="hidden" id="nextPage" value=""/>
-                                <!--<input type="hidden" id="totalPage" value=""/>-->
-                                <!--<input type="hidden" id="PageSize" value=""/>-->
-                            </div>
-                        </div>
-                    </div>
+
                 </div>
                 <div class="set-margin-top reply-area">
-                    <form>
-                        <div class="form-group">
-                            <label for="message-text" class="control-label">回复:</label>
-                            <textarea class="form-control" id="message-text"></textarea>
-                            <input type="hidden" id="replyTo" name="replyTo" value=""/>
-                            <input type="hidden" id="messageBoardId4Reply" name="messageBoardId4Reply" value=""/>
-                        </div>
-                    </form>
+
                 </div>
             </div>
             <div class="modal-footer">
