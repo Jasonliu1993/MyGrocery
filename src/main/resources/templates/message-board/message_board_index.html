@@ -63,7 +63,7 @@
                     <h2>留言板</h2>
                     <p>茫茫人海中，有你有我。</p>
                     <!--<p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a></p>-->
-                    <p><a id="modal-127408" class="btn btn-primary btn-lg" href="#exampleModal" role="button"
+                    <p><a id="modal-127408" class="btn btn-primary btn-lg" href="#leaveMessageModel" role="button"
                           data-toggle="modal">留言</a></p>
                 </div>
                 <div class="col-md-12">
@@ -77,8 +77,8 @@
                         <div class="media-body">
                             <h4 class="media-heading">
                                 &nbsp;&nbsp;<span th:text="${MessageBoard.getUserName()}">未知用户</span>&nbsp;&nbsp;
-                                <button type="button" class="btn btn-primary btn-xs" data-toggle="modal"
-                                        data-target="#myModal" id="replyButton">
+                                <button type="button" class="btn btn-primary btn-xs"
+                                        id="replyButton">
                                     回复&nbsp;<span class="badge" th:text="${MessageBoard.getSubreplyCount()}">0</span>
                                     <input type="hidden" id="messageBoardId" th:value="${MessageBoard.getId()}"/>
                                     <input type="hidden" id="messageBoardUserId"
@@ -100,7 +100,7 @@
 </div>
 
 <!--回复弹出框-->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+<div class="modal fade" id="leaveMessageModel" tabindex="-1" role="dialog" aria-labelledby="leaveMessageLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -113,7 +113,8 @@
                 <form action="/messageBoard/leaveMessage" method="post" id="replyForm">
                     <div class="form-group">
                         <label for="replyMessage" class="control-label">内容</label>
-                        <textarea class="form-control" id="replyMessage" name="replyMessage" placeholder="请输入内容..."></textarea>
+                        <textarea class="form-control" id="replyMessage" name="replyMessage"
+                                  placeholder="请输入内容..."></textarea>
                     </div>
                 </form>
             </div>
@@ -133,8 +134,9 @@
 </div>
 
 <!--回复留言弹出框-->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog" role="document">
+<div class="modal fade bs-example-modal-lg" id="subReplyModel" tabindex="-1" role="dialog"
+     aria-labelledby="subReplyLabel">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
@@ -151,6 +153,53 @@
         </div>
     </div>
 </div>
+
+<script>
+
+    function loadSubReply(varMessageBoardId, varMessageBoardUserId) {
+        console.log(varMessageBoardId);
+        console.log(varMessageBoardUserId);
+
+        $.ajax({
+            url: '/ajax/getLoadButtonFlag.do',
+            type: "POST",//请求方式：get或post
+            scriptCharset: 'utf-8',
+            dataType: "json",//数据返回类型：xml、json、script
+            cache: false,
+            data: {
+                'messageBoardId': varMessageBoardId,
+                'messageBoardUserId': varMessageBoardUserId,
+            },//自定义提交的数据
+            success: function (json) {
+                if (json !== null || json !== undefined || json !== '') {
+                    if (json.flag == 'Y') {
+                    } else {
+                        reloadBar.remove();
+                    }
+                }
+            },
+            error: function (json) {
+                alert("Request Error!")
+            }
+        })
+    }
+
+    $("#replyButton").on("click", function () {
+        loadSubReply($(this).children("#messageBoardId").val(), $(this).children("#messageBoardUserId").val());
+
+        $("#subReplyModel").modal({
+//          remote:"test/test.jsp";//可以填写一个url，会调用jquery load方法加载数据
+//          backdrop:"static";//指定一个静态背景，当用户点击背景处，modal界面不会消失
+            keyboard: true//当按下esc键时，modal框消失
+        })
+    })
+
+    $('#subReplyModel').on('hide.bs.modal', function () {
+
+        alert('嘿，我听说您喜欢模态框...');
+    });
+
+</script>
 
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <script src="/js/jquery-3.1.1.min.js"></script>

@@ -2,10 +2,9 @@ package com.grocery.serviceImpl;
 
 import com.grocery.dao.AuthenticationMapper;
 import com.grocery.dao.NavigatationMenuMapper;
+import com.grocery.dao.PersonalInfoMapper;
 import com.grocery.dao.SystemUserMapper;
-import com.grocery.domain.AuthInfo;
-import com.grocery.domain.NavigatationMenu;
-import com.grocery.domain.SystemUser;
+import com.grocery.domain.*;
 import com.grocery.services.IndexService;
 import com.grocery.utilities.DateUtility;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +27,9 @@ public class IndexServiceImpl implements IndexService {
 
     @Autowired
     private SystemUserMapper systemUserMapper;
+
+    @Autowired
+    private PersonalInfoMapper personalInfoMapper;
 
     @Override
     public List<NavigatationMenu> getNavMenu(String path) {
@@ -59,6 +61,7 @@ public class IndexServiceImpl implements IndexService {
     @Override
     public SystemUser registerAuthentication(String userName, String password4Register, String activeEmail) {
         SystemUser systemUser = new SystemUser();
+        PersonalInfo personalInfo = new PersonalInfo();
 
         systemUser.setUserName(userName);
         systemUser.setPassword(password4Register);
@@ -68,6 +71,12 @@ public class IndexServiceImpl implements IndexService {
         systemUser.setLastLoginDatetime(DateUtility.getCurrentDate());
 
         systemUserMapper.insertSelective(systemUser);
+
+        personalInfo.setVersion(1);
+        personalInfo.setUserId(systemUser.getId());
+        personalInfo.setAvator(1);
+
+        personalInfoMapper.insertSelective(personalInfo);
 
         return systemUser;
     }
