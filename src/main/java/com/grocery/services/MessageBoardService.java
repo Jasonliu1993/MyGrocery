@@ -12,4 +12,5 @@ public interface MessageBoardService {
     List<MessageBoard> getMessageBoardByPaging(Integer pageNum, Integer pageSize);
     Integer getMessageBoardCount();
     void sendMessage(HttpSession session, String replyMessage);
+    MessageBoard firstLoadDetailReply(String messageBoardId, String messageBoardUserId, HttpSession session);
 }

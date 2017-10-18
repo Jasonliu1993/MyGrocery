@@ -54,7 +54,7 @@
 
     <script src="/js/jquery-3.1.1.min.js"></script>
     <script>
-        function loadSubReply(varMessageBoardId, varMessageBoardUserId) {
+        function firstLoadDetailReply(varMessageBoardId, varMessageBoardUserId) {
             console.log(varMessageBoardId);
             console.log(varMessageBoardUserId);
 
@@ -85,9 +85,8 @@
         $(document).ready(function () {
 
             $(".replyButtonClass").on("click", function () {
-//        loadSubReply($(this).children("#messageBoardId").val(), $(this).children("#messageBoardUserId").val());
+//                loadSubReply($(this).children("#messageBoardId").val(), $(this).children("#messageBoardUserId").val());
 
-                console.log("here")
 
                 $("#subReplyModel").modal({
                     keyboard: true//当按下esc键时，modal框消失
@@ -196,7 +195,7 @@
                 <h4 class="modal-title" id="myModalLabel">详情</h4>
             </div>
             <div class="modal-body">
-                <div class="media">
+                <div class="media master-area">
                     <div class="media-left">
                         <a href="#">
                             <img class="media-object" src="/image/avator/1" alt="avator"/>
@@ -217,76 +216,75 @@
                             百年前，孙中山在《建国方略》中描绘了现代化的蓝图：
                         </div>
                     </div>
-                    <div class="set-margin-top">
+                </div>
+                <div class="set-margin-top subReply-area">
 
-                        <!-- Nav tabs -->
-                        <ul class="nav nav-tabs" role="tablist">
-                            <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab"
-                                                                      data-toggle="tab">Home</a></li>
-                        </ul>
-                        <!-- Tab panes -->
-                        <div class="tab-content" style="overflow: scroll">
-                            <div role="tabpanel" class="tab-pane active" id="home" style="padding-top: 20px">
-                                <div class="media">
-                                    <div class="media-left">
-                                        <a href="#">
-                                            <img class="media-object" src="/image/avator/1" alt="avator"
-                                                 width="60"/>
-                                        </a>
-                                    </div>
-                                    <div class="media-body">
-                                        <h4 class="media-heading">Media heading
-                                            <button type="button" class="btn btn-primary btn-xs replyButtonClass"
-                                                    id="subReplyButtonInModel">
-                                                回复&nbsp;
-                                                <input type="hidden" id="subReplyMessageBoardIdInModel" value=""/>
-                                                <input type="hidden" id="subReplyMessageBoardUserIdInModel"
-                                                       value=""/>
-                                            </button>
-                                        </h4>
-                                        <div>这是一个测试</div>
-                                    </div>
+                    <!-- Nav tabs -->
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab"
+                                                                  data-toggle="tab">回复</a></li>
+                    </ul>
+                    <!-- Tab panes -->
+                    <div class="tab-content" style="overflow: scroll">
+                        <div role="tabpanel" class="tab-pane active" id="home" style="padding-top: 20px">
+                            <div class="media">
+                                <div class="media-left">
+                                    <a href="#">
+                                        <img class="media-object" src="/image/avator/1" alt="avator"
+                                             width="60"/>
+                                    </a>
                                 </div>
-                                <div class="media">
-                                    <div class="media-left">
-                                        <a href="#">
-                                            <img class="media-object" src="/image/avator/1" alt="avator"
-                                                 width="60"/>
-                                        </a>
-                                    </div>
-                                    <div class="media-body">
-                                        <h4 class="media-heading">Media heading
-                                            <button type="button" class="btn btn-primary btn-xs replyButtonClass"
-                                                    id="subReplyButtonInModel">
-                                                回复&nbsp;
-                                                <input type="hidden" id="subReplyMessageBoardIdInModel" value=""/>
-                                                <input type="hidden" id="subReplyMessageBoardUserIdInModel"
-                                                       value=""/>
-                                            </button>
-                                        </h4>
-                                        <div>这是一个测试2</div>
-                                    </div>
+                                <div class="media-body">
+                                    <h4 class="media-heading">Media heading
+                                        <button type="button" class="btn btn-primary btn-xs replyButtonClass"
+                                                id="subReplyButtonInModel">
+                                            回复&nbsp;
+                                            <input type="hidden" id="subReplyMessageBoardIdInModel" value=""/>
+                                            <input type="hidden" id="subReplyMessageBoardUserIdInModel"
+                                                   value=""/>
+                                        </button>
+                                    </h4>
+                                    <div>这是一个测试</div>
                                 </div>
-                                <div class="set-margin-top" >
-                                    <button type="button" class="btn btn-primary btn-block">下一页</button>
-                                    <input type="hidden" id="nextPage" value=""/>
-                                    <!--<input type="hidden" id="totalPage" value=""/>-->
-                                    <!--<input type="hidden" id="PageSize" value=""/>-->
+                            </div>
+                            <div class="media">
+                                <div class="media-left">
+                                    <a href="#">
+                                        <img class="media-object" src="/image/avator/1" alt="avator"
+                                             width="60"/>
+                                    </a>
                                 </div>
+                                <div class="media-body">
+                                    <h4 class="media-heading">Media heading
+                                        <button type="button" class="btn btn-primary btn-xs replyButtonClass"
+                                                id="subReplyButtonInModel">
+                                            回复&nbsp;
+                                            <input type="hidden" id="subReplyMessageBoardIdInModel" value=""/>
+                                            <input type="hidden" id="subReplyMessageBoardUserIdInModel"
+                                                   value=""/>
+                                        </button>
+                                    </h4>
+                                    <div>这是一个测试2</div>
+                                </div>
+                            </div>
+                            <div class="set-margin-top">
+                                <button type="button" class="btn btn-primary btn-block">下一页</button>
+                                <input type="hidden" id="nextPage" value=""/>
+                                <!--<input type="hidden" id="totalPage" value=""/>-->
+                                <!--<input type="hidden" id="PageSize" value=""/>-->
                             </div>
                         </div>
                     </div>
-                    <div class="set-margin-top">
-                        <form>
-                            <div class="form-group">
-                                <label for="message-text" class="control-label">回复:</label>
-                                <textarea class="form-control" id="message-text"></textarea>
-                                <input type="hidden" id="replyTo" name="replyTo" value="" />
-                                <input type="hidden" id="messageBoardId4Reply" name="messageBoardId4Reply" value="" />
-
-                            </div>
-                        </form>
-                    </div>
+                </div>
+                <div class="set-margin-top reply-area">
+                    <form>
+                        <div class="form-group">
+                            <label for="message-text" class="control-label">回复:</label>
+                            <textarea class="form-control" id="message-text"></textarea>
+                            <input type="hidden" id="replyTo" name="replyTo" value=""/>
+                            <input type="hidden" id="messageBoardId4Reply" name="messageBoardId4Reply" value=""/>
+                        </div>
+                    </form>
                 </div>
             </div>
             <div class="modal-footer">
