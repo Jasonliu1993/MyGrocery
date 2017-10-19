@@ -77,7 +77,7 @@
                             '</div>' +
                             '<div class="media-body">' +
                             '<h4 class="media-heading">' + json.data.userName +
-                        '&nbsp;<button type="button" class="btn btn-primary btn-xs replyButtonClass" id="replyButtonInModel">' +
+                        '&nbsp;<button type="button" class="btn btn-primary btn-xs subReplyButtonMainClass" id="replyButtonInModel">' +
                             '回复&nbsp;' +
                     '<input type="hidden" id="messageBoardIdInModel" value="' + json.data.id + '"/>' +
                             '<input type="hidden" id="messageBoardUserIdInModel" value="' + json.data.userid + '"/>' +
@@ -106,22 +106,25 @@
                         '<div class="media-body">' +
                         '<h4 class="media-heading">';
                         if (json.data.messageBoardSubreply[i].replyUserId !== null) {
-                            subReplyArea = subReplyArea +  json.data.messageBoardSubreply[i].userName + '&nbsp;>&nbsp;' + json.data.messageBoardSubreply[i].replyUserName + '&nbsp;';
+                            subReplyArea = subReplyArea +  json.data.messageBoardSubreply[i].userName + '&nbsp;回复&nbsp;' + json.data.messageBoardSubreply[i].replyUserName + '&nbsp;';
                         } else {
                             subReplyArea = subReplyArea +  json.data.messageBoardSubreply[i].userName + '&nbsp;';
                         }
 
-                        subReplyArea = subReplyArea + '<button type="button" class="btn btn-primary btn-xs replyButtonClass" id="subReplyButtonInModel">' +
+                        subReplyArea = subReplyArea + '<button type="button" class="btn btn-primary btn-xs subReplyButtonClass" id="subReplyButtonInModel">' +
                         '&nbsp;回复&nbsp;' +
                         '<input type="hidden" id="subReplyMessageBoardIdInModel" value="' + json.data.messageBoardSubreply[i].id + '"/>' +
                         '<input type="hidden" id="subReplyMessageBoardUserIdInModel" value="' + json.data.messageBoardSubreply[i].userid + '"/>' +
+                        '<input type="hidden" id="subReplyMessageBoardUserNameInModel" value="' + json.data.messageBoardSubreply[i].userName + '"/>' +
                         '</button>' +
                         '</h4>' +
                         '<div>' + json.data.messageBoardSubreply[i].content +'</div>' +
                         '</div>' +
                         '</div>'
                     }
+
                     /*]]>*/
+                    subReplyArea = subReplyArea + '</div>' ;
                     subReplyArea = subReplyArea + '<div class="set-margin-top next-btn">' ;
                     if(json.data.custom1 == 'Y') {
 
@@ -132,7 +135,7 @@
                     }
                     subReplyArea = subReplyArea +'</div>' +
 
-                        '</div>' +
+
                         '</div>';
 
                     $(".subReply-area").append(subReplyArea);
@@ -141,7 +144,7 @@
                     var replyArea = '<form action="/messageBoard/subReply" method="post">' +
                         '<div class="form-group">' +
                         '<label for="message-text" class="control-label">回复:</label>' +
-                    '<textarea class="form-control" id="message-text"></textarea>' +
+                    '<textarea class="form-control" id="messageText" name="messageText"></textarea>' +
                         '<input type="hidden" id="replyTo" name="replyTo" value=""/>' +
                         '<input type="hidden" id="messageBoardId4Reply" name="messageBoardId4Reply" value="' + json.data.id + '"/>' +
                         '</div>' +
@@ -155,6 +158,31 @@
             })
         }
 
+        /*function sendReplyOrSubReply(messageBoardId4Reply,replyTo,messageText) {
+            $.ajax({
+                url: '/messageBoard/sendReplyOrSubReply',
+                type: "POST",//请求方式：get或post
+                scriptCharset: 'utf-8',
+                dataType: "json",//数据返回类型：xml、json、script
+                cache: false,
+                data: {
+                    'messageBoardId4Reply': messageBoardId4Reply,
+                    'replyTo': replyTo,
+                    'messageText': messageText
+                },//自定义提交的数据
+                success: function (json) {
+                    if (json !== null || json !== undefined || json !== '') {
+                        var subReply = '';
+                        subReply = subReply ;
+                        $("#home").append(subReply);
+                    }
+                },
+                error: function (json) {
+                    alert("Request Error!")
+                }
+            })
+        }*/
+
         $(document).ready(function () {
 
             $(".replyButtonClass").on("click", function () {
@@ -164,13 +192,25 @@
                 $("#subReplyModel").modal({
                     keyboard: true//当按下esc键时，modal框消失
                 })
-            })
+            });
 
             $("#subReplyModel").on("hidden.bs.modal", function () {
                 $(".master-area").html('');
                 $(".subReply-area").html('');
                 $(".reply-area").html('');
             });
+
+            $(".master-area").delegate(".subReplyButtonMainClass","click",function(){
+
+                $("#replyTo").val('');
+                $("#messageText").attr("placeholder","");
+            });
+
+            $(".subReply-area").delegate(".subReplyButtonClass","click",function(){
+                $("#replyTo").val($(this).children("#subReplyMessageBoardUserIdInModel").val());
+                var user = '@' + $(this).children('#subReplyMessageBoardUserNameInModel').val();
+                $("#messageText").attr("placeholder",user);
+            })
 
         })
 

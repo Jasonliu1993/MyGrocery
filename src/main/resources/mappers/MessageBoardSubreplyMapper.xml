@@ -44,8 +44,9 @@
     <select id="selectpaging" resultMap="BaseResultMap">
         SELECT
         <include refid="Base_Column_List"/>
-        FROM MESSAGE_BOARD_SUBREPLY ORDER BY
-        CREATE_DATETIME DESC LIMIT #{arg0}, #{arg1};
+        FROM MESSAGE_BOARD_SUBREPLY
+        WHERE PARENT_REF_ID = #{arg2}
+        ORDER BY CREATE_DATETIME DESC LIMIT #{arg0}, #{arg1};
     </select>
     <select id="getCount" resultType="java.lang.Integer">
         SELECT COUNT(*) FROM MESSAGE_BOARD_SUBREPLY;

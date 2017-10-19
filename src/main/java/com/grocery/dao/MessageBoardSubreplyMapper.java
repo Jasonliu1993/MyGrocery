@@ -37,7 +37,7 @@ public interface MessageBoardSubreplyMapper {
      */
     MessageBoardSubreply selectByPrimaryKey(Integer id);
 
-    List<MessageBoardSubreply> selectpaging(Integer pageIndex, Integer pageSize);
+    List<MessageBoardSubreply> selectpaging(Integer pageIndex, Integer pageSize,String id);
 
     Integer getCountByMessageBoardId(String id);
 

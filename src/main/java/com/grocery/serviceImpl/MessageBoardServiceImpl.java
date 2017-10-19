@@ -68,7 +68,7 @@ public class MessageBoardServiceImpl implements MessageBoardService{
     public MessageBoard firstLoadDetailReply(String messageBoardId, String messageBoardUserId, HttpSession session) {
         MessageBoard messageBoard = messageBoardMapper.selectByPrimaryKey(Integer.valueOf(messageBoardId));
 
-        List<MessageBoardSubreply> messageBoardSubreplies = messageBoardSubreplyMapper.selectpaging(0,Integer.valueOf(customProperty.getSubReply()));
+        List<MessageBoardSubreply> messageBoardSubreplies = messageBoardSubreplyMapper.selectpaging(0,Integer.valueOf(customProperty.getSubReply()),messageBoardId);
 
         for (MessageBoardSubreply messageBoardSubreply : messageBoardSubreplies) {
             /**
