@@ -21,7 +21,8 @@ public class GroceryApplicationTests {
 	@Test
 	public void contextLoads() {
 //        System.out.println("http://localhost:8080/error/loginFailed".contains("/error/loginFailed"));
-		messageBoardService.getMessageBoardByPaging(1,15);
+//		messageBoardService.getMessageBoardByPaging(1,15);
+		System.out.println(3/2);
 	}
 
 	@Test

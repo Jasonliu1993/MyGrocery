@@ -15,4 +15,6 @@ public interface MessageBoardService {
     void sendMessage(HttpSession session, String replyMessage);
     MessageBoard firstLoadDetailReply(String messageBoardId, String messageBoardUserId, HttpSession session);
     MessageBoardSubreply saveMessageBoardSubreply(String messageBoardId4Reply, String replyTo, String messageText, HttpSession session);
+    List<MessageBoardSubreply> getMessageBoardSubreplyByPaging(Integer pageIndex, Integer pageSize,String id);
+    Integer getSubReply(Integer pageSize,String id);
 }

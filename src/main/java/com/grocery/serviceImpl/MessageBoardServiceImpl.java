@@ -118,4 +118,24 @@ public class MessageBoardServiceImpl implements MessageBoardService{
 
         return messageBoardSubreply;
     }
+
+    @Override
+    public List<MessageBoardSubreply> getMessageBoardSubreplyByPaging(Integer pageIndex, Integer pageSize, String id) {
+        List<MessageBoardSubreply> messageBoardSubreplies = messageBoardSubreplyMapper.selectpaging((pageIndex - 1) * pageSize,pageSize,id);
+
+        for (MessageBoardSubreply messageBoardSubreply : messageBoardSubreplies) {
+            /**
+             * 获取头像的ID
+             */
+            messageBoardSubreply.setCustom1(personalInfoMapper.selectByPrimaryKey(messageBoardSubreply.getUserid()).getAvator().toString());
+        }
+
+        return messageBoardSubreplies;
+    }
+
+    @Override
+    public Integer getSubReply(Integer pageSize, String id) {
+
+        return messageBoardSubreplyMapper.getCountByMessageBoardId(id) / pageSize + 1;
+    }
 }
