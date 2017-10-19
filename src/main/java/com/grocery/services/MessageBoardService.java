@@ -1,6 +1,7 @@
 package com.grocery.services;
 
 import com.grocery.domain.MessageBoard;
+import com.grocery.domain.MessageBoardSubreply;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -13,4 +14,5 @@ public interface MessageBoardService {
     Integer getMessageBoardCount();
     void sendMessage(HttpSession session, String replyMessage);
     MessageBoard firstLoadDetailReply(String messageBoardId, String messageBoardUserId, HttpSession session);
+    MessageBoardSubreply saveMessageBoardSubreply(String messageBoardId4Reply, String replyTo, String messageText, HttpSession session);
 }

@@ -158,7 +158,7 @@
             })
         }
 
-        /*function sendReplyOrSubReply(messageBoardId4Reply,replyTo,messageText) {
+        function sendReplyOrSubReply(messageBoardId4Reply,replyTo,messageText) {
             $.ajax({
                 url: '/messageBoard/sendReplyOrSubReply',
                 type: "POST",//请求方式：get或post
@@ -173,7 +173,31 @@
                 success: function (json) {
                     if (json !== null || json !== undefined || json !== '') {
                         var subReply = '';
-                        subReply = subReply ;
+                        subReply = subReply +
+                            '<div class="media">' +
+                            '<div class="media-left">' +
+                            '<a href="#">' +
+                            '<img class="media-object" src="/image/avator/' + json.data.custom1 + '" alt="avator" width="60"/>' +
+                            '</a>' +
+                            '</div>' +
+                            '<div class="media-body">' +
+                            '<h4 class="media-heading">';
+                        if (json.data.replyUserId !== null) {
+                            subReply = subReply +  json.data.userName + '&nbsp;回复&nbsp;' + json.data.replyUserName + '&nbsp;';
+                        } else {
+                            subReply = subReply +  json.data.userName + '&nbsp;';
+                        }
+
+                        subReply = subReply + '<button type="button" class="btn btn-primary btn-xs subReplyButtonClass" id="subReplyButtonInModel">' +
+                            '&nbsp;回复&nbsp;' +
+                            '<input type="hidden" id="subReplyMessageBoardIdInModel" value="' + json.data.id + '"/>' +
+                            '<input type="hidden" id="subReplyMessageBoardUserIdInModel" value="' + json.data.userid + '"/>' +
+                            '<input type="hidden" id="subReplyMessageBoardUserNameInModel" value="' + json.data.userName + '"/>' +
+                            '</button>' +
+                            '</h4>' +
+                            '<div>' + json.data.content +'</div>' +
+                            '</div>' +
+                            '</div>';
                         $("#home").append(subReply);
                     }
                 },
@@ -181,7 +205,7 @@
                     alert("Request Error!")
                 }
             })
-        }*/
+        }
 
         $(document).ready(function () {
 
@@ -210,6 +234,10 @@
                 $("#replyTo").val($(this).children("#subReplyMessageBoardUserIdInModel").val());
                 var user = '@' + $(this).children('#subReplyMessageBoardUserNameInModel').val();
                 $("#messageText").attr("placeholder",user);
+            })
+
+            $("#saveReplyBtn").on("click",function(){
+                sendReplyOrSubReply($("#messageBoardId4Reply").val(),$("#replyTo").val(),$("#messageText").val())
             })
 
         })
@@ -321,7 +349,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                <button type="button" class="btn btn-primary">回复</button>
+                <button type="button" class="btn btn-primary" id="saveReplyBtn">回复</button>
             </div>
         </div>
     </div>

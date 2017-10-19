@@ -3,6 +3,7 @@ package com.grocery.serviceImpl;
 import com.grocery.dao.MessageBoardMapper;
 import com.grocery.dao.MessageBoardSubreplyMapper;
 import com.grocery.dao.PersonalInfoMapper;
+import com.grocery.dao.SystemUserMapper;
 import com.grocery.domain.MessageBoard;
 import com.grocery.domain.MessageBoardSubreply;
 import com.grocery.domain.SystemUser;
@@ -33,6 +34,9 @@ public class MessageBoardServiceImpl implements MessageBoardService{
 
     @Autowired
     private CustomProperty customProperty;
+
+    @Autowired
+    private SystemUserMapper systemUserMapper;
 
     @Override
     public List<MessageBoard> getMessageBoardByPaging(Integer pageNum, Integer pageSize) {
@@ -92,4 +96,26 @@ public class MessageBoardServiceImpl implements MessageBoardService{
         return messageBoard;
     }
 
+    @Override
+    public MessageBoardSubreply saveMessageBoardSubreply(String messageBoardId4Reply, String replyTo, String messageText, HttpSession session) {
+        MessageBoardSubreply messageBoardSubreply = new MessageBoardSubreply();
+
+        messageBoardSubreply.setVersion(1);
+        messageBoardSubreply.setUserid(((SystemUser)session.getAttribute("User")).getId());
+        messageBoardSubreply.setUserName(((SystemUser)session.getAttribute("User")).getUserName());
+        messageBoardSubreply.setEmail(((SystemUser)session.getAttribute("User")).getEmail());
+        messageBoardSubreply.setContent(messageText);
+        if (!"".equals(replyTo)) {
+            messageBoardSubreply.setReplyUserId(Integer.valueOf(replyTo));
+            messageBoardSubreply.setReplyUserName(systemUserMapper.selectByPrimaryKey(Integer.valueOf(replyTo)).getUserName());
+        }
+        messageBoardSubreply.setParentRefId(Integer.valueOf(messageBoardId4Reply));
+        messageBoardSubreply.setCreateDatetime(DateUtility.getCurrentDate());
+
+        messageBoardSubreplyMapper.insertSelective(messageBoardSubreply);
+
+        messageBoardSubreply.setCustom1(personalInfoMapper.selectByPrimaryKey(messageBoardSubreply.getUserid()).getAvator().toString());
+
+        return messageBoardSubreply;
+    }
 }

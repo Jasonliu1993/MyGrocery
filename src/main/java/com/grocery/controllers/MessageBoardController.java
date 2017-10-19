@@ -40,7 +40,7 @@ public class MessageBoardController {
     @PostMapping("/sendReplyOrSubReply")
     @ResponseBody
     public Message sendReplyOrSubReply(String messageBoardId4Reply, String replyTo, String messageText, HttpSession session) {
-        return PackingInfo.changeData2Message(null);
+        return PackingInfo.changeData2Message(messageBoardService.saveMessageBoardSubreply(messageBoardId4Reply,replyTo,messageText,session));
     }
 
 }
