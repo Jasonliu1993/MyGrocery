@@ -1,5 +1,7 @@
 package com.grocery.interceptor;
 
+import com.grocery.domain.NavigatationMenu;
+import com.grocery.domain.SystemUser;
 import com.grocery.services.IndexService;
 import com.grocery.utilities.PackingInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +11,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.util.List;
 
 /**
  * Created by Jason on 14/10/2017.
@@ -30,7 +34,23 @@ public class GroceryInterceptor implements HandlerInterceptor {
         /**
          * 导航条
          */
-        request.setAttribute("Nav", PackingInfo.changeData2Message(indexService.getNavMenu(request.getRequestURI())));
+
+        List<NavigatationMenu> navigatationMenus = indexService.getNavMenu(request.getRequestURI());
+
+        HttpSession session = request.getSession();
+        SystemUser systemUser = null;
+        if ((systemUser = (SystemUser) session.getAttribute("User")) != null) {
+            if ("admin".equals(systemUser.getType())) {
+                request.setAttribute("Nav", PackingInfo.changeData2Message(navigatationMenus));
+            } else {
+                navigatationMenus.remove(navigatationMenus.remove(navigatationMenus.size() - 1));
+                request.setAttribute("Nav", PackingInfo.changeData2Message(navigatationMenus));
+            }
+        } else {
+            navigatationMenus.remove(navigatationMenus.remove(navigatationMenus.size() - 1));
+            request.setAttribute("Nav", PackingInfo.changeData2Message(navigatationMenus));
+        }
+
     }
 
     @Override
