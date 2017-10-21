@@ -10,6 +10,7 @@ import javax.sql.DataSource;
 
 /**
  * Created by Jason on 21/10/2017.
+ * 此处可以读取配置文件的参数，放入DruidDataSource中，但是这里没有配置
  */
 @Configuration
 public class DruidDataSourceConfig {

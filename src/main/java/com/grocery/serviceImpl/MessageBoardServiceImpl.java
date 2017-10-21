@@ -12,6 +12,9 @@ import com.grocery.services.MessageBoardService;
 import com.grocery.utilities.DateUtility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -53,6 +56,7 @@ public class MessageBoardServiceImpl implements MessageBoardService{
      * @param replyMessage 回复内容
      */
     @Override
+    @Transactional(propagation = Propagation.REQUIRED,isolation = Isolation.DEFAULT,timeout=36000,rollbackFor=Exception.class)
     public void sendMessage(HttpSession session, String replyMessage) {
         MessageBoard messageBoard = new MessageBoard();
         SystemUser systemUser = (SystemUser) session.getAttribute("User");
@@ -97,6 +101,7 @@ public class MessageBoardServiceImpl implements MessageBoardService{
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED,isolation = Isolation.DEFAULT,timeout=36000,rollbackFor=Exception.class)
     public MessageBoardSubreply saveMessageBoardSubreply(String messageBoardId4Reply, String replyTo, String messageText, HttpSession session) {
         MessageBoardSubreply messageBoardSubreply = new MessageBoardSubreply();
 

@@ -9,6 +9,9 @@ import com.grocery.services.IndexService;
 import com.grocery.utilities.DateUtility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -47,6 +50,7 @@ public class IndexServiceImpl implements IndexService {
     }
 
     @Override
+    @Transactional
     public SystemUser loginAuthentication(String userNameOrEmail, String password) {
         SystemUser systemUser = null;
 
@@ -59,7 +63,8 @@ public class IndexServiceImpl implements IndexService {
     }
 
     @Override
-    public SystemUser registerAuthentication(String userName, String password4Register, String activeEmail) {
+    @Transactional(propagation = Propagation.REQUIRED,isolation = Isolation.DEFAULT,timeout=36000,rollbackFor=Exception.class)
+    public SystemUser registerAuthentication(String userName, String password4Register, String activeEmail){
         SystemUser systemUser = new SystemUser();
         PersonalInfo personalInfo = new PersonalInfo();
 
