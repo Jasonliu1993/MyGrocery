@@ -11,8 +11,9 @@
     </logger>
 
     <logger name="com.grocery.interceptor" level="DEBUG"/>
-    <!--<logger name="com.grocery" level="debug" />-->
-    <!--<appender-ref ref="STDOUT"/>-->
+    <logger name="com.grocery" level="debug" >
+        <appender-ref ref="STDOUT"/>
+    </logger>
     <root>
         <level value="ERROR"/>
         <appender-ref ref="STDOUT"/>
