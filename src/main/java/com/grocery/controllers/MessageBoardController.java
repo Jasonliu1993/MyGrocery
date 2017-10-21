@@ -2,8 +2,7 @@ package com.grocery.controllers;
 
 import com.grocery.domain.Message;
 import com.grocery.domain.MessageBoardSubreply;
-import com.grocery.properties.CustomProperty;
-import com.grocery.serviceImpl.MessageBoardServiceImpl;
+import com.grocery.configuration.CustomProperty;
 import com.grocery.services.MessageBoardService;
 import com.grocery.utilities.PackingInfo;
 import org.springframework.beans.factory.annotation.Autowired;

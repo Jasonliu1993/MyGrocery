@@ -1,8 +1,6 @@
 package com.grocery.controllers;
 
-import com.grocery.properties.CustomProperty;
-import com.grocery.services.ImageService;
-import com.grocery.services.IndexService;
+import com.grocery.configuration.CustomProperty;
 import com.grocery.services.MessageBoardService;
 import com.grocery.services.PhotographyService;
 import com.grocery.utilities.PackingInfo;

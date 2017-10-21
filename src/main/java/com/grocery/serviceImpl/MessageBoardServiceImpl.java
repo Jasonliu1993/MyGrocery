@@ -7,7 +7,7 @@ import com.grocery.dao.SystemUserMapper;
 import com.grocery.domain.MessageBoard;
 import com.grocery.domain.MessageBoardSubreply;
 import com.grocery.domain.SystemUser;
-import com.grocery.properties.CustomProperty;
+import com.grocery.configuration.CustomProperty;
 import com.grocery.services.MessageBoardService;
 import com.grocery.utilities.DateUtility;
 import org.springframework.beans.factory.annotation.Autowired;

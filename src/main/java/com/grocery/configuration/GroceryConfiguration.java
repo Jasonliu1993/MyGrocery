@@ -1,4 +1,4 @@
-package com.grocery.properties;
+package com.grocery.configuration;
 
 import com.grocery.interceptor.GroceryInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,4 +1,4 @@
-package com.grocery.properties;
+package com.grocery.configuration;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
