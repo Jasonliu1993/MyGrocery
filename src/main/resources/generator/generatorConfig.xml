@@ -74,5 +74,9 @@
                enableUpdateByExample="false">
             <property name="useActualColumnNames" value="false"/>
         </table>-->
+        <!--<table tableName="SHARING_IMAGES" enableCountByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
+               enableUpdateByExample="false">
+            <property name="useActualColumnNames" value="false"/>
+        </table>-->
     </context>
 </generatorConfiguration>
