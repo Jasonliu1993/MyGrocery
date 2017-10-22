@@ -16,4 +16,9 @@ public class ErrorPageController {
         return "/error-page/login_failed";
     }
 
+    @RequestMapping("/authFailed")
+    public String authFailed() {
+        return "/error-page/authentication_failed";
+    }
+
 }

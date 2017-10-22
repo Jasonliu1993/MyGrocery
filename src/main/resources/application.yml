@@ -40,7 +40,7 @@ spring:
     #thymeleaf start
     thymeleaf:
         cache: false
-        mode: HTML5
+        mode: LEGACYHTML5
         encoding: UTF-8
         content-type: text/html
     #thymeleaf end

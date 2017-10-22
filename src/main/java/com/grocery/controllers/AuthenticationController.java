@@ -32,13 +32,13 @@ public class AuthenticationController {
         SystemUser user = null;
         if ((user = indexService.loginAuthentication(userNameOrEmail, EncryptionUtility.encrypt4MD5(password4log))) != null) {
             session.setAttribute("User", user);
-            if(currentURL4Login.contains("/error/loginFailed")) {
+            if(currentURL4Login.contains("/error/")) {
                 response.sendRedirect("/index");
             } else {
                 response.sendRedirect(currentURL4Login);
             }
         } else
-            response.sendRedirect("/error/loginFailed");
+            response.sendRedirect("/error/");
     }
 
     @GetMapping("/logout")
@@ -51,7 +51,7 @@ public class AuthenticationController {
     public void register(String userName, String password4Register, String activeEmail, String currentURL4Register, HttpSession session, HttpServletResponse response) throws IOException {
         SystemUser user = indexService.registerAuthentication(userName,EncryptionUtility.encrypt4MD5(password4Register),activeEmail);
         session.setAttribute("User", user);
-        if(currentURL4Register.contains("/error/loginFailed")) {
+        if(currentURL4Register.contains("/error/")) {
             response.sendRedirect("/index");
         } else {
             response.sendRedirect(currentURL4Register);

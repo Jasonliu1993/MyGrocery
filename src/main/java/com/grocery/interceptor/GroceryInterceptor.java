@@ -26,7 +26,24 @@ public class GroceryInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        return true;
+
+        if (request.getRequestURI().contains("/admin")) {
+            HttpSession session = request.getSession();
+            SystemUser systemUser = null;
+            if ((systemUser = (SystemUser) session.getAttribute("User")) != null) {
+                if ("admin".equals(systemUser.getType())) {
+                    return true;
+                } else {
+                    response.sendRedirect(request.getContextPath() + "/error/authFailed");
+                    return false;
+                }
+            } else {
+                response.sendRedirect(request.getContextPath() + "/error/authFailed");
+                return false;
+            }
+        } else {
+            return true;
+        }
     }
 
     @Override
