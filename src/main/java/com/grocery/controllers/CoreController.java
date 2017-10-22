@@ -74,4 +74,17 @@ public class CoreController {
         return "/message-board/message_board_index";
     }
 
+    @GetMapping("/admin")
+    public String admin(ModelMap modelMap) {
+
+        modelMap.addAttribute("Paginations", PackingInfo.changeData2Message(new PaginationUtility(
+                "1",
+                customProperty.getPaginationDisplayNum(),
+                "/messageBoard",
+                String.valueOf(messageBoardService.getMessageBoardCount()),
+                customProperty.getMessageBoardPageSize())));
+
+        return "/admin/admin_index";
+    }
+
 }

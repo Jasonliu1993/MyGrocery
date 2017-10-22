@@ -14,6 +14,7 @@ public class CustomProperty {
     private String paginationDisplayNum;
     private String messageBoardPageSize;
     private String subReply;
+    private String adminPageSize;
 
     public String getPhotographyDetailPageSize() {
         return photographyDetailPageSize;
@@ -45,5 +46,13 @@ public class CustomProperty {
 
     public void setSubReply(String subReply) {
         this.subReply = subReply;
+    }
+
+    public String getAdminPageSize() {
+        return adminPageSize;
+    }
+
+    public void setAdminPageSize(String adminPageSize) {
+        this.adminPageSize = adminPageSize;
     }
 }
