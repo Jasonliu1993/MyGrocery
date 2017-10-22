@@ -1,19 +1,15 @@
 package com.grocery.controllers;
 
 import com.baidu.ueditor.ActionEnter;
-import com.baidu.ueditor.ConfigManager;
-import com.grocery.domain.Message;
 import com.grocery.domain.SharingImages;
 import com.grocery.services.ImageService;
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.FileNotFoundException;
 
 /**
  * Created by Jason on 21/10/2017.
@@ -37,7 +33,8 @@ public class AdminController {
         String rootPath = request.getServletContext().getRealPath("/");
         try {
             return new ActionEnter(request, rootPath).exec();
-        } finally {
+        } catch (JSONException e) {
+            e.printStackTrace();
             return null;
         }
     }
