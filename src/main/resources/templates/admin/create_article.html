@@ -21,6 +21,11 @@
     <!--这里加载的语言文件会覆盖你在配置项目里添加的语言类型，比如你在配置项目里配置的是英文，这里加载的中文，那最后就是中文-->
     <script type="text/javascript" charset="utf-8" src="/plugins/ueditor-1.4.3/lang/zh-cn/zh-cn.js"></script>
 
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="/js/jquery-3.1.1.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="/js/bootstrap-3.3.7/js/bootstrap.js"></script>
+
     <style>
         .theme {
             background-color: #2e3032;
@@ -42,6 +47,13 @@
         }
 
     </style>
+
+    <script>
+        $("#saveBtn").on("click",function(){
+            alert("here")
+            alert(getContent());
+        })
+    </script>
 
 </head>
 <body class="theme">
@@ -82,9 +94,6 @@
     </div>
 </div>
 
-<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-<script src="/js/jquery-3.1.1.min.js"></script>
-<!-- Include all compiled plugins (below), or include individual files as needed -->
-<script src="/js/bootstrap-3.3.7/js/bootstrap.js"></script>
+
 </body>
 </html>

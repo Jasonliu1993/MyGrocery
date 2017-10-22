@@ -2,10 +2,7 @@ package com.grocery.restful;
 
 import com.grocery.services.ImageService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * Created by Jason on 14/10/2017.
@@ -27,5 +24,10 @@ public class ImageController {
     public byte[] getAvator(@PathVariable("id") Integer id) {
         return imageService.getAvator(id);
     }
+
+    /*@GetMapping("/saveImage")
+    public String saveUEditorImage() {
+        return "";
+    }*/
 
 }
