@@ -23973,7 +23973,9 @@ UE.plugin.register('autosave', function (){
 
             },
 
+
             'contentchange': function () {
+            if (!me.getOpt('enableAutoSave')) {return;} //添加用于取消自动保存按钮
 
                 if ( !saveKey ) {
                     return;
