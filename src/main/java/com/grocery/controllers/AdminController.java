@@ -1,8 +1,8 @@
 package com.grocery.controllers;
 
 import com.baidu.ueditor.ActionEnter;
-import com.grocery.domain.SharingImages;
 import com.grocery.domain.UploadResponseMessage;
+import com.grocery.services.AdminService;
 import com.grocery.services.ImageService;
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
  * Created by Jason on 21/10/2017.
@@ -22,6 +24,9 @@ public class AdminController {
 
     @Autowired
     private ImageService imageService;
+
+    @Autowired
+    private AdminService adminService;
 
     @GetMapping("/createArticle")
     public String createArticle() {
@@ -44,10 +49,20 @@ public class AdminController {
     @ResponseBody
     public UploadResponseMessage saveUEditorImage(@RequestParam(value = "upfile") MultipartFile file) {
 
-        UploadResponseMessage uploadResponseMessage = imageService.processUEditorUpload(file);
-
-        return uploadResponseMessage;
+        return imageService.processUEditorUpload(file);
     }
 
+    @PostMapping("/saveTechSharing")
+    public void saveTechSharing(String editorContent, String type, String title, HttpServletResponse response ) {
+
+        adminService.saveArticle(editorContent,type,title);
+
+        try {
+            response.sendRedirect("/admin");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
 
 }

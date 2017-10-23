@@ -27,13 +27,18 @@ function createEditor() {
 function getAllHtml() {
     return UE.getEditor('editor').getAllHtml();
 }
-function getContent() {
+/*function getContent() {
     var arr = [];
     arr.push("使用editor.getContent()方法可以获得编辑器的内容");
     arr.push("内容为：");
     arr.push(UE.getEditor('editor').getContent());
     return arr.join("\n");
+}*/
+
+function getContent() {
+    return UE.getEditor('editor').getContent();
 }
+
 function getPlainTxt() {
     var arr = [];
     arr.push("使用editor.getPlainTxt()方法可以获得编辑器的带格式的纯文本内容");
