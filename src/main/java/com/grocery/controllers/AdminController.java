@@ -2,6 +2,7 @@ package com.grocery.controllers;
 
 import com.baidu.ueditor.ActionEnter;
 import com.grocery.domain.SharingImages;
+import com.grocery.domain.UploadResponseMessage;
 import com.grocery.services.ImageService;
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,18 +42,11 @@ public class AdminController {
 
     @PostMapping(value = "/saveImage", produces = "application/json; charset=utf-8")
     @ResponseBody
-    public String saveUEditorImage(@RequestParam(value = "upfile") MultipartFile file) {
+    public UploadResponseMessage saveUEditorImage(@RequestParam(value = "upfile") MultipartFile file) {
 
-        Integer id = ((SharingImages) imageService.processUEditorUpload(file).getData()).getId();
+        UploadResponseMessage uploadResponseMessage = imageService.processUEditorUpload(file);
 
-        String config =
-                "{\n" +
-                        "            \"state\": \"SUCCESS\",\n" +
-                        "                \"url\": \"http://localhost:8081/upload/" + id.toString() + "\",\n" +
-                        "                \"title\": \"path\",\n" +
-                        "                \"original\": \"path\"\n" +
-                        "        }";
-        return config;
+        return uploadResponseMessage;
     }
 
 

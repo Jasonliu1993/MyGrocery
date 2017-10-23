@@ -25,9 +25,9 @@ public class ImageController {
         return imageService.getAvator(id);
     }
 
-    /*@GetMapping("/saveImage")
-    public String saveUEditorImage() {
-        return "";
-    }*/
+    @GetMapping("/getUploadImage/{id}")
+    public byte[] getUploadImage(@PathVariable("id") Integer id) {
+        return imageService.getUploadImage(id);
+    }
 
 }

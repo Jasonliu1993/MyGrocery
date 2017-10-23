@@ -1,6 +1,7 @@
 package com.grocery.services;
 
 import com.grocery.domain.Message;
+import com.grocery.domain.UploadResponseMessage;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -10,6 +11,7 @@ public interface ImageService {
 
     byte[] getPhotographyPhoto(Integer id);
     byte[] getAvator(Integer id);
+    byte[] getUploadImage(Integer id);
 
-    Message processUEditorUpload(MultipartFile file);
+    UploadResponseMessage processUEditorUpload(MultipartFile file);
 }

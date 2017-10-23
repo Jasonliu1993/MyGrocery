@@ -5,6 +5,7 @@ import com.grocery.dao.PhotographyPhotoMapper;
 import com.grocery.dao.SharingImagesMapper;
 import com.grocery.domain.Message;
 import com.grocery.domain.SharingImages;
+import com.grocery.domain.UploadResponseMessage;
 import com.grocery.exception.ErrorException;
 import com.grocery.exception.StatusCode;
 import com.grocery.services.ImageService;
@@ -47,10 +48,14 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    public Message processUEditorUpload(MultipartFile file) {
-        System.out.println("here");
+    public byte[] getUploadImage(Integer id) {
+        return sharingImagesMapper.selectByPrimaryKey(id).getPhoto();
+    }
+
+    @Override
+    public UploadResponseMessage processUEditorUpload(MultipartFile file) {
         if (file.isEmpty()) {
-            return PackingInfo.changeException2Message(new ErrorException(StatusCode.NULL_FILE));
+            return null;
         }
         // 获取文件名
         String fileName = file.getOriginalFilename();
@@ -71,8 +76,15 @@ public class ImageServiceImpl implements ImageService {
             sharingImages.setPhoto(stream);
 
             sharingImagesMapper.insertSelective(sharingImages);
+            logger.error(sharingImages.getId().toString());
+            UploadResponseMessage uploadResponseMessage = new UploadResponseMessage();
 
-            return PackingInfo.changeData2Message(sharingImages);
+            uploadResponseMessage.setState("SUCCESS");
+            uploadResponseMessage.setUrl("/image/getUploadImage/" + sharingImages.getId());
+            uploadResponseMessage.setTitle("uploadImage");
+            uploadResponseMessage.setOriginal("uploadImage");
+
+            return uploadResponseMessage;
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -80,7 +92,7 @@ public class ImageServiceImpl implements ImageService {
 
 
 
-        return PackingInfo.changeException2Message(new ErrorException(StatusCode.FAILED_UPLOAD));
+        return null;
 
     }
 }
