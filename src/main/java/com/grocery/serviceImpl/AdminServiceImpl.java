@@ -1,6 +1,8 @@
 package com.grocery.serviceImpl;
 
+import com.grocery.dao.AdminMenuMapper;
 import com.grocery.dao.TechSharingMapper;
+import com.grocery.domain.AdminMenu;
 import com.grocery.domain.TechSharing;
 import com.grocery.services.AdminService;
 import com.grocery.utilities.DateUtility;
@@ -9,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.UnsupportedEncodingException;
+import java.util.List;
 
 /**
  * Created by Jason on 23/10/2017.
@@ -19,6 +22,9 @@ public class AdminServiceImpl implements AdminService {
 
     @Autowired
     private TechSharingMapper techSharingMapper;
+
+    @Autowired
+    private AdminMenuMapper adminMenuMapper;
 
     @Override
     @Transactional
@@ -38,4 +44,9 @@ public class AdminServiceImpl implements AdminService {
         techSharingMapper.insertSelective(techSharing);
 
     }
+
+    public List<AdminMenu> getAdminMenu() {
+        return adminMenuMapper.selectAdminMenuOrder();
+    }
+
 }

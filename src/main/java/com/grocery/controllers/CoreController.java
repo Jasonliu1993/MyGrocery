@@ -1,8 +1,10 @@
 package com.grocery.controllers;
 
 import com.grocery.configuration.CustomProperty;
+import com.grocery.services.AdminService;
 import com.grocery.services.MessageBoardService;
 import com.grocery.services.PhotographyService;
+import com.grocery.services.TechService;
 import com.grocery.utilities.PackingInfo;
 import com.grocery.utilities.PaginationUtility;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +28,12 @@ public class CoreController {
 
     @Autowired
     private MessageBoardService messageBoardService;
+
+    @Autowired
+    private AdminService adminService;
+
+    @Autowired
+    private TechService techService;
 
     @GetMapping("/index")
     public String index(ModelMap modelMap) {
@@ -77,12 +85,16 @@ public class CoreController {
     @GetMapping("/admin")
     public String admin(ModelMap modelMap) {
 
+        modelMap.addAttribute("AdminMenus",PackingInfo.changeData2Message(adminService.getAdminMenu()));
+        modelMap.addAttribute("CurrentType","tech");
+        modelMap.addAttribute("TechSharingPaging",techService.getTechSharingByPaging(1,Integer.valueOf(customProperty.getAdminPageSize())));
+
         modelMap.addAttribute("Paginations", PackingInfo.changeData2Message(new PaginationUtility(
                 "1",
                 customProperty.getPaginationDisplayNum(),
-                "/messageBoard",
-                String.valueOf(messageBoardService.getMessageBoardCount()),
-                customProperty.getMessageBoardPageSize())));
+                "",
+                String.valueOf(techService.getTechSharingCount()),
+                customProperty.getAdminPageSize())));
 
         return "/admin/admin_index";
     }

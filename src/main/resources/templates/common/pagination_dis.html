@@ -1,0 +1,11 @@
+<ul class="pagination" th:fragment="pagination">
+    <li th:class="${Paginations.data.getPreButton() eq 'MIN'} ? 'disabled'">
+        <span id="pre">前一页</span>
+    </li>
+    <li th:class="${Paginations.data.getCurrentPage() eq  Pt} ? 'active'" th:each="Pt,PtStat : ${Paginations.data.getBarList()}">
+        <span th:text="${Pt}"></span>
+    </li>
+    <li th:class="${Paginations.data.getPostButton() eq 'MAX'} ? 'disabled'">
+        <span id="post">后一页</span>
+    </li>
+</ul>
