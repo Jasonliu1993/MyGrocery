@@ -84,22 +84,26 @@
             float: left;
         }
 
+        .set-null-bottom {
+            margin-bottom: 0;
+        }
+
     </style>
 
     <script>
 
         function setAdminMenuActive(currentType) {
-            $(".nav-stacked li").each(function() {
+            $(".nav-stacked li").each(function () {
                 $(this).removeClass("active");
             })
             $("#" + currentType + "").addClass("active");
         }
 
-        $(document).ready(function() {
+        $(document).ready(function () {
             /*    初始化     */
             setAdminMenuActive($("#currentType").val())
 
-            $(".nav-stacked li").on("click",function() {
+            $(".nav-stacked li").on("click", function () {
                 $("#currentType").val($(this).attr("id"));
                 setAdminMenuActive($("#currentType").val())
             })
@@ -115,7 +119,10 @@
         <div class="col-md-2">
             <div class="set-left">
                 <ul class="nav nav-pills nav-stacked">
-                    <li role="presentation" th:id="${AdminMenu.getLinkMatching()}" th:each="AdminMenu,AdminMenuStatus : ${AdminMenus.data}"><a th:href="@{${AdminMenu.getInterlinkage()}}" th:text="${AdminMenu.getMenuItemName()}">Home</a></li>
+                    <li role="presentation" th:id="${AdminMenu.getLinkMatching()}"
+                        th:each="AdminMenu,AdminMenuStatus : ${AdminMenus.data}"><a
+                            th:href="@{${AdminMenu.getInterlinkage()}}"
+                            th:text="${AdminMenu.getMenuItemName()}">Home</a></li>
                     <!--<li role="presentation" class="active"><a href="#">Profile</a></li>
                     <li role="presentation"><a href="#">Messages</a></li>-->
                 </ul>
@@ -127,7 +134,18 @@
             </div>
             <div class="clear-both"></div>
             <div class="content set-margin-top">
-
+                <ul class="list-group set-null-bottom">
+                    <a th:href="@{'/admin/adminDetail/' + ${TechSharing.getId()}}" class="list-group-item"
+                       th:each="TechSharing,TechSharingStatus : ${TechSharingPagings.data}"
+                       th:text="${TechSharing.getTitle()}">
+                        Cras justo odio
+                    </a>
+                    <!--
+                    <a href="#" class="list-group-item">Dapibus ac facilisis in</a>
+                    <a href="#" class="list-group-item">Morbi leo risus</a>
+                    <a href="#" class="list-group-item">Porta ac consectetur ac</a>
+                    <a href="#" class="list-group-item">Vestibulum at eros</a>-->
+                </ul>
             </div>
             <div th:include="common/pagination_dis"></div>
         </div>

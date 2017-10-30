@@ -87,7 +87,7 @@ public class CoreController {
 
         modelMap.addAttribute("AdminMenus",PackingInfo.changeData2Message(adminService.getAdminMenu()));
         modelMap.addAttribute("CurrentType","tech");
-        modelMap.addAttribute("TechSharingPaging",techService.getTechSharingByPaging(1,Integer.valueOf(customProperty.getAdminPageSize())));
+        modelMap.addAttribute("TechSharingPagings",PackingInfo.changeData2Message(techService.getTechSharingByPaging(1,Integer.valueOf(customProperty.getAdminPageSize()))));
 
         modelMap.addAttribute("Paginations", PackingInfo.changeData2Message(new PaginationUtility(
                 "1",

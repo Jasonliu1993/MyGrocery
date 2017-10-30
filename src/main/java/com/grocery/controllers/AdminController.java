@@ -65,4 +65,10 @@ public class AdminController {
 
     }
 
+    @GetMapping("/adminDetail/{id}")
+    public String adminDetail(@PathVariable("id") String id) {
+
+        return "/admin/admin_detail";
+    }
+
 }

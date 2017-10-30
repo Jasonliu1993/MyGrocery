@@ -1,6 +1,7 @@
 package com.grocery.services;
 
 import com.grocery.domain.AdminMenu;
+import com.grocery.domain.TechSharing;
 
 import java.util.List;
 
@@ -12,4 +13,5 @@ public interface AdminService {
     void saveArticle(String editorContent, String type, String title);
 
     List<AdminMenu> getAdminMenu();
+
 }
