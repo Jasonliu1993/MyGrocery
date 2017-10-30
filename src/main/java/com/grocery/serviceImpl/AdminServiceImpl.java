@@ -3,9 +3,11 @@ package com.grocery.serviceImpl;
 import com.grocery.dao.AdminMenuMapper;
 import com.grocery.dao.TechSharingMapper;
 import com.grocery.domain.AdminMenu;
+import com.grocery.domain.Message;
 import com.grocery.domain.TechSharing;
 import com.grocery.services.AdminService;
 import com.grocery.utilities.DateUtility;
+import com.grocery.utilities.PackingInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -49,4 +51,53 @@ public class AdminServiceImpl implements AdminService {
         return adminMenuMapper.selectAdminMenuOrder();
     }
 
+    @Override
+    public Message getAdminDetail(Integer id, String type) {
+        Message message = null;
+
+        if ("article".equals(type)) {
+            //文章
+
+        } else if ("tech".equals(type)) {
+            //技术
+            message = PackingInfo.changeData2Message(techSharingMapper.selectByPrimaryKey(id));
+        } else if ("software".equals(type)) {
+            //软甲
+
+        } else if ("news".equals(type)) {
+            //新闻
+
+        } else {
+            //美食
+
+        }
+
+        return message;
+    }
+
+    @Override
+    @Transactional
+    public void updateArticle(String editorContent, String type, String title, Integer id) {
+
+        TechSharing techSharing = new TechSharing();
+        System.out.println("here we" + editorContent);
+        System.out.println("type: " + type);
+        System.out.println("title: " + title);
+        System.out.println("id: " + id);
+        try {
+            techSharing.setId(id);
+            techSharing.setVersion(techSharingMapper.selectByPrimaryKey(id).getVersion() + 1);
+            techSharing.setTitle(title);
+            techSharing.setContent(editorContent.getBytes("UTF-8"));
+            techSharing.setCreateDatetime(DateUtility.getCurrentDate());
+
+            System.out.println(techSharing.toString());
+
+            techSharingMapper.updateByPrimaryKey(techSharing);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
+
+    }
 }

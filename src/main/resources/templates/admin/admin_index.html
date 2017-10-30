@@ -135,11 +135,13 @@
             <div class="clear-both"></div>
             <div class="content set-margin-top">
                 <ul class="list-group set-null-bottom">
-                    <a th:href="@{'/admin/adminDetail/' + ${TechSharing.getId()}}" class="list-group-item"
+
+                    <a th:href="@{'/admin/adminDetail?id=' + ${TechSharing.getId()} + '&' + 'currentType=' + ${CurrentType}}" class="list-group-item"
                        th:each="TechSharing,TechSharingStatus : ${TechSharingPagings.data}"
                        th:text="${TechSharing.getTitle()}">
                         Cras justo odio
                     </a>
+
                     <!--
                     <a href="#" class="list-group-item">Dapibus ac facilisis in</a>
                     <a href="#" class="list-group-item">Morbi leo risus</a>

@@ -27,4 +27,9 @@ public class TechServiceImpl implements TechService{
     public Integer getTechSharingCount() {
         return techSharingMapper.getCount();
     }
+
+    @Override
+    public TechSharing getTechSharingById(Integer id) {
+        return techSharingMapper.selectByPrimaryKey(id);
+    }
 }

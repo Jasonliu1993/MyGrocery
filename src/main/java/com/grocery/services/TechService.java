@@ -11,5 +11,6 @@ public interface TechService {
 
     List<TechSharing> getTechSharingByPaging(Integer pageIndex, Integer pageSize);
     Integer getTechSharingCount();
+    TechSharing getTechSharingById(Integer id);
 
 }

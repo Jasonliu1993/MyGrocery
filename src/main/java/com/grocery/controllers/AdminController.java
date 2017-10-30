@@ -1,18 +1,22 @@
 package com.grocery.controllers;
 
 import com.baidu.ueditor.ActionEnter;
+import com.grocery.domain.TechSharing;
 import com.grocery.domain.UploadResponseMessage;
 import com.grocery.services.AdminService;
 import com.grocery.services.ImageService;
+import com.grocery.utilities.PackingInfo;
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 
 /**
  * Created by Jason on 21/10/2017.
@@ -53,9 +57,9 @@ public class AdminController {
     }
 
     @PostMapping("/saveTechSharing")
-    public void saveTechSharing(String editorContent, String type, String title, HttpServletResponse response ) {
+    public void saveTechSharing(String editorContent, String type, String title, HttpServletResponse response) {
 
-        adminService.saveArticle(editorContent,type,title);
+        adminService.saveArticle(editorContent, type, title);
 
         try {
             response.sendRedirect("/admin");
@@ -65,10 +69,25 @@ public class AdminController {
 
     }
 
-    @GetMapping("/adminDetail/{id}")
-    public String adminDetail(@PathVariable("id") String id) {
+    @GetMapping("/adminDetail")
+    public String adminDetail(@RequestParam("id") Integer id, @RequestParam("currentType") String currentType, ModelMap modelMap) throws UnsupportedEncodingException {
+
+        modelMap.addAttribute("AdminDetail", adminService.getAdminDetail(id, currentType));
+
+        modelMap.addAttribute("UEditor", new String(((TechSharing) adminService.getAdminDetail(id, currentType).getData()).getContent(), "utf-8"));
 
         return "/admin/admin_detail";
+    }
+
+    @PostMapping("/updateTechSharing")
+    public void updateTechSharing(String editorContent,String type, String title, Integer id, HttpServletResponse response) {
+        adminService.updateArticle(editorContent, type, title, id);
+
+        try {
+            response.sendRedirect("/admin");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }
