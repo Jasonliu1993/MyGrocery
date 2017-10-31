@@ -33,7 +33,7 @@ public class AdminController {
 
     @GetMapping("/createArticle")
     public String createArticle() {
-        return "/admin/create_article";
+        return "/admin/admin_create_article";
     }
 
     @GetMapping("/readUEditorConfig")
@@ -75,7 +75,7 @@ public class AdminController {
 
         modelMap.addAttribute("UEditor", new String(((Sharing) adminService.getAdminDetail(id, currentType).getData()).getContent(), "utf-8"));
 
-        return "/admin/admin_detail";
+        return "/admin/admin_update_detail";
     }
 
     @PostMapping("/updateSharing")

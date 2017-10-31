@@ -37,10 +37,13 @@ public class PaginationUtility {
      */
     private String totalPage;
 
-    public PaginationUtility(String currentPage, String barLength, String path, String dataRowCount, String pageDisplaySize) {
+    public PaginationUtility(String currentPage, String barLength, String path,boolean pathFlag, String dataRowCount, String pageDisplaySize) {
         this.currentPage = currentPage;
         this.barLength = barLength;
-        this.path = path + "/";
+        if(pathFlag)
+            this.path = path + "/";
+        else
+            this.path = path;
         this.dataRowCount = dataRowCount;
         this.pageDisplaySize = pageDisplaySize;
         setTotalPage(dataRowCount, pageDisplaySize);
