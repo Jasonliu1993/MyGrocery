@@ -4,6 +4,7 @@ import com.grocery.dao.AdminMenuMapper;
 import com.grocery.dao.TechSharingMapper;
 import com.grocery.domain.AdminMenu;
 import com.grocery.domain.Message;
+import com.grocery.domain.Sharing;
 import com.grocery.domain.TechSharing;
 import com.grocery.services.AdminService;
 import com.grocery.utilities.DateUtility;
@@ -79,21 +80,42 @@ public class AdminServiceImpl implements AdminService {
     @Transactional
     public void updateArticle(String editorContent, String type, String title, Integer id) {
 
-        TechSharing techSharing = new TechSharing();
-        System.out.println("here we" + editorContent);
-        System.out.println("type: " + type);
-        System.out.println("title: " + title);
-        System.out.println("id: " + id);
+        Sharing Sharing = null;
+
         try {
-            techSharing.setId(id);
-            techSharing.setVersion(techSharingMapper.selectByPrimaryKey(id).getVersion() + 1);
-            techSharing.setTitle(title);
-            techSharing.setContent(editorContent.getBytes("UTF-8"));
-            techSharing.setCreateDatetime(DateUtility.getCurrentDate());
+            switch (type) {
 
-            System.out.println(techSharing.toString());
+                case "article":
 
-            techSharingMapper.updateByPrimaryKey(techSharing);
+                    break;
+                case "software":
+
+                    break;
+                case "photography":
+
+                    break;
+                case "news":
+
+                    break;
+                case "food":
+
+                    break;
+                default:
+                    Sharing = new TechSharing();
+                    Sharing.setVersion(techSharingMapper.selectByPrimaryKey(id).getVersion() + 1);
+                    Sharing.setId(id);
+                    Sharing.setType(type);
+                    Sharing.setTitle(title);
+                    Sharing.setContent(editorContent.getBytes("UTF-8"));
+                    Sharing.setCreateDatetime(DateUtility.getCurrentDate());
+
+                    techSharingMapper.updateByPrimaryKeyWithBLOBs((TechSharing)Sharing);
+                    break;
+
+            }
+
+
+
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }

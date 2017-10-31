@@ -5,7 +5,8 @@
 <generatorConfiguration>
 
     <!-- !!!! Driver Class Path !!!! -->
-    <classPathEntry location="/Users/Jason/Documents/Workspaces/IDEA/grocery/target/grocery-0.0.1-SNAPSHOT/WEB-INF/lib/mysql-connector-java-5.1.35.jar"/>
+    <classPathEntry
+            location="/Users/Jason/Documents/Workspaces/IDEA/grocery/target/grocery-0.0.1-SNAPSHOT/WEB-INF/lib/mysql-connector-java-5.1.35.jar"/>
 
     <context id="context" targetRuntime="MyBatis3">
         <commentGenerator>
@@ -15,7 +16,8 @@
 
         <!-- !!!! Database Configurations !!!! -->
         <!-- 数据库链接URL、用户名、密码 -->
-        <jdbcConnection driverClass="com.mysql.jdbc.Driver" connectionURL="jdbc:mysql://localhost:3306/GROCERY" userId="root" password="root"/>
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver" connectionURL="jdbc:mysql://localhost:3306/GROCERY"
+                        userId="root" password="root"/>
 
         <javaTypeResolver>
             <property name="forceBigDecimals" value="false"/>
@@ -79,6 +81,26 @@
             <property name="useActualColumnNames" value="false"/>
         </table>-->
         <!--<table tableName="ADMIN_MENU" enableCountByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
+               enableUpdateByExample="false">
+            <property name="useActualColumnNames" value="false"/>
+        </table>-->
+        <!--<table tableName="ARTICLE_SHARING" enableCountByExample="false" enableDeleteByExample="false"
+               enableSelectByExample="false"
+               enableUpdateByExample="false">
+            <property name="useActualColumnNames" value="false"/>
+        </table>
+        <table tableName="SOFTWARE_SHARING" enableCountByExample="false" enableDeleteByExample="false"
+               enableSelectByExample="false"
+               enableUpdateByExample="false">
+            <property name="useActualColumnNames" value="false"/>
+        </table>
+        <table tableName="NEWS_SHARING" enableCountByExample="false" enableDeleteByExample="false"
+               enableSelectByExample="false"
+               enableUpdateByExample="false">
+            <property name="useActualColumnNames" value="false"/>
+        </table>
+        <table tableName="FOOD_SHARING" enableCountByExample="false" enableDeleteByExample="false"
+               enableSelectByExample="false"
                enableUpdateByExample="false">
             <property name="useActualColumnNames" value="false"/>
         </table>-->

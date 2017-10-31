@@ -4,7 +4,7 @@ import com.grocery.configuration.CustomProperty;
 import com.grocery.services.AdminService;
 import com.grocery.services.MessageBoardService;
 import com.grocery.services.PhotographyService;
-import com.grocery.services.TechService;
+import com.grocery.services.SharingService;
 import com.grocery.utilities.PackingInfo;
 import com.grocery.utilities.PaginationUtility;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * Created by Jason on 10/10/2017.
@@ -33,7 +34,7 @@ public class CoreController {
     private AdminService adminService;
 
     @Autowired
-    private TechService techService;
+    private SharingService sharingService;
 
     @GetMapping("/index")
     public String index(ModelMap modelMap) {
@@ -67,7 +68,7 @@ public class CoreController {
          * 留言板数据分页
          */
 
-        modelMap.addAttribute("MessageBoards",PackingInfo.changeData2Message( messageBoardService.getMessageBoardByPaging(pageNum,Integer.valueOf(customProperty.getMessageBoardPageSize()))));
+        modelMap.addAttribute("MessageBoards", PackingInfo.changeData2Message(messageBoardService.getMessageBoardByPaging(pageNum, Integer.valueOf(customProperty.getMessageBoardPageSize()))));
 
         /**
          * 分页导航显示
@@ -83,18 +84,41 @@ public class CoreController {
     }
 
     @GetMapping("/admin")
-    public String admin(ModelMap modelMap) {
+    public String admin(ModelMap modelMap, @RequestParam("type") String type, @RequestParam("pageIndex") Integer pageIndex) {
 
-        modelMap.addAttribute("AdminMenus",PackingInfo.changeData2Message(adminService.getAdminMenu()));
-        modelMap.addAttribute("CurrentType","tech");
-        modelMap.addAttribute("TechSharingPagings",PackingInfo.changeData2Message(techService.getTechSharingByPaging(1,Integer.valueOf(customProperty.getAdminPageSize()))));
+        modelMap.addAttribute("AdminMenus", PackingInfo.changeData2Message(adminService.getAdminMenu()));
+        modelMap.addAttribute("CurrentType", type);
 
-        modelMap.addAttribute("Paginations", PackingInfo.changeData2Message(new PaginationUtility(
-                "1",
-                customProperty.getPaginationDisplayNum(),
-                "",
-                String.valueOf(techService.getTechSharingCount()),
-                customProperty.getAdminPageSize())));
+        switch (type) {
+
+            case "article":
+
+                break;
+            case "software":
+
+                break;
+            case "photography":
+
+                break;
+            case "news":
+
+                break;
+            case "food":
+
+                break;
+            default:
+                modelMap.addAttribute("SharingPagings", PackingInfo.changeData2Message(sharingService.getSharingByPaging(pageIndex, Integer.valueOf(customProperty.getAdminPageSize()))));
+
+                modelMap.addAttribute("Paginations", PackingInfo.changeData2Message(new PaginationUtility(
+                        "1",
+                        customProperty.getPaginationDisplayNum(),
+                        "",
+                        String.valueOf(sharingService.getSharingCount()),
+                        customProperty.getAdminPageSize())));
+                break;
+
+        }
+
 
         return "/admin/admin_index";
     }

@@ -56,13 +56,13 @@ public class AdminController {
         return imageService.processUEditorUpload(file);
     }
 
-    @PostMapping("/saveTechSharing")
-    public void saveTechSharing(String editorContent, String type, String title, HttpServletResponse response) {
+    @PostMapping("/saveSharing")
+    public void saveSharing(String editorContent, String type, String title, HttpServletResponse response) {
 
         adminService.saveArticle(editorContent, type, title);
 
         try {
-            response.sendRedirect("/admin");
+            response.sendRedirect("/admin?type=" + type + "&pageIndex=1");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -79,12 +79,12 @@ public class AdminController {
         return "/admin/admin_detail";
     }
 
-    @PostMapping("/updateTechSharing")
-    public void updateTechSharing(String editorContent,String type, String title, Integer id, HttpServletResponse response) {
+    @PostMapping("/updateSharing")
+    public void updateSharing(String editorContent,String type, String title, Integer id, HttpServletResponse response) {
         adminService.updateArticle(editorContent, type, title, id);
 
         try {
-            response.sendRedirect("/admin");
+            response.sendRedirect("/admin?type=" + type + "&pageIndex=1");
         } catch (IOException e) {
             e.printStackTrace();
         }
