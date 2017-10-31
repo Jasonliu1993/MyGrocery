@@ -10,7 +10,7 @@ import java.util.List;
  */
 public interface SharingService {
 
-    List<TechSharing> getSharingByPaging(Integer pageIndex, Integer pageSize);
+    List<? extends Sharing> getSharingByPaging(Integer pageIndex, Integer pageSize);
     Integer getSharingCount();
     Sharing getSharingById(Integer id);
 

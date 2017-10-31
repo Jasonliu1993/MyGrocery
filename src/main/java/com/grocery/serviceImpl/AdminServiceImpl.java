@@ -1,11 +1,7 @@
 package com.grocery.serviceImpl;
 
-import com.grocery.dao.AdminMenuMapper;
-import com.grocery.dao.TechSharingMapper;
-import com.grocery.domain.AdminMenu;
-import com.grocery.domain.Message;
-import com.grocery.domain.Sharing;
-import com.grocery.domain.TechSharing;
+import com.grocery.dao.*;
+import com.grocery.domain.*;
 import com.grocery.services.AdminService;
 import com.grocery.utilities.DateUtility;
 import com.grocery.utilities.PackingInfo;
@@ -27,25 +23,85 @@ public class AdminServiceImpl implements AdminService {
     private TechSharingMapper techSharingMapper;
 
     @Autowired
+    private SoftwareSharingMapper softwareSharingMapper;
+
+    @Autowired
+    private NewsSharingMapper newsSharingMapper;
+
+    @Autowired
+    private FoodSharingMapper foodSharingMapper;
+
+    @Autowired
+    private ArticleSharingMapper articleSharingMapper;
+
+    @Autowired
     private AdminMenuMapper adminMenuMapper;
 
     @Override
     @Transactional
     public void saveArticle(String editorContent, String type, String title) {
-        TechSharing techSharing = new TechSharing();
+
+        Sharing Sharing = null;
 
         try {
-            techSharing.setVersion(1);
-            techSharing.setTitle(title);
-            techSharing.setType(type);
-            techSharing.setContent(editorContent.getBytes("UTF-8"));
-            techSharing.setCreateDatetime(DateUtility.getCurrentDate());
+            switch (type) {
+
+                case "article":
+                    Sharing = new ArticleSharing();
+                    Sharing.setVersion(1);
+                    Sharing.setTitle(title);
+                    Sharing.setType(type);
+                    Sharing.setContent(editorContent.getBytes("UTF-8"));
+                    Sharing.setCreateDatetime(DateUtility.getCurrentDate());
+
+                    articleSharingMapper.insertSelective((ArticleSharing) Sharing);
+                    break;
+                case "software":
+                    Sharing = new SoftwareSharing();
+                    Sharing.setVersion(1);
+                    Sharing.setTitle(title);
+                    Sharing.setType(type);
+                    Sharing.setContent(editorContent.getBytes("UTF-8"));
+                    Sharing.setCreateDatetime(DateUtility.getCurrentDate());
+
+                    softwareSharingMapper.insertSelective((SoftwareSharing) Sharing);
+                    break;
+                case "news":
+                    Sharing = new NewsSharing();
+                    Sharing.setVersion(1);
+                    Sharing.setTitle(title);
+                    Sharing.setType(type);
+                    Sharing.setContent(editorContent.getBytes("UTF-8"));
+                    Sharing.setCreateDatetime(DateUtility.getCurrentDate());
+
+                    newsSharingMapper.insertSelective((NewsSharing) Sharing);
+
+                    break;
+                case "food":
+                    Sharing = new FoodSharing();
+                    Sharing.setVersion(1);
+                    Sharing.setTitle(title);
+                    Sharing.setType(type);
+                    Sharing.setContent(editorContent.getBytes("UTF-8"));
+                    Sharing.setCreateDatetime(DateUtility.getCurrentDate());
+
+                    foodSharingMapper.insertSelective((FoodSharing) Sharing);
+                    break;
+                default:
+                    Sharing = new TechSharing();
+                    Sharing.setVersion(1);
+                    Sharing.setTitle(title);
+                    Sharing.setType(type);
+                    Sharing.setContent(editorContent.getBytes("UTF-8"));
+                    Sharing.setCreateDatetime(DateUtility.getCurrentDate());
+
+                    techSharingMapper.insertSelective((TechSharing) Sharing);
+                    break;
+            }
+
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-
-        techSharingMapper.insertSelective(techSharing);
-
     }
 
     public List<AdminMenu> getAdminMenu() {
@@ -56,21 +112,23 @@ public class AdminServiceImpl implements AdminService {
     public Message getAdminDetail(Integer id, String type) {
         Message message = null;
 
-        if ("article".equals(type)) {
-            //文章
+        switch (type) {
 
-        } else if ("tech".equals(type)) {
-            //技术
-            message = PackingInfo.changeData2Message(techSharingMapper.selectByPrimaryKey(id));
-        } else if ("software".equals(type)) {
-            //软甲
-
-        } else if ("news".equals(type)) {
-            //新闻
-
-        } else {
-            //美食
-
+            case "article":
+                message = PackingInfo.changeData2Message(articleSharingMapper.selectByPrimaryKey(id));
+                break;
+            case "software":
+                message = PackingInfo.changeData2Message(softwareSharingMapper.selectByPrimaryKey(id));
+                break;
+            case "news":
+                message = PackingInfo.changeData2Message(newsSharingMapper.selectByPrimaryKey(id));
+                break;
+            case "food":
+                message = PackingInfo.changeData2Message(foodSharingMapper.selectByPrimaryKey(id));
+                break;
+            default:
+                message = PackingInfo.changeData2Message(techSharingMapper.selectByPrimaryKey(id));
+                break;
         }
 
         return message;
@@ -86,19 +144,48 @@ public class AdminServiceImpl implements AdminService {
             switch (type) {
 
                 case "article":
+                    Sharing = new ArticleSharing();
+                    Sharing.setVersion(articleSharingMapper.selectByPrimaryKey(id).getVersion() + 1);
+                    Sharing.setId(id);
+                    Sharing.setType(type);
+                    Sharing.setTitle(title);
+                    Sharing.setContent(editorContent.getBytes("UTF-8"));
+                    Sharing.setCreateDatetime(DateUtility.getCurrentDate());
 
+                    articleSharingMapper.updateByPrimaryKeyWithBLOBs((ArticleSharing) Sharing);
                     break;
                 case "software":
+                    Sharing = new SoftwareSharing();
+                    Sharing.setVersion(softwareSharingMapper.selectByPrimaryKey(id).getVersion() + 1);
+                    Sharing.setId(id);
+                    Sharing.setType(type);
+                    Sharing.setTitle(title);
+                    Sharing.setContent(editorContent.getBytes("UTF-8"));
+                    Sharing.setCreateDatetime(DateUtility.getCurrentDate());
 
-                    break;
-                case "photography":
-
+                    softwareSharingMapper.updateByPrimaryKeyWithBLOBs((SoftwareSharing) Sharing);
                     break;
                 case "news":
+                    Sharing = new NewsSharing();
+                    Sharing.setVersion(newsSharingMapper.selectByPrimaryKey(id).getVersion() + 1);
+                    Sharing.setId(id);
+                    Sharing.setType(type);
+                    Sharing.setTitle(title);
+                    Sharing.setContent(editorContent.getBytes("UTF-8"));
+                    Sharing.setCreateDatetime(DateUtility.getCurrentDate());
 
+                    newsSharingMapper.updateByPrimaryKeyWithBLOBs((NewsSharing) Sharing);
                     break;
                 case "food":
+                    Sharing = new FoodSharing();
+                    Sharing.setVersion(foodSharingMapper.selectByPrimaryKey(id).getVersion() + 1);
+                    Sharing.setId(id);
+                    Sharing.setType(type);
+                    Sharing.setTitle(title);
+                    Sharing.setContent(editorContent.getBytes("UTF-8"));
+                    Sharing.setCreateDatetime(DateUtility.getCurrentDate());
 
+                    foodSharingMapper.updateByPrimaryKeyWithBLOBs((FoodSharing) Sharing);
                     break;
                 default:
                     Sharing = new TechSharing();
@@ -109,12 +196,10 @@ public class AdminServiceImpl implements AdminService {
                     Sharing.setContent(editorContent.getBytes("UTF-8"));
                     Sharing.setCreateDatetime(DateUtility.getCurrentDate());
 
-                    techSharingMapper.updateByPrimaryKeyWithBLOBs((TechSharing)Sharing);
+                    techSharingMapper.updateByPrimaryKeyWithBLOBs((TechSharing) Sharing);
                     break;
 
             }
-
-
 
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();

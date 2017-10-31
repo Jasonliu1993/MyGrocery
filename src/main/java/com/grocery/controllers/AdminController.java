@@ -1,11 +1,10 @@
 package com.grocery.controllers;
 
 import com.baidu.ueditor.ActionEnter;
-import com.grocery.domain.TechSharing;
+import com.grocery.domain.Sharing;
 import com.grocery.domain.UploadResponseMessage;
 import com.grocery.services.AdminService;
 import com.grocery.services.ImageService;
-import com.grocery.utilities.PackingInfo;
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -74,7 +73,7 @@ public class AdminController {
 
         modelMap.addAttribute("AdminDetail", adminService.getAdminDetail(id, currentType));
 
-        modelMap.addAttribute("UEditor", new String(((TechSharing) adminService.getAdminDetail(id, currentType).getData()).getContent(), "utf-8"));
+        modelMap.addAttribute("UEditor", new String(((Sharing) adminService.getAdminDetail(id, currentType).getData()).getContent(), "utf-8"));
 
         return "/admin/admin_detail";
     }

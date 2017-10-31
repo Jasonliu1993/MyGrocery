@@ -1,6 +1,7 @@
 package com.grocery.controllers;
 
 import com.grocery.configuration.CustomProperty;
+import com.grocery.serviceImpl.*;
 import com.grocery.services.AdminService;
 import com.grocery.services.MessageBoardService;
 import com.grocery.services.PhotographyService;
@@ -34,7 +35,19 @@ public class CoreController {
     private AdminService adminService;
 
     @Autowired
-    private SharingService sharingService;
+    private TechSharingServiceImpl techSharingService;
+
+    @Autowired
+    private SoftwareSharingServiceImpl softwareSharingService;
+
+    @Autowired
+    private NewsSharingServiceImpl newsSharingService;
+
+    @Autowired
+    private FoodSharingServiceImpl foodSharingService;
+
+    @Autowired
+    private ArticleSharingServiceImpl articleSharingService;
 
     @GetMapping("/index")
     public String index(ModelMap modelMap) {
@@ -93,33 +106,73 @@ public class CoreController {
 
             case "article":
 
-                break;
-            case "software":
-
-                break;
-            case "photography":
-
-                break;
-            case "news":
-
-                break;
-            case "food":
-
-                break;
-            default:
-                modelMap.addAttribute("SharingPagings", PackingInfo.changeData2Message(sharingService.getSharingByPaging(pageIndex, Integer.valueOf(customProperty.getAdminPageSize()))));
+                modelMap.addAttribute("SharingPagings", PackingInfo.changeData2Message(articleSharingService.getSharingByPaging(pageIndex, Integer.valueOf(customProperty.getAdminPageSize()))));
 
                 modelMap.addAttribute("Paginations", PackingInfo.changeData2Message(new PaginationUtility(
                         "1",
                         customProperty.getPaginationDisplayNum(),
                         "",
-                        String.valueOf(sharingService.getSharingCount()),
+                        String.valueOf(articleSharingService.getSharingCount()),
+                        customProperty.getAdminPageSize())));
+
+                break;
+            case "software":
+
+                modelMap.addAttribute("SharingPagings", PackingInfo.changeData2Message(softwareSharingService.getSharingByPaging(pageIndex, Integer.valueOf(customProperty.getAdminPageSize()))));
+
+                modelMap.addAttribute("Paginations", PackingInfo.changeData2Message(new PaginationUtility(
+                        "1",
+                        customProperty.getPaginationDisplayNum(),
+                        "",
+                        String.valueOf(softwareSharingService.getSharingCount()),
+                        customProperty.getAdminPageSize())));
+
+                break;
+            case "photography":
+
+
+
+                break;
+            case "news":
+
+                modelMap.addAttribute("SharingPagings", PackingInfo.changeData2Message(newsSharingService.getSharingByPaging(pageIndex, Integer.valueOf(customProperty.getAdminPageSize()))));
+
+                modelMap.addAttribute("Paginations", PackingInfo.changeData2Message(new PaginationUtility(
+                        "1",
+                        customProperty.getPaginationDisplayNum(),
+                        "",
+                        String.valueOf(newsSharingService.getSharingCount()),
+                        customProperty.getAdminPageSize())));
+
+                break;
+            case "food":
+
+                modelMap.addAttribute("SharingPagings", PackingInfo.changeData2Message(foodSharingService.getSharingByPaging(pageIndex, Integer.valueOf(customProperty.getAdminPageSize()))));
+
+                modelMap.addAttribute("Paginations", PackingInfo.changeData2Message(new PaginationUtility(
+                        "1",
+                        customProperty.getPaginationDisplayNum(),
+                        "",
+                        String.valueOf(foodSharingService.getSharingCount()),
+                        customProperty.getAdminPageSize())));
+
+                break;
+            default:
+                modelMap.addAttribute("SharingPagings", PackingInfo.changeData2Message(techSharingService.getSharingByPaging(pageIndex, Integer.valueOf(customProperty.getAdminPageSize()))));
+
+                modelMap.addAttribute("Paginations", PackingInfo.changeData2Message(new PaginationUtility(
+                        "1",
+                        customProperty.getPaginationDisplayNum(),
+                        "",
+                        String.valueOf(techSharingService.getSharingCount()),
                         customProperty.getAdminPageSize())));
                 break;
 
         }
 
-
+        if ("photography".equals(type)){
+            return "/admin/admin_index";
+        }
         return "/admin/admin_index";
     }
 

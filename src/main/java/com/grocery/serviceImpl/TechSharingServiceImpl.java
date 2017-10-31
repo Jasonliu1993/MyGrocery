@@ -14,7 +14,7 @@ import java.util.List;
  */
 
 @Service
-public class TechServiceImpl implements SharingService {
+public class TechSharingServiceImpl implements SharingService {
 
     @Autowired
     private TechSharingMapper techSharingMapper;
