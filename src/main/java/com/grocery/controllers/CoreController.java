@@ -111,7 +111,7 @@ public class CoreController {
                 modelMap.addAttribute("SharingPagings", PackingInfo.changeData2Message(articleSharingService.getSharingByPaging(pageIndex, Integer.valueOf(customProperty.getAdminPageSize()))));
 
                 modelMap.addAttribute("Paginations", PackingInfo.changeData2Message(new PaginationUtility(
-                        "1",
+                        pageIndex.toString(),
                         customProperty.getPaginationDisplayNum(),
                         "/admin?type=article&pageIndex=",
                         false,
@@ -124,7 +124,7 @@ public class CoreController {
                 modelMap.addAttribute("SharingPagings", PackingInfo.changeData2Message(softwareSharingService.getSharingByPaging(pageIndex, Integer.valueOf(customProperty.getAdminPageSize()))));
 
                 modelMap.addAttribute("Paginations", PackingInfo.changeData2Message(new PaginationUtility(
-                        "1",
+                        pageIndex.toString(),
                         customProperty.getPaginationDisplayNum(),
                         "/admin?type=software&pageIndex=",
                         false,
@@ -134,7 +134,15 @@ public class CoreController {
                 break;
             case "photography":
 
+                modelMap.addAttribute("SharingPagings", PackingInfo.changeData2Message(photographyService.getPhotographyDetailBypaging(pageIndex, Integer.valueOf(customProperty.getAdminPageSize()))));
 
+                modelMap.addAttribute("Paginations", PackingInfo.changeData2Message(new PaginationUtility(
+                        pageIndex.toString(),
+                        customProperty.getPaginationDisplayNum(),
+                        "/admin?type=photography&pageIndex=",
+                        false,
+                        String.valueOf(photographyService.getPhotographyDetailCount()),
+                        customProperty.getAdminPageSize())));
 
                 break;
             case "news":
@@ -142,7 +150,7 @@ public class CoreController {
                 modelMap.addAttribute("SharingPagings", PackingInfo.changeData2Message(newsSharingService.getSharingByPaging(pageIndex, Integer.valueOf(customProperty.getAdminPageSize()))));
 
                 modelMap.addAttribute("Paginations", PackingInfo.changeData2Message(new PaginationUtility(
-                        "1",
+                        pageIndex.toString(),
                         customProperty.getPaginationDisplayNum(),
                         "/admin?type=news&pageIndex=",
                         false,
@@ -155,7 +163,7 @@ public class CoreController {
                 modelMap.addAttribute("SharingPagings", PackingInfo.changeData2Message(foodSharingService.getSharingByPaging(pageIndex, Integer.valueOf(customProperty.getAdminPageSize()))));
 
                 modelMap.addAttribute("Paginations", PackingInfo.changeData2Message(new PaginationUtility(
-                        "1",
+                        pageIndex.toString(),
                         customProperty.getPaginationDisplayNum(),
                         "/admin?type=food&pageIndex=",
                         false,
@@ -167,7 +175,7 @@ public class CoreController {
                 modelMap.addAttribute("SharingPagings", PackingInfo.changeData2Message(techSharingService.getSharingByPaging(pageIndex, Integer.valueOf(customProperty.getAdminPageSize()))));
 
                 modelMap.addAttribute("Paginations", PackingInfo.changeData2Message(new PaginationUtility(
-                        "1",
+                        pageIndex.toString(),
                         customProperty.getPaginationDisplayNum(),
                         "/admin?type=tech&pageIndex=",
                         false,
@@ -178,7 +186,7 @@ public class CoreController {
         }
 
         if ("photography".equals(type)){
-            return "/admin/admin_index";
+            return "/admin/admin_photography";
         }
         return "/admin/admin_index";
     }

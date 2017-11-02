@@ -31,6 +31,11 @@ public class AdminController {
     @Autowired
     private AdminService adminService;
 
+    @GetMapping("/createPhotography")
+    public String createPhotography() {
+        return "/admin/admin_create_photography";
+    }
+
     @GetMapping("/createArticle")
     public String createArticle() {
         return "/admin/admin_create_article";
@@ -76,6 +81,12 @@ public class AdminController {
         modelMap.addAttribute("UEditor", new String(((Sharing) adminService.getAdminDetail(id, currentType).getData()).getContent(), "utf-8"));
 
         return "/admin/admin_update_detail";
+    }
+
+    @GetMapping("/adminPhotographyDetail")
+    public String adminPhotographyDetail(@RequestParam("id") Integer id, @RequestParam("currentType") String currentType, ModelMap modelMap) {
+
+        return "/admin/admin_update_photography_detail";
     }
 
     @PostMapping("/updateSharing")

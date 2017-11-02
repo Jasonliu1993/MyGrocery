@@ -11,7 +11,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 public class GroceryApplication {
 
 	public static void main(String[] args) {
-        System.out.println("run here!");
         SpringApplication.run(GroceryApplication.class, args);
 	}
 }
