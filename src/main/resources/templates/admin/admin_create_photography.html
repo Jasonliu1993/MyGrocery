@@ -17,7 +17,8 @@
     <link href="/css/bootstrap-3.3.7/css/bootstrap.css" rel="stylesheet">
     <link href="/plugins/bootstrap-fileinput/css/fileinput.css" media="all" rel="stylesheet" type="text/css"/>
     <!--<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" media="all" rel="stylesheet" type="text/css"/>-->
-    <link href="/plugins/bootstrap-fileinput/themes/explorer-fa/theme.css" media="all" rel="stylesheet" type="text/css"/>
+    <link href="/plugins/bootstrap-fileinput/themes/explorer-fa/theme.css" media="all" rel="stylesheet"
+          type="text/css"/>
     <script src="/js/jquery-3.1.1.min.js"></script>
     <script src="/plugins/bootstrap-fileinput/js/plugins/sortable.js" type="text/javascript"></script>
     <script src="/plugins/bootstrap-fileinput/js/fileinput.js" type="text/javascript"></script>
@@ -63,17 +64,17 @@
 
     </style>
 
-   <!-- <script>
-        $(document).ready(function () {
+    <!-- <script>
+         $(document).ready(function () {
 
 
-            $("#saveBtn").on("click", function () {
-                $("#formSubmit").submit();
-            })
+             $("#saveBtn").on("click", function () {
+                 $("#formSubmit").submit();
+             })
 
 
-        })
-    </script>-->
+         })
+     </script>-->
 
 </head>
 <body class="theme">
@@ -112,7 +113,7 @@
             <form enctype="multipart/form-data">
                 <div class="form-group">
                     <div class="file-loading">
-                        <input id="file-4" type="file" class="file" data-upload-url="#">
+                        <input id="imageUpload" type="file" class="projectfile" data-upload-url="#">
                     </div>
                 </div>
             </form>
@@ -123,17 +124,28 @@
 </body>
 
 <script>
-
-    $("#file-4").fileinput({
-        theme: 'fa',
-        uploadExtraData: {kvId: '10'}
+    $(document).ready(function () {
+        $("#imageUpload").fileinput({
+            theme: 'fa',
+            uploadExtraData: {kvId: '10'},
+            uploadUrl: '/test',
+            showUpload: true,
+            showCaption: true,
+            showPreview: true,
+            showUploadedThumbs: true,
+//            browseClass: "btn btn-primary btn-lg",
+            fileType: "any",
+            previewFileIcon: "<i class='glyphicon glyphicon-king'></i>",
+            overwriteInitial: false,
+            initialPreviewAsData: true,
+            initialPreview: [
+                "http://localhost:8080/images/camera.jpeg",
+            ],
+            initialPreviewConfig: [
+                {caption: "transport-1.jpg", size: 329892, width: "120px", url: "{$url}", key: 1},
+            ],
+        });
     });
-    /*
-     $(".file").on('fileselect', function(event, n, l) {
-     alert('File Selected. Name: ' + l + ', Num: ' + n);
-     });
-     */
-
 </script>
 
 </html>
