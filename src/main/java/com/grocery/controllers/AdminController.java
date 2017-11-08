@@ -60,8 +60,28 @@ public class AdminController {
         return imageService.processUEditorUpload(file);
     }
 
+    @PostMapping(value = "/savePhotographyImage", produces = "application/json; charset=utf-8")
+    @ResponseBody
+    public UploadResponseMessage savePhotographyImage(@RequestParam(value = "imageUpload") MultipartFile file) {
+        System.out.println("here");
+        return null;
+    }
+
     @PostMapping("/saveSharing")
     public void saveSharing(String editorContent, String type, String title, HttpServletResponse response) {
+
+        adminService.saveArticle(editorContent, type, title);
+
+        try {
+            response.sendRedirect("/admin?type=" + type + "&pageIndex=1");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    @PostMapping("/savePhotography")
+    public void savePhotography(String editorContent, String type, String title, HttpServletResponse response) {
 
         adminService.saveArticle(editorContent, type, title);
 
@@ -90,7 +110,18 @@ public class AdminController {
     }
 
     @PostMapping("/updateSharing")
-    public void updateSharing(String editorContent,String type, String title, Integer id, HttpServletResponse response) {
+    public void updateSharing(String editorContent, String type, String title, Integer id, HttpServletResponse response) {
+        adminService.updateArticle(editorContent, type, title, id);
+
+        try {
+            response.sendRedirect("/admin?type=" + type + "&pageIndex=1");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @PostMapping("/updatePhotography")
+    public void updatePhotography(String editorContent, String type, String title, Integer id, HttpServletResponse response) {
         adminService.updateArticle(editorContent, type, title, id);
 
         try {
