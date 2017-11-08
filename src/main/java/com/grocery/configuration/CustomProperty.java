@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
  */
 
 @Component
-@ConfigurationProperties(prefix="CustomProps")
+@ConfigurationProperties(prefix = "CustomProps")
 public class CustomProperty {
     private String photographyDetailPageSize;
     private String paginationDisplayNum;
