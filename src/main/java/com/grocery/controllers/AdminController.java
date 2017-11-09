@@ -1,6 +1,7 @@
 package com.grocery.controllers;
 
 import com.baidu.ueditor.ActionEnter;
+import com.grocery.domain.FileInputResponseMessage;
 import com.grocery.domain.Sharing;
 import com.grocery.domain.UploadResponseMessage;
 import com.grocery.services.AdminService;
@@ -16,6 +17,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Jason on 21/10/2017.
@@ -62,9 +67,8 @@ public class AdminController {
 
     @PostMapping(value = "/savePhotographyImage", produces = "application/json; charset=utf-8")
     @ResponseBody
-    public UploadResponseMessage savePhotographyImage(@RequestParam(value = "imageUpload") MultipartFile file) {
-        System.out.println("here");
-        return null;
+    public FileInputResponseMessage savePhotographyImage(@RequestParam(value = "file_data") MultipartFile file) {
+        return imageService.processPhotographyUpload(file);
     }
 
     @PostMapping("/saveSharing")
@@ -81,12 +85,12 @@ public class AdminController {
     }
 
     @PostMapping("/savePhotography")
-    public void savePhotography(String editorContent, String type, String title, HttpServletResponse response) {
+    public void savePhotography(String comments, String theme,String photoRefId, HttpServletResponse response) {
 
-        adminService.saveArticle(editorContent, type, title);
+        adminService.savePhotography(comments,theme,photoRefId);
 
         try {
-            response.sendRedirect("/admin?type=" + type + "&pageIndex=1");
+            response.sendRedirect("/admin?type=photography&pageIndex=1");
         } catch (IOException e) {
             e.printStackTrace();
         }

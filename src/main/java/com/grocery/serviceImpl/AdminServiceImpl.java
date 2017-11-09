@@ -37,6 +37,9 @@ public class AdminServiceImpl implements AdminService {
     @Autowired
     private AdminMenuMapper adminMenuMapper;
 
+    @Autowired
+    private PhotographyDetailMapper photographyDetailMapper;
+
     @Override
     @Transactional
     public void saveArticle(String editorContent, String type, String title) {
@@ -102,6 +105,20 @@ public class AdminServiceImpl implements AdminService {
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    @Transactional
+    public void savePhotography(String comments, String theme, String photoRefId) {
+        PhotographyDetail photographyDetail = new PhotographyDetail();
+
+        photographyDetail.setVersion(1);
+        photographyDetail.setTheme(theme);
+        photographyDetail.setPhotoRefId(Integer.valueOf(photoRefId));
+        photographyDetail.setComments(comments);
+        photographyDetail.setCreateDatetime(DateUtility.getCurrentDate());
+
+        photographyDetailMapper.insertSelective(photographyDetail);
     }
 
     public List<AdminMenu> getAdminMenu() {
@@ -207,4 +224,5 @@ public class AdminServiceImpl implements AdminService {
 
 
     }
+
 }

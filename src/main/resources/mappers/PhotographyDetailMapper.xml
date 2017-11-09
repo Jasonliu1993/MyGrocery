@@ -87,6 +87,9 @@
             <if test="comments != null">
                 COMMENTS,
             </if>
+            <if test="createDatetime != null">
+                CREATE_DATETIME,
+            </if>
             <if test="photoRefId != null">
                 PHOTO_REF_ID,
             </if>
@@ -118,6 +121,9 @@
             </if>
             <if test="comments != null">
                 #{comments,jdbcType=VARCHAR},
+            </if>
+            <if test="createDatetime != null">
+                #{createDatetime,jdbcType=VARCHAR},
             </if>
             <if test="photoRefId != null">
                 #{photoRefId,jdbcType=INTEGER},
@@ -154,6 +160,9 @@
             </if>
             <if test="comments != null">
                 COMMENTS = #{comments,jdbcType=VARCHAR},
+            </if>
+            <if test="createDatetime != null">
+                CREATE_DATETIME = #{createDatetime,jdbcType=VARCHAR},
             </if>
             <if test="photoRefId != null">
                 PHOTO_REF_ID = #{photoRefId,jdbcType=INTEGER},

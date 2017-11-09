@@ -3,14 +3,12 @@ package com.grocery.serviceImpl;
 import com.grocery.dao.AvatorMapper;
 import com.grocery.dao.PhotographyPhotoMapper;
 import com.grocery.dao.SharingImagesMapper;
-import com.grocery.domain.Message;
+import com.grocery.domain.FileInputResponseMessage;
+import com.grocery.domain.PhotographyPhoto;
 import com.grocery.domain.SharingImages;
 import com.grocery.domain.UploadResponseMessage;
-import com.grocery.exception.ErrorException;
-import com.grocery.exception.StatusCode;
 import com.grocery.services.ImageService;
 import com.grocery.utilities.DateUtility;
-import com.grocery.utilities.PackingInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -93,8 +91,31 @@ public class ImageServiceImpl implements ImageService {
         }
 
 
-
         return null;
+
+    }
+
+    @Override
+    @Transactional
+    public FileInputResponseMessage processPhotographyUpload(MultipartFile file) {
+
+        FileInputResponseMessage responseMessage = new FileInputResponseMessage();
+
+        PhotographyPhoto photographyPhoto = new PhotographyPhoto();
+
+        try {
+            photographyPhoto.setVersion(1);
+            photographyPhoto.setType("photography");
+            photographyPhoto.setPhoto(file.getBytes());
+
+            photographyPhotoMapper.insertSelective(photographyPhoto);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        responseMessage.setImageId(photographyPhoto.getId());
+
+        return responseMessage;
 
     }
 }

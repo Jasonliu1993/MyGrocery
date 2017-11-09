@@ -12,6 +12,7 @@ import java.util.List;
 public interface AdminService {
 
     void saveArticle(String editorContent, String type, String title);
+    void savePhotography(String comments, String theme,String photoRefId);
 
     List<AdminMenu> getAdminMenu();
 

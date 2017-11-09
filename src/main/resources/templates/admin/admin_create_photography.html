@@ -66,6 +66,12 @@
 
     <script>
         $(document).ready(function () {
+            $(document).ready(function(){
+                $("#uploadImageBtn").on("click",function(){
+                    $("#formSubmit").submit();
+                })
+            })
+
             $("#imageUpload").fileinput({
                 theme: 'fa',
                 uploadExtraData: {kvId: '10'},
@@ -86,7 +92,16 @@
                  initialPreviewConfig: [
                  {caption: "transport-1.jpg", size: 329892, width: "120px", url: "{$url}", key: 1},
                  ],*/
-            });
+            }).on("filebatchselected", function (event, files) {
+                $(this).fileinput("upload");
+            })
+                .on("fileuploaded", function (event, data) {
+                    if (data.response) {
+//                        console.log(data)
+                        /*上传成功时的回调函数*/
+                        $("#photoRefId").val((data.response).imageId);
+                    }
+                });
         });
     </script>
 
@@ -270,8 +285,8 @@
     </div>
     <div class="row set-margin-top">
         <div class="col-md-3">
-            <form class="form-horizontal" id="formSubmit" action="/admin/saveSharing" method="post"
-                  enctype="multipart/form-data">
+            <form class="form-horizontal" id="formSubmit" action="/admin/savePhotography" method="post">
+                <input type="hidden" id="photoRefId" name="photoRefId" value="">
                 <div class="form-group">
 
                     <div class="col-sm-6">
