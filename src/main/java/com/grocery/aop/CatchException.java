@@ -21,8 +21,11 @@ public class CatchException {
 
         if (runtimeException instanceof ErrorException) {
             return PackingInfo.changeException2Message((ErrorException) runtimeException);
-        } else
+        } else {
+            runtimeException.printStackTrace();
             return PackingInfo.changeException2Message(new ErrorException(StatusCode.UNKNOWN));
+        }
+
     }
 
 }

@@ -225,4 +225,17 @@ public class AdminServiceImpl implements AdminService {
 
     }
 
+    @Override
+    public void updatePhotography(String comments, String theme, String photoRefId, Integer id) {
+        PhotographyDetail photographyDetail = new PhotographyDetail();
+
+        photographyDetail.setId(id);
+        photographyDetail.setVersion(photographyDetailMapper.selectByPrimaryKey(id).getVersion() + 1);
+        photographyDetail.setTheme(theme);
+        photographyDetail.setPhotoRefId(Integer.valueOf(photoRefId));
+        photographyDetail.setComments(comments);
+        photographyDetail.setCreateDatetime(DateUtility.getCurrentDate());
+
+        photographyDetailMapper.updateByPrimaryKeySelective(photographyDetail);
+    }
 }

@@ -202,4 +202,7 @@
         CUSTOM5 = #{custom5,jdbcType=VARCHAR}
         where ID = #{id,jdbcType=INTEGER}
     </update>
+    <update id="updatePhotoRefIdByKey">
+        UPDATE PHOTOGRAPHY_DETAIL SET PHOTO_REF_ID = 1 WHERE PHOTO_REF_ID = #{id}
+    </update>
 </mapper>

@@ -6,6 +6,7 @@ import com.grocery.domain.Sharing;
 import com.grocery.domain.UploadResponseMessage;
 import com.grocery.services.AdminService;
 import com.grocery.services.ImageService;
+import com.grocery.services.PhotographyService;
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -35,6 +36,9 @@ public class AdminController {
 
     @Autowired
     private AdminService adminService;
+
+    @Autowired
+    private PhotographyService photographyService;
 
     @GetMapping("/createPhotography")
     public String createPhotography() {
@@ -108,7 +112,9 @@ public class AdminController {
     }
 
     @GetMapping("/adminPhotographyDetail")
-    public String adminPhotographyDetail(@RequestParam("id") Integer id, @RequestParam("currentType") String currentType, ModelMap modelMap) {
+    public String adminPhotographyDetail(@RequestParam("id") Integer id, ModelMap modelMap) {
+        System.out.println(id);
+        modelMap.addAttribute("PhotographyDetail",photographyService.getPhotographyDetailById(id));
 
         return "/admin/admin_update_photography_detail";
     }
@@ -125,11 +131,11 @@ public class AdminController {
     }
 
     @PostMapping("/updatePhotography")
-    public void updatePhotography(String editorContent, String type, String title, Integer id, HttpServletResponse response) {
-        adminService.updateArticle(editorContent, type, title, id);
+    public void updatePhotography(String comments, String theme,String photoRefId, Integer id, HttpServletResponse response) {
+        adminService.updatePhotography(comments, theme, photoRefId, id);
 
         try {
-            response.sendRedirect("/admin?type=" + type + "&pageIndex=1");
+            response.sendRedirect("/admin?type=photography&pageIndex=1");
         } catch (IOException e) {
             e.printStackTrace();
         }

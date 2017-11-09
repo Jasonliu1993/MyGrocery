@@ -19,4 +19,5 @@ public interface AdminService {
     Message getAdminDetail(Integer id, String type);
 
     void updateArticle(String editorContent, String type, String title, Integer id);
+    void updatePhotography(String comments, String theme,String photoRefId, Integer id);
 }

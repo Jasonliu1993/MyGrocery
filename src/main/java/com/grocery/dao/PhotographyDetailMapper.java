@@ -58,4 +58,6 @@ public interface PhotographyDetailMapper {
      * @mbggenerated
      */
     int updateByPrimaryKey(PhotographyDetail record);
+
+    int updatePhotoRefIdByKey(Integer id);
 }

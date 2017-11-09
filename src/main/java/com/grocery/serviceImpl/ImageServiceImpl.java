@@ -1,6 +1,7 @@
 package com.grocery.serviceImpl;
 
 import com.grocery.dao.AvatorMapper;
+import com.grocery.dao.PhotographyDetailMapper;
 import com.grocery.dao.PhotographyPhotoMapper;
 import com.grocery.dao.SharingImagesMapper;
 import com.grocery.domain.FileInputResponseMessage;
@@ -29,6 +30,9 @@ public class ImageServiceImpl implements ImageService {
 
     @Autowired
     private PhotographyPhotoMapper photographyPhotoMapper;
+
+    @Autowired
+    private PhotographyDetailMapper photographyDetailMapper;
 
     @Autowired
     private AvatorMapper avatorMapper;
@@ -118,4 +122,14 @@ public class ImageServiceImpl implements ImageService {
         return responseMessage;
 
     }
+
+    @Override
+    @Transactional
+    public void deletePhotography(Integer id) {
+
+        photographyDetailMapper.updatePhotoRefIdByKey(id);
+        photographyPhotoMapper.deleteByPrimaryKey(id);
+
+    }
+
 }

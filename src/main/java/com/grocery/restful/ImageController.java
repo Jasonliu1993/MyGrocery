@@ -30,4 +30,10 @@ public class ImageController {
         return imageService.getUploadImage(id);
     }
 
+    @PostMapping("/deletePhotography/{id}")
+    public String deletePhotography(@PathVariable("id") Integer id) {
+        imageService.deletePhotography(id);
+        return "0";
+    }
+
 }

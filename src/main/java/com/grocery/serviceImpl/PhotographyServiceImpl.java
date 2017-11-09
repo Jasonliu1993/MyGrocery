@@ -25,7 +25,6 @@ public class PhotographyServiceImpl implements PhotographyService {
 
     @Override
     public PhotographyDetail getPhotographyDetailById(Integer id) {
-        System.out.println(id);
         return photographyDetailMapper.selectByPrimaryKey(id);
     }
 

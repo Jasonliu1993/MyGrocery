@@ -67,9 +67,17 @@
     <script>
         $(document).ready(function () {
             $(document).ready(function(){
-                $("#saveBtn").on("click",function(){
-                    $("#formSubmit").submit();
+
+                /*<![CDATA[*/
+                $("#saveBtn").on("click", function () {
+                    var photoRefId = $("#photoRefId").val();
+                    if(photoRefId !== null && photoRefId !== undefined && photoRefId !== '') {
+                        $("#formSubmit").submit();
+                    } else {
+                        alert("请上传图片")
+                    }
                 })
+                /*]]>*/
             })
 
             $("#imageUpload").fileinput({

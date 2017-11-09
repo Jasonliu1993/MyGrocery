@@ -15,4 +15,6 @@ public interface ImageService {
 
     UploadResponseMessage processUEditorUpload(MultipartFile file);
     FileInputResponseMessage processPhotographyUpload(MultipartFile file);
+    void deletePhotography(Integer id);
+
 }
