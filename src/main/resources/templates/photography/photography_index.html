@@ -23,9 +23,10 @@
             background-color: #2e3032;
         }
 
-        .thumbnail img {
-            /*clip:rect(100% ,200px,200px,0px);*/
+        #inImage {
+            /*overflow: scroll;*/
         }
+
     </style>
 </head>
 <body class="theme">
@@ -34,7 +35,7 @@
     <div class="row set-margin-top">
         <div class="col-md-4" th:each="PhotographyDetail,PhotographyDetailStat : ${PhotographyDetail.data}">
             <div class="thumbnail">
-                <img alt="Bootstrap Thumbnail First" th:src="${'/image/photography/'+ PhotographyDetail.getPhotoRefId()}"/>
+                <img id="inImage" alt="Bootstrap Thumbnail First" th:src="${'/image/photography/'+ PhotographyDetail.getPhotoRefId()}"/>
                 <div class="caption">
                     <h3 th:text="${PhotographyDetail.getTheme()}">
                         title
