@@ -1,11 +1,17 @@
 <ul class="pagination" th:fragment="pagination">
-    <li th:class="${Paginations.data.getPreButton() eq 'MIN'} ? 'disabled'">
+    <li th:class="${Paginations.data.getPreButton() eq 'MIN'} ? 'disabled'" th:if="${! (Paginations.data.getPreButton() eq 'MIN')}">
         <a th:href="@{${Paginations.data.getPath() + Paginations.data.getPreButton()}}">前一页</a>
+    </li>
+    <li th:class="${Paginations.data.getPreButton() eq 'MIN'} ? 'disabled'" th:if="${Paginations.data.getPreButton() eq 'MIN'}">
+        <span>前一页</span>
     </li>
     <li th:class="${Paginations.data.getCurrentPage() eq  Pt} ? 'active'" th:each="Pt,PtStat : ${Paginations.data.getBarList()}">
         <a href="#" th:href="@{${Paginations.data.getPath() + Pt}}" th:text="${Pt}"></a>
     </li>
-    <li th:class="${Paginations.data.getPostButton() eq 'MAX'} ? 'disabled'">
+    <li th:class="${Paginations.data.getPostButton() eq 'MAX'} ? 'disabled'" th:if="${! (Paginations.data.getPostButton() eq 'MAX')}">
         <a th:href="@{${Paginations.data.getPath() + Paginations.data.getPostButton()}}">后一页</a>
+    </li>
+    <li th:class="${Paginations.data.getPostButton() eq 'MAX'} ? 'disabled'" th:if="${Paginations.data.getPostButton() eq 'MAX'}">
+        <span>后一页</span>
     </li>
 </ul>
