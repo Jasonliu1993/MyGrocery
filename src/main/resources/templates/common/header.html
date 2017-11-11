@@ -35,7 +35,7 @@
 
     <li class="pull-right" th:if="${! #strings.isEmpty(session.User)}">
         <!-- Button trigger modal -->
-        <a th:text="${session.User.getUserName() + ',欢迎您'}" href="#" id="userstatus"></a>
+        <a th:text="${session.User.getUserName() + ',欢迎您'}" href="/personalPage/main" id="userstatus"></a>
     </li>
 </ul>
 
