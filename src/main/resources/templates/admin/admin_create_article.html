@@ -90,11 +90,14 @@
             <script id="editor" type="text/plain" class="set-full"></script>
             <script>
                 $(document).ready(function () {
+                    var baseURL = window.location.host;
+                    var protocol = window.location.protocol;
+
                     var ue = UE.getEditor('editor');
                     UE.Editor.prototype._bkGetActionUrl = UE.Editor.prototype.getActionUrl;
                     UE.Editor.prototype.getActionUrl = function(action) {
                         if (action == 'uploadimage' || action == 'uploadscrawl' || action == 'uploadimage') {
-                            return 'http://localhost:8080/admin/saveImage';
+                            return protocol + "//" + baseURL + '/admin/saveImage';
                         } else if (action == 'uploadvideo') {
                             return 'http://a.b.com/video.php';
                         } else {

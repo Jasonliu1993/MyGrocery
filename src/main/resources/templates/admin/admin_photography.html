@@ -137,9 +137,10 @@
                 <ul class="list-group set-null-bottom">
 
                     <a th:href="@{'/admin//adminPhotographyDetail?id=' + ${Sharing.getId()} + '&' + 'currentType=' + ${CurrentType}}" class="list-group-item"
-                       th:each="Sharing,SharingStatus : ${SharingPagings.data}"
-                       th:text="${Sharing.getTheme()}">
-                        Cras justo odio
+                       th:each="Sharing,SharingStatus : ${SharingPagings.data}">
+                        <span style="float: left; display: inline-block" th:text="${Sharing.getTheme()}">text</span>
+                        <span style="float: right; display: inline-block" th:text="${Sharing.getCreateDatetime()}">text</span>
+                        <span class="clear-both" style="display: inline-block"></span>
                     </a>
 
                     <!--

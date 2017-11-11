@@ -92,23 +92,6 @@
 
     <script>
 
-        function setAdminMenuActive(currentType) {
-            $(".nav-stacked li").each(function () {
-                $(this).removeClass("active");
-            })
-            $("#" + currentType + "").addClass("active");
-        }
-
-        $(document).ready(function () {
-            /*    初始化     */
-            setAdminMenuActive($("#currentType").val())
-
-            $(".nav-stacked li").on("click", function () {
-                $("#currentType").val($(this).attr("id"));
-                setAdminMenuActive($("#currentType").val())
-            })
-
-        })
     </script>
 
 </head>
@@ -116,27 +99,12 @@
 <div class="container-fluid">
     <div th:include="common/header"></div>
     <div class="row set-margin-top">
-        <div class="col-md-2">
-            <div class="set-left">
-                <ul class="nav nav-pills nav-stacked">
-                    <li role="presentation" th:id="${AdminMenu.getLinkMatching()}"
-                        th:each="AdminMenu,AdminMenuStatus : ${AdminMenus.data}"><a
-                            th:href="@{${AdminMenu.getInterlinkage()}}"
-                            th:text="${AdminMenu.getMenuItemName()}">Home</a></li>
-                    <!--<li role="presentation" class="active"><a href="#">Profile</a></li>
-                    <li role="presentation"><a href="#">Messages</a></li>-->
-                </ul>
-            </div>
-        </div>
-        <div class="col-md-10">
-            <div class="set-to-left">
-                <a href="/admin/createArticle" class="btn btn-primary">发表新的文章</a>
-            </div>
-            <div class="clear-both"></div>
+        <div class="col-md-10 col-md-offset-1">
             <div class="content set-margin-top">
                 <ul class="list-group set-null-bottom">
 
-                    <a th:href="@{'/admin/adminDetail?id=' + ${Sharing.getId()} + '&' + 'currentType=' + ${CurrentType}}" class="list-group-item"
+                    <a th:href="@{'/sharing/sharingDetail/' + ${CurrentType} + '/' + ${Sharing.getId()}}"
+                       class="list-group-item"
                        th:each="Sharing,SharingStatus : ${SharingPagings.data}">
                         <span style="float: left; display: inline-block" th:text="${Sharing.getTitle()}">text</span>
                         <span style="float: right; display: inline-block" th:text="${Sharing.getCreateDatetime()}">text</span>

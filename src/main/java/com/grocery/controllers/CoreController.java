@@ -5,7 +5,7 @@ import com.grocery.serviceImpl.*;
 import com.grocery.services.AdminService;
 import com.grocery.services.MessageBoardService;
 import com.grocery.services.PhotographyService;
-import com.grocery.services.SharingService;
+import com.grocery.utilities.SharingServiceUtility;
 import com.grocery.utilities.PackingInfo;
 import com.grocery.utilities.PaginationUtility;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,19 +35,7 @@ public class CoreController {
     private AdminService adminService;
 
     @Autowired
-    private TechSharingServiceImpl techSharingService;
-
-    @Autowired
-    private SoftwareSharingServiceImpl softwareSharingService;
-
-    @Autowired
-    private NewsSharingServiceImpl newsSharingService;
-
-    @Autowired
-    private FoodSharingServiceImpl foodSharingService;
-
-    @Autowired
-    private ArticleSharingServiceImpl articleSharingService;
+    private SharingServiceUtility sharingServiceUtility;
 
     @GetMapping("/index")
     public String index(ModelMap modelMap) {
@@ -102,93 +90,22 @@ public class CoreController {
     public String admin(ModelMap modelMap, @RequestParam("type") String type, @RequestParam("pageIndex") Integer pageIndex) {
 
         modelMap.addAttribute("AdminMenus", PackingInfo.changeData2Message(adminService.getAdminMenu()));
-        modelMap.addAttribute("CurrentType", type);
 
-        switch (type) {
+        sharingServiceUtility.proceedTypeAndPageIndex(modelMap, type, "/admin?type={type}&pageIndex=", pageIndex);
 
-            case "article":
-
-                modelMap.addAttribute("SharingPagings", PackingInfo.changeData2Message(articleSharingService.getSharingByPaging(pageIndex, Integer.valueOf(customProperty.getAdminPageSize()))));
-
-                modelMap.addAttribute("Paginations", PackingInfo.changeData2Message(new PaginationUtility(
-                        pageIndex.toString(),
-                        customProperty.getPaginationDisplayNum(),
-                        "/admin?type=article&pageIndex=",
-                        false,
-                        String.valueOf(articleSharingService.getSharingCount()),
-                        customProperty.getAdminPageSize())));
-
-                break;
-            case "software":
-
-                modelMap.addAttribute("SharingPagings", PackingInfo.changeData2Message(softwareSharingService.getSharingByPaging(pageIndex, Integer.valueOf(customProperty.getAdminPageSize()))));
-
-                modelMap.addAttribute("Paginations", PackingInfo.changeData2Message(new PaginationUtility(
-                        pageIndex.toString(),
-                        customProperty.getPaginationDisplayNum(),
-                        "/admin?type=software&pageIndex=",
-                        false,
-                        String.valueOf(softwareSharingService.getSharingCount()),
-                        customProperty.getAdminPageSize())));
-
-                break;
-            case "photography":
-
-                modelMap.addAttribute("SharingPagings", PackingInfo.changeData2Message(photographyService.getPhotographyDetailBypaging(pageIndex, Integer.valueOf(customProperty.getAdminPageSize()))));
-
-                modelMap.addAttribute("Paginations", PackingInfo.changeData2Message(new PaginationUtility(
-                        pageIndex.toString(),
-                        customProperty.getPaginationDisplayNum(),
-                        "/admin?type=photography&pageIndex=",
-                        false,
-                        String.valueOf(photographyService.getPhotographyDetailCount()),
-                        customProperty.getAdminPageSize())));
-
-                break;
-            case "news":
-
-                modelMap.addAttribute("SharingPagings", PackingInfo.changeData2Message(newsSharingService.getSharingByPaging(pageIndex, Integer.valueOf(customProperty.getAdminPageSize()))));
-
-                modelMap.addAttribute("Paginations", PackingInfo.changeData2Message(new PaginationUtility(
-                        pageIndex.toString(),
-                        customProperty.getPaginationDisplayNum(),
-                        "/admin?type=news&pageIndex=",
-                        false,
-                        String.valueOf(newsSharingService.getSharingCount()),
-                        customProperty.getAdminPageSize())));
-
-                break;
-            case "food":
-
-                modelMap.addAttribute("SharingPagings", PackingInfo.changeData2Message(foodSharingService.getSharingByPaging(pageIndex, Integer.valueOf(customProperty.getAdminPageSize()))));
-
-                modelMap.addAttribute("Paginations", PackingInfo.changeData2Message(new PaginationUtility(
-                        pageIndex.toString(),
-                        customProperty.getPaginationDisplayNum(),
-                        "/admin?type=food&pageIndex=",
-                        false,
-                        String.valueOf(foodSharingService.getSharingCount()),
-                        customProperty.getAdminPageSize())));
-
-                break;
-            default:
-                modelMap.addAttribute("SharingPagings", PackingInfo.changeData2Message(techSharingService.getSharingByPaging(pageIndex, Integer.valueOf(customProperty.getAdminPageSize()))));
-
-                modelMap.addAttribute("Paginations", PackingInfo.changeData2Message(new PaginationUtility(
-                        pageIndex.toString(),
-                        customProperty.getPaginationDisplayNum(),
-                        "/admin?type=tech&pageIndex=",
-                        false,
-                        String.valueOf(techSharingService.getSharingCount()),
-                        customProperty.getAdminPageSize())));
-                break;
-
-        }
-
-        if ("photography".equals(type)){
+        if ("photography".equals(type)) {
             return "/admin/admin_photography";
         }
+
         return "/admin/admin_index";
+    }
+
+    @GetMapping("/sharing/{type}/{pageIndex}")
+    public String sharingIndex(@PathVariable("type") String type, @PathVariable("pageIndex") Integer pageIndex, ModelMap modelMap) {
+
+        sharingServiceUtility.proceedTypeAndPageIndex(modelMap, type, "/sharing/{type}/", pageIndex);
+
+        return "/sharing/sharing_index";
     }
 
 }
