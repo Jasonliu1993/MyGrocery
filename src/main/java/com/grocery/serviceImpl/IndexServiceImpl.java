@@ -66,6 +66,7 @@ public class IndexServiceImpl implements IndexService {
         if ((systemUser = authenticationMapper.Auth(userNameOrEmail,password)) != null ) {
             systemUser.setLastLoginDatetime(DateUtility.getCurrentDate());
             systemUserMapper.updateByPrimaryKeySelective(systemUser);
+            systemUser.setPersonalInfo(personalInfoMapper.selectByUserId(systemUser.getId()));
         }
 
         return systemUser;

@@ -69,4 +69,3 @@ CustomProps:
     paginationDisplayNum: 5
     loginOnly:
       - /personalPage/main
-      - /personalPage

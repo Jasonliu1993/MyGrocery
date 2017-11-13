@@ -3,10 +3,7 @@ package com.grocery.serviceImpl;
 import com.grocery.dao.AvatorMapper;
 import com.grocery.dao.PersonalInfoMapper;
 import com.grocery.dao.PersonalMenuMapper;
-import com.grocery.domain.Avator;
-import com.grocery.domain.PersonalInfo;
-import com.grocery.domain.PersonalMenu;
-import com.grocery.domain.SystemUser;
+import com.grocery.domain.*;
 import com.grocery.services.PersonalDataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -43,7 +40,9 @@ public class PersonalDataServiceImpl implements PersonalDataService {
 
     @Transactional
     @Override
-    public void saveAvator(MultipartFile image) throws IOException {
+    public FileInputResponseMessage saveAvator(MultipartFile image) throws IOException {
+        FileInputResponseMessage responseMessage = new FileInputResponseMessage();
+
         HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
 
         HttpSession session = request.getSession();
@@ -57,9 +56,16 @@ public class PersonalDataServiceImpl implements PersonalDataService {
 
         PersonalInfo personalInfo = personalInfoMapper.selectByUserId(((SystemUser)session.getAttribute("User")).getId());
 
+        if (personalInfo.getAvator() != 1) {
+            avatorMapper.deleteByPrimaryKey(personalInfo.getAvator());
+        }
+
         personalInfo.setAvator(avator.getId());
 
         personalInfoMapper.updateByPrimaryKey(personalInfo);
 
+        ((SystemUser)session.getAttribute("User")).getPersonalInfo().setAvator(avator.getId());
+
+        return responseMessage;
     }
 }

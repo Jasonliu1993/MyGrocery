@@ -1,5 +1,6 @@
 package com.grocery.services;
 
+import com.grocery.domain.FileInputResponseMessage;
 import com.grocery.domain.PersonalMenu;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -13,5 +14,5 @@ public interface PersonalDataService {
 
     List<PersonalMenu> getPersonalMenuOrder();
 
-    void saveAvator(MultipartFile image) throws IOException;
+    FileInputResponseMessage saveAvator(MultipartFile image) throws IOException;
 }

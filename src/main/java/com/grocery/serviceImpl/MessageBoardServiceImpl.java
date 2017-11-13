@@ -43,7 +43,14 @@ public class MessageBoardServiceImpl implements MessageBoardService{
 
     @Override
     public List<MessageBoard> getMessageBoardByPaging(Integer pageNum, Integer pageSize) {
-        return messageBoardMapper.selectPaging((pageNum - 1) * pageSize,pageSize);
+
+        List<MessageBoard> messageBoards = messageBoardMapper.selectPaging((pageNum - 1) * pageSize,pageSize);
+
+        for(MessageBoard messageBoard : messageBoards) {
+            messageBoard.setAvator(personalInfoMapper.selectByUserId(messageBoard.getUserid()).getAvator());
+        }
+
+        return messageBoards;
     }
 
     @Override
