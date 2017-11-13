@@ -9,6 +9,8 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * Created by Jason on 11/11/2017.
@@ -29,7 +31,8 @@ public class PersonalPageController {
     }
 
     @PostMapping("/saveImage")
-    public Message saveImage() {
+    public Message saveImage(@RequestParam(value = "avatar") MultipartFile avator) {
+
         return PackingInfo.changeData2Message("Y");
     }
 

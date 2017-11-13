@@ -67,3 +67,6 @@ CustomProps:
     adminPageSize: 10
     #设置分页时导航条显示多少个页签
     paginationDisplayNum: 5
+    loginOnly:
+      - /personalPage/main
+      - /personalPage

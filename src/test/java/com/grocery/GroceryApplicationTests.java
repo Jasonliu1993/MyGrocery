@@ -1,5 +1,6 @@
 package com.grocery;
 
+import com.grocery.configuration.CustomProperty;
 import com.grocery.dao.NavigatationMenuMapper;
 import com.grocery.domain.AdminMenu;
 import com.grocery.services.AdminService;
@@ -25,6 +26,9 @@ public class GroceryApplicationTests {
 	@Autowired
 	private AdminService adminService;
 
+	@Autowired
+	private CustomProperty customProperty;
+
 	@Test
 	public void contextLoads() {
 //        System.out.println("http://localhost:8080/error/loginFailed".contains("/error/loginFailed"));
@@ -39,16 +43,25 @@ public class GroceryApplicationTests {
 	public void testNavDao() {
 //		Assert.assertEquals(navigatationMenuMapper.selectAll().get(0).getMenuItemName(),"主页");
 //		Assert.assertEquals(navigatationMenuMapper.selectAll().get(0).getInterlinkage(),"/index");
-        List<AdminMenu> adminMenus = adminService.getAdminMenu();
+        /*List<AdminMenu> adminMenus = adminService.getAdminMenu();
         for(AdminMenu adminMenu : adminMenus) {
             System.out.println(adminMenu.getMenuItemName());
-        }
+        }*/
 	}
 
 	@Test
 	public void testMD5() {
 
 //		System.out.println(EncryptionUtility.encrypt4MD5("1"));
+	}
+
+	@Test
+	public void getProPertise() {
+		/*List<String> list = customProperty.getLoginOnly();
+
+		for(String str : list) {
+			System.out.println(str);
+		}*/
 	}
 
 }

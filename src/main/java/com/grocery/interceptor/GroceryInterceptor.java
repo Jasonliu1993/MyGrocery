@@ -1,5 +1,6 @@
 package com.grocery.interceptor;
 
+import com.grocery.configuration.CustomProperty;
 import com.grocery.domain.NavigatationMenu;
 import com.grocery.domain.SystemUser;
 import com.grocery.services.IndexService;
@@ -24,13 +25,16 @@ public class GroceryInterceptor implements HandlerInterceptor {
     @Autowired
     private IndexService indexService;
 
+    @Autowired
+    private CustomProperty customProperty;
+
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
+        HttpSession session = request.getSession();
+        SystemUser systemUser = (SystemUser) session.getAttribute("User");
         if (request.getRequestURI().contains("/admin")) {
-            HttpSession session = request.getSession();
-            SystemUser systemUser = null;
-            if ((systemUser = (SystemUser) session.getAttribute("User")) != null) {
+            if (systemUser != null) {
                 if ("admin".equals(systemUser.getType())) {
                     return true;
                 } else {
@@ -42,8 +46,24 @@ public class GroceryInterceptor implements HandlerInterceptor {
                 return false;
             }
         } else {
+            List<String> notAllowUrl = customProperty.getLoginOnly();
+
+            for (String URL : notAllowUrl) {
+                if (request.getRequestURI().contains(URL)) {
+                    if (systemUser != null)
+                        return true;
+                    else {
+
+                        response.sendRedirect(request.getContextPath() + "/error/authFailed");
+                        return false;
+                    }
+                }
+
+            }
             return true;
         }
+
+
     }
 
     @Override

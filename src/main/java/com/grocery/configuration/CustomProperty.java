@@ -3,6 +3,9 @@ package com.grocery.configuration;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
+import java.util.LinkedList;
+import java.util.List;
+
 /**
  * Created by Jason on 14/10/2017.
  */
@@ -15,6 +18,7 @@ public class CustomProperty {
     private String messageBoardPageSize;
     private String subReply;
     private String adminPageSize;
+    private List<String> loginOnly;
 
     public String getPhotographyDetailPageSize() {
         return photographyDetailPageSize;
@@ -54,5 +58,13 @@ public class CustomProperty {
 
     public void setAdminPageSize(String adminPageSize) {
         this.adminPageSize = adminPageSize;
+    }
+
+    public List<String> getLoginOnly() {
+        return loginOnly;
+    }
+
+    public void setLoginOnly(List<String> loginOnly) {
+        this.loginOnly = loginOnly;
     }
 }
