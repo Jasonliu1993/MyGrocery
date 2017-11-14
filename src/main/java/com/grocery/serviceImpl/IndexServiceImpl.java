@@ -12,7 +12,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 /**
@@ -41,11 +45,11 @@ public class IndexServiceImpl implements IndexService {
         /**
          * 标识是在哪个页面，将导航条设置成高亮
          */
-        for(NavigatationMenu navigatationMenu : navigatationMenus) {
+        for (NavigatationMenu navigatationMenu : navigatationMenus) {
 
-            if(navigatationMenu.getLinkMatching().contains("&")) {
+            if (navigatationMenu.getLinkMatching().contains("&")) {
                 String[] strings = navigatationMenu.getLinkMatching().split("&");
-                for(String str : strings) {
+                for (String str : strings) {
                     if (path.startsWith(str))
                         navigatationMenu.setCustom1("Y");
                 }
@@ -63,7 +67,7 @@ public class IndexServiceImpl implements IndexService {
     public SystemUser loginAuthentication(String userNameOrEmail, String password) {
         SystemUser systemUser = null;
 
-        if ((systemUser = authenticationMapper.Auth(userNameOrEmail,password)) != null ) {
+        if ((systemUser = authenticationMapper.Auth(userNameOrEmail, password)) != null) {
             systemUser.setLastLoginDatetime(DateUtility.getCurrentDate());
             systemUserMapper.updateByPrimaryKeySelective(systemUser);
             systemUser.setPersonalInfo(personalInfoMapper.selectByUserId(systemUser.getId()));
@@ -73,8 +77,8 @@ public class IndexServiceImpl implements IndexService {
     }
 
     @Override
-    @Transactional(propagation = Propagation.REQUIRED,isolation = Isolation.DEFAULT,timeout=36000,rollbackFor=Exception.class)
-    public SystemUser registerAuthentication(String userName, String password4Register, String activeEmail){
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, timeout = 36000, rollbackFor = Exception.class)
+    public SystemUser registerAuthentication(String userName, String password4Register, String activeEmail) {
         SystemUser systemUser = new SystemUser();
         PersonalInfo personalInfo = new PersonalInfo();
 
@@ -101,28 +105,44 @@ public class IndexServiceImpl implements IndexService {
 
         AuthInfo authInfo = new AuthInfo();
 
-        if ("UserName".equals(object)) {
-            if(systemUserMapper.checkUserName(content) > 0) {
-                authInfo.setObject("UserName");
+        switch (object) {
+            case "UserName":
+                if (systemUserMapper.checkUserName(content) > 0) {
+                    authInfo.setObject("UserName");
+                    authInfo.setErrorFlag("N");
+                    authInfo.setErrorMessage("用户名已存在");
+                } else {
+                    authInfo.setObject("UserName");
+                    authInfo.setErrorFlag("Y");
+                }
+                break;
+            case "Email":
+                if (systemUserMapper.checkEmail(content) > 0) {
+                    authInfo.setObject("Email");
+                    authInfo.setErrorFlag("N");
+                    authInfo.setErrorMessage("邮箱已存在");
+                } else {
+                    authInfo.setObject("Email");
+                    authInfo.setErrorFlag("Y");
+                }
+                break;
+            case "Password":
+                HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+                HttpSession session = request.getSession();
+                SystemUser systemUser = (SystemUser) session.getAttribute("User");
+                if (!content.equals(systemUser.getPassword())) {
+                    authInfo.setObject("Password");
+                    authInfo.setErrorFlag("N");
+                    authInfo.setErrorMessage("密码不正确");
+                } else {
+                    authInfo.setObject("Password");
+                    authInfo.setErrorFlag("Y");
+                }
+                break;
+            default:
+                authInfo.setObject("Unkonw");
                 authInfo.setErrorFlag("N");
-                authInfo.setErrorMessage("用户名已存在");
-            } else {
-                authInfo.setObject("UserName");
-                authInfo.setErrorFlag("Y");
-            }
-        } else if ("Email".equals(object)) {
-            if(systemUserMapper.checkEmail(content) > 0) {
-                authInfo.setObject("Email");
-                authInfo.setErrorFlag("N");
-                authInfo.setErrorMessage("邮箱已存在");
-            } else {
-                authInfo.setObject("Email");
-                authInfo.setErrorFlag("Y");
-            }
-        } else {
-            authInfo.setObject("Unkonw");
-            authInfo.setErrorFlag("N");
-            authInfo.setErrorMessage("未知错误");
+                authInfo.setErrorMessage("未知错误");
         }
 
         return authInfo;

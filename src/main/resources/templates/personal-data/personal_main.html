@@ -21,6 +21,7 @@
           type="text/css"/>
     <script src="/js/jquery-3.1.1.min.js"></script>
     <script src="/js/jquerySession.js"></script>
+    <script src="/js/common/common.js"></script>
     <script src="/plugins/bootstrap-fileinput/js/plugins/sortable.js" type="text/javascript"></script>
     <script src="/plugins/bootstrap-fileinput/js/fileinput.js" type="text/javascript"></script>
     <script src="/plugins/bootstrap-fileinput/js/locales/fr.js" type="text/javascript"></script>
@@ -122,36 +123,135 @@
         function setAdminMenuActive(currentType) {
             $(".nav-stacked li").each(function () {
                 $(this).removeClass("active");
-                $("#avatorUpload").css("display","none");
-                $("#emailChange").css("display","none");
-                $("#InfoChange").css("display","none");
+                $("#avatorUpload").css("display", "none");
+                $("#emailChange").css("display", "none");
+                $("#infoChange").css("display", "none");
+                $("#passwordChange").css("display", "none");
             })
             $("#" + currentType + "").addClass("active");
             if (currentType == 'info') {
-                $("#InfoChange").css("display","block");
+                $("#infoChange").css("display", "block");
             } else if (currentType == 'email') {
-                $("#emailChange").css("display","block");
+                $("#emailChange").css("display", "block");
+            } else if (currentType == 'password') {
+                $("#passwordChange").css("display", "block");
             } else {
-                $("#avatorUpload").css("display","block");
+                $("#avatorUpload").css("display", "block");
             }
         }
+
+        function updatePersonalInfo(newInfo,object) {
+            $.ajax({
+                url: '/personalPage/updatePersonalInfo',
+                type: "POST",//请求方式：get或post
+                scriptCharset: 'utf-8',
+                dataType: "json",//数据返回类型：xml、json、script
+                cache: false,
+                data: {
+                    'newInfo': newInfo,
+                    'object': object,
+                },//自定义提交的数据
+                success: function (json) {
+                    if (json !== null || json !== undefined || json !== '') {
+                        /*判断程序内部返回是否有错*/
+                        if (object == "UserName") {
+                            $("#infoMessage").text(json.message);
+                        } else if(object == "Email") {
+                            $("#emailMessage").text(json.message);
+                        }
+
+                    }
+                },
+                error: function (json) {
+                    if (object == "UserName") {
+                        $("#infoMessage").text("Request Error!");
+                    } else if(object == "Email") {
+                        $("#emailMessage").text("Request Error!");
+                    }
+                }
+            })
+        }
+
+        function doModifyCheck(object, json) {
+            if (object == 'Email') {
+                $("#emailMessage").text('');
+                if (json.data.errorFlag == 'N') {
+                    $("#emailMessage").text(json.data.errorMessage);
+                    $("#emailButton").addClass("disabled");
+                    $("#emailButton").unbind("click");
+                }
+                else {
+                    $("#emailMessage").text('');
+                    /*<![CDATA[*/
+                    $("#emailButton").removeClass("disabled");
+                    $("#emailButton").bind("click", function () {
+//                    $("#registerForm").submit();
+                        updatePersonalInfo($("#inputEmail").val(),object);
+                    })
+                    /*]]>*/
+                }
+            }
+            if (object == 'UserName') {
+                $("#infoMessage").text('');
+                if (json.data.errorFlag == 'N') {
+                    $("#infoMessage").text(json.data.errorMessage);
+                    $("#infoButton").addClass("disabled");
+                    $("#infoButton").unbind("click");
+                }
+                else {
+                    $("#infoMessage").text('');
+                    /*<![CDATA[*/
+                    $("#infoButton").removeClass("disabled");
+                    $("#infoButton").bind("click", function () {
+//                    $("#registerForm").submit();
+                        updatePersonalInfo($("#inputInfo").val(),object);
+                    })
+                    /*]]>*/
+                }
+            }
+
+        }
+
+        /*做email的非空检查*/
+        function checkInputEmailIsNotNull() {
+            var email = $("#inputEmail").val();
+            if (email == null || email == undefined || email == '') {
+                return false;
+            }
+            return true;
+        }
+
+        /*做userName的非空检查*/
+        function checkInputUserNameIsNotNull() {
+            var userName = $("#inputInfo").val();
+            if (userName == null || userName == undefined || userName == '') {
+                return false;
+            }
+            return true;
+        }
+
 
         $(document).ready(function () {
             var baseURL = window.location.host;
             var protocol = window.location.protocol;
+            var path = window.location.pathname;
 
             /*浏览器返回事件*/
             if (window.history && window.history.pushState) {
 //                window.history.go(-1);
                 var URI = window.location.pathname;
 
-                /*if(URL.substr(URI.length - 1,1) == '/') {
-                 URL = URL.substring(1,URI.length - 1)
-                 }*/
-
                 if (first) {
+                    var index = path.length - 1;
                     console.log("运行avator");
                     setAdminMenuActive("avator");
+                    if (path.lastIndexOf("/") != index) {
+
+                        window.history.pushState('forward', null, URI + '/#avator');
+                    } else {
+                        window.history.pushState('forward', null, URI + '#avator');
+
+                    }
                     first = false;
                 }
 
@@ -162,21 +262,13 @@
                         var hashName = hashSplit[1];
 
                         console.log(hashName);
-                        if (hashName == 'info') {
-                            console.log("运行info");
-                            setAdminMenuActive("info");
-                        } else if (hashName == 'email') {
-                            console.log("运行email");
-                            setAdminMenuActive("email");
-                        } else {
-                            console.log("运行avator");
-                            setAdminMenuActive("avator");
-                        }
+                        setAdminMenuActive(hashName);
+
                     }
 
                 });
 
-                window.history.pushState('forward', null, URI + '/#avator');
+
             }
 
             $(".nav-stacked li").on("click", function () {
@@ -212,6 +304,28 @@
                         $("#photoRefId").val((data.response).imageId);
                     }
                 });
+
+            /*做email的检查*/
+            $("#inputEmail").on("blur", function () {
+                if (checkInputEmailIsNotNull()) {
+                    authInfo("Email", $("#inputEmail").val(), "emailMessage", "modify");
+                } else {
+                    $("#emailMessage").text("邮箱不能为空");
+                    $("#emailButton").addClass("disabled");
+                    $("#emailButton").unbind("click");
+                }
+            })
+
+            /*做UserName的检查*/
+            $("#inputInfo").on("blur", function () {
+                if (checkInputUserNameIsNotNull()) {
+                    authInfo("UserName", $("#inputInfo").val(), "infoMessage", "modify");
+                } else {
+                    $("#infoMessage").text("用户名不能为空");
+                    $("#infoButton").addClass("disabled");
+                    $("#infoButton").unbind("click");
+                }
+            })
 
         });
     </script>
@@ -423,11 +537,79 @@
             </div>
             <div class="content" id="emailChange">
                 <h3 style="text-align: center">邮箱修改</h3>
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        <label for="inputEmail" class="col-sm-2 control-label">邮箱</label>
+                        <div class="col-sm-8">
+                            <input type="email" class="form-control" id="inputEmail" placeholder="邮箱"
+                                   th:value="${session.User.getEmail()}">
+                        </div>
+                        <div id="emailMessage" class="col-sm-2" style="color: red;">
 
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <button id="emailButton" type="button" class="btn btn-primary disabled">保存</button>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="content" id="InfoChange">
+            <div class="content" id="infoChange">
                 <h3 style="text-align: center">个人信息修改</h3>
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        <label for="inputInfo" class="col-sm-2 control-label">用户名</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="inputInfo" placeholder="用户名" th:value="${session.User.getUserName()}">
+                        </div>
+                        <div id="infoMessage" class="col-sm-2" style="color: red;">
 
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <button id="infoButton" type="button" class="btn btn-primary disabled">保存</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="content" id="passwordChange">
+                <h3 style="text-align: center">密码修改</h3>
+                <form class="form-horizontal" id="passwordChangeForm" method="post" action="#">
+                    <div class="form-group">
+                        <label for="inputOldPassword" class="col-sm-2 control-label">旧密码</label>
+                        <div class="col-sm-8">
+                            <input type="password" class="form-control" id="inputOldPassword" placeholder="旧密码">
+                        </div>
+                        <div id="OldPasswordMessage" class="col-sm-2" style="color: red;">
+                            已被使用
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputNewPassword" class="col-sm-2 control-label">新密码</label>
+                        <div class="col-sm-8">
+                            <input type="password" class="form-control" id="inputNewPassword" placeholder="新密码">
+                        </div>
+                        <div id="NewPasswordMessage" class="col-sm-2" style="color: red;">
+                            已被使用
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputConfirmPassword" class="col-sm-2 control-label">确认密码</label>
+                        <div class="col-sm-8">
+                            <input type="password" class="form-control" id="inputConfirmPassword" placeholder="确认密码">
+                        </div>
+                        <div id="ConfirmPasswordMessage" class="col-sm-2" style="color: red;">
+                            已被使用
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <button id="passwordButton" type="button" class="btn btn-primary disabled">保存</button>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

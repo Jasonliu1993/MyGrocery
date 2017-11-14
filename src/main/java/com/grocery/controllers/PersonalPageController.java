@@ -27,4 +27,10 @@ public class PersonalPageController {
         return "/personal-data/personal_main";
     }
 
+    @PostMapping("/updatePersonalInfo")
+    @ResponseBody
+    public Message updatePersonalInfo(@RequestParam("newInfo") String newInfo,@RequestParam("object") String object) {
+        return personalDataService.updatePersonalInfo(newInfo, object);
+    }
+
 }
