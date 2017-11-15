@@ -38,7 +38,7 @@ public class AuthenticationController {
                 response.sendRedirect(currentURL4Login);
             }
         } else
-            response.sendRedirect("/error/");
+            response.sendRedirect("/error/loginFailed");
     }
 
     @GetMapping("/logout")

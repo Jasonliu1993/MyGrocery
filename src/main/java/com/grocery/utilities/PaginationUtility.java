@@ -86,7 +86,7 @@ public class PaginationUtility {
          * 添加后一页按钮内容
          * 如果当前页是最后一个，那后一页的按钮还是后指向最大页加一，但是在前台页面会判断是否显示
          */
-        return currentPage.equals(totalPage) ? "MAX" : String.valueOf(Integer.valueOf(currentPage) + 1);
+        return (currentPage.equals(totalPage) || Integer.valueOf(currentPage) > Integer.valueOf(totalPage)) ? "MAX" : String.valueOf(Integer.valueOf(currentPage) + 1);
     }
 
     /**
