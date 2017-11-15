@@ -7,6 +7,7 @@ import com.grocery.dao.SystemUserMapper;
 import com.grocery.domain.*;
 import com.grocery.services.PersonalDataService;
 import com.grocery.utilities.DateUtility;
+import com.grocery.utilities.EncryptionUtility;
 import com.grocery.utilities.PackingInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -93,6 +94,10 @@ public class PersonalDataServiceImpl implements PersonalDataService {
 
             case "Email":
                 systemUser.setEmail(newInfo);
+                break;
+
+            case "Password":
+                systemUser.setPassword(EncryptionUtility.encrypt4MD5(newInfo));
                 break;
 
         }

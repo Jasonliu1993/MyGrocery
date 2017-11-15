@@ -7,6 +7,7 @@ import com.grocery.dao.SystemUserMapper;
 import com.grocery.domain.*;
 import com.grocery.services.IndexService;
 import com.grocery.utilities.DateUtility;
+import com.grocery.utilities.EncryptionUtility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
@@ -130,7 +131,7 @@ public class IndexServiceImpl implements IndexService {
                 HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
                 HttpSession session = request.getSession();
                 SystemUser systemUser = (SystemUser) session.getAttribute("User");
-                if (!content.equals(systemUser.getPassword())) {
+                if (!EncryptionUtility.encrypt4MD5(content).equals(systemUser.getPassword())) {
                     authInfo.setObject("Password");
                     authInfo.setErrorFlag("N");
                     authInfo.setErrorMessage("密码不正确");

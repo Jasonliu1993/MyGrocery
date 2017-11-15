@@ -40,7 +40,7 @@ function firstLoadDetailReply(varMessageBoardId, varMessageBoardUserId) {
             var subReplyArea = '<ul class="nav nav-tabs" role="tablist">' +
                 '<li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">回复</a></li>' +
                 '</ul>' +
-                '<div class="tab-content" style="overflow: scroll">' +
+                '<div class="tab-content" style="">' +
                 '<div role="tabpanel" class="tab-pane active" id="home" style="padding-top: 20px">';
             /*<![CDATA[*/
             for (var i = 0; i < json.data.messageBoardSubreply.length; i++) {

@@ -120,117 +120,6 @@
     <script>
         var first = true;
 
-        function setAdminMenuActive(currentType) {
-            $(".nav-stacked li").each(function () {
-                $(this).removeClass("active");
-                $("#avatorUpload").css("display", "none");
-                $("#emailChange").css("display", "none");
-                $("#infoChange").css("display", "none");
-                $("#passwordChange").css("display", "none");
-            })
-            $("#" + currentType + "").addClass("active");
-            if (currentType == 'info') {
-                $("#infoChange").css("display", "block");
-            } else if (currentType == 'email') {
-                $("#emailChange").css("display", "block");
-            } else if (currentType == 'password') {
-                $("#passwordChange").css("display", "block");
-            } else {
-                $("#avatorUpload").css("display", "block");
-            }
-        }
-
-        function updatePersonalInfo(newInfo,object) {
-            $.ajax({
-                url: '/personalPage/updatePersonalInfo',
-                type: "POST",//请求方式：get或post
-                scriptCharset: 'utf-8',
-                dataType: "json",//数据返回类型：xml、json、script
-                cache: false,
-                data: {
-                    'newInfo': newInfo,
-                    'object': object,
-                },//自定义提交的数据
-                success: function (json) {
-                    if (json !== null || json !== undefined || json !== '') {
-                        /*判断程序内部返回是否有错*/
-                        if (object == "UserName") {
-                            $("#infoMessage").text(json.message);
-                        } else if(object == "Email") {
-                            $("#emailMessage").text(json.message);
-                        }
-
-                    }
-                },
-                error: function (json) {
-                    if (object == "UserName") {
-                        $("#infoMessage").text("Request Error!");
-                    } else if(object == "Email") {
-                        $("#emailMessage").text("Request Error!");
-                    }
-                }
-            })
-        }
-
-        function doModifyCheck(object, json) {
-            if (object == 'Email') {
-                $("#emailMessage").text('');
-                if (json.data.errorFlag == 'N') {
-                    $("#emailMessage").text(json.data.errorMessage);
-                    $("#emailButton").addClass("disabled");
-                    $("#emailButton").unbind("click");
-                }
-                else {
-                    $("#emailMessage").text('');
-                    /*<![CDATA[*/
-                    $("#emailButton").removeClass("disabled");
-                    $("#emailButton").bind("click", function () {
-//                    $("#registerForm").submit();
-                        updatePersonalInfo($("#inputEmail").val(),object);
-                    })
-                    /*]]>*/
-                }
-            }
-            if (object == 'UserName') {
-                $("#infoMessage").text('');
-                if (json.data.errorFlag == 'N') {
-                    $("#infoMessage").text(json.data.errorMessage);
-                    $("#infoButton").addClass("disabled");
-                    $("#infoButton").unbind("click");
-                }
-                else {
-                    $("#infoMessage").text('');
-                    /*<![CDATA[*/
-                    $("#infoButton").removeClass("disabled");
-                    $("#infoButton").bind("click", function () {
-//                    $("#registerForm").submit();
-                        updatePersonalInfo($("#inputInfo").val(),object);
-                    })
-                    /*]]>*/
-                }
-            }
-
-        }
-
-        /*做email的非空检查*/
-        function checkInputEmailIsNotNull() {
-            var email = $("#inputEmail").val();
-            if (email == null || email == undefined || email == '') {
-                return false;
-            }
-            return true;
-        }
-
-        /*做userName的非空检查*/
-        function checkInputUserNameIsNotNull() {
-            var userName = $("#inputInfo").val();
-            if (userName == null || userName == undefined || userName == '') {
-                return false;
-            }
-            return true;
-        }
-
-
         $(document).ready(function () {
             var baseURL = window.location.host;
             var protocol = window.location.protocol;
@@ -324,6 +213,41 @@
                     $("#infoMessage").text("用户名不能为空");
                     $("#infoButton").addClass("disabled");
                     $("#infoButton").unbind("click");
+                }
+            })
+
+            /*做OldPassword的检查*/
+            $("#inputOldPassword").on("blur", function () {
+                if (checkInputOldPasswordNotNull("inputOldPassword")) {
+                    authInfo("Password", $("#inputOldPassword").val(), "OldPasswordMessage", "modify");
+                } else {
+                    $("#OldPasswordMessage").text("旧密码不能为空");
+                    $("#passwordButton").addClass("disabled");
+                    $("#passwordButton").unbind("click");
+                }
+            })
+
+            /*做NewPassword的检查*/
+            $("#inputNewPassword").on("blur", function () {
+                if (checkInputNewPasswordNotNull("inputNewPassword")) {
+                    $("#NewPasswordMessage").text('');
+                    checkNewPasswordAndConfirmPassword("inputNewPassword", "NewPasswordMessage", "inputConfirmPassword", "ConfirmPasswordMessage", false);
+                } else {
+                    $("#NewPasswordMessage").text("新密码不能为空");
+                    $("#passwordButton").addClass("disabled");
+                    $("#passwordButton").unbind("click");
+                }
+            })
+
+            /*做NewPassword的检查*/
+            $("#inputConfirmPassword").on("blur", function () {
+                if (checkInputConfirmPasswordNotNull("inputConfirmPassword")) {
+                    $("#ConfirmPasswordMessage").text('');
+                    checkNewPasswordAndConfirmPassword("inputNewPassword", "NewPasswordMessage", "inputConfirmPassword", "ConfirmPasswordMessage", false);
+                } else {
+                    $("#ConfirmPasswordMessage").text("确认密码不能为空");
+                    $("#passwordButton").addClass("disabled");
+                    $("#passwordButton").unbind("click");
                 }
             })
 
@@ -561,7 +485,8 @@
                     <div class="form-group">
                         <label for="inputInfo" class="col-sm-2 control-label">用户名</label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control" id="inputInfo" placeholder="用户名" th:value="${session.User.getUserName()}">
+                            <input type="text" class="form-control" id="inputInfo" placeholder="用户名"
+                                   th:value="${session.User.getUserName()}">
                         </div>
                         <div id="infoMessage" class="col-sm-2" style="color: red;">
 
@@ -576,14 +501,14 @@
             </div>
             <div class="content" id="passwordChange">
                 <h3 style="text-align: center">密码修改</h3>
-                <form class="form-horizontal" id="passwordChangeForm" method="post" action="#">
+                <div class="form-horizontal">
                     <div class="form-group">
                         <label for="inputOldPassword" class="col-sm-2 control-label">旧密码</label>
                         <div class="col-sm-8">
                             <input type="password" class="form-control" id="inputOldPassword" placeholder="旧密码">
                         </div>
                         <div id="OldPasswordMessage" class="col-sm-2" style="color: red;">
-                            已被使用
+
                         </div>
                     </div>
                     <div class="form-group">
@@ -592,7 +517,7 @@
                             <input type="password" class="form-control" id="inputNewPassword" placeholder="新密码">
                         </div>
                         <div id="NewPasswordMessage" class="col-sm-2" style="color: red;">
-                            已被使用
+
                         </div>
                     </div>
                     <div class="form-group">
@@ -601,7 +526,7 @@
                             <input type="password" class="form-control" id="inputConfirmPassword" placeholder="确认密码">
                         </div>
                         <div id="ConfirmPasswordMessage" class="col-sm-2" style="color: red;">
-                            已被使用
+
                         </div>
                     </div>
                     <div class="form-group">
@@ -609,7 +534,7 @@
                             <button id="passwordButton" type="button" class="btn btn-primary disabled">保存</button>
                         </div>
                     </div>
-                </form>
+                </div>
             </div>
         </div>
     </div>
