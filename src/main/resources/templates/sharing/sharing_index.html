@@ -31,36 +31,8 @@
             background-color: #2e3032;
         }
 
-        .col-center-block {
-            float: none;
-            display: block;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
         .set-margin-top {
             margin-top: 20px;
-        }
-
-        .border-setting {
-            width: 90%;
-            border: 1px solid white;
-            border-radius: 3px;
-            margin: 0 auto;
-            background-color: white;
-            -moz-box-shadow: 4px 4px 3px rgba(80%, 80%, 80%, 0.5);
-            -webkit-box-shadow: 4px 4px 3px rgba(80%, 80%, 80%, 0.5);
-            box-shadow: 4px 4px 3px rgba(80%, 80%, 80%, 0.5);
-        }
-
-        .pagination-setting {
-            width: 90%;
-            margin: 0 auto;
-        }
-
-        .set-left {
-            height: 90%;
-            clear: both;
         }
 
         .content {
@@ -74,14 +46,6 @@
 
         .clear-both {
             clear: both;
-        }
-
-        .set-right {
-            float: right;
-        }
-
-        .set-to-left {
-            float: left;
         }
 
         .set-null-bottom {
@@ -110,12 +74,6 @@
                         <span style="float: right; display: inline-block" th:text="${Sharing.getCreateDatetime()}">text</span>
                         <span class="clear-both" style="display: inline-block"></span>
                     </a>
-
-                    <!--
-                    <a href="#" class="list-group-item">Dapibus ac facilisis in</a>
-                    <a href="#" class="list-group-item">Morbi leo risus</a>
-                    <a href="#" class="list-group-item">Porta ac consectetur ac</a>
-                    <a href="#" class="list-group-item">Vestibulum at eros</a>-->
                 </ul>
             </div>
             <div th:include="common/pagination"></div>
