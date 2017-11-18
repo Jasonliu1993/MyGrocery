@@ -1,11 +1,9 @@
 package com.grocery.serviceImpl;
 
-import com.grocery.dao.MessageBoardMapper;
-import com.grocery.dao.MessageBoardSubreplyMapper;
-import com.grocery.dao.PersonalInfoMapper;
-import com.grocery.dao.SystemUserMapper;
+import com.grocery.dao.*;
 import com.grocery.domain.MessageBoard;
 import com.grocery.domain.MessageBoardSubreply;
+import com.grocery.domain.MessageBoardTitleMessage;
 import com.grocery.domain.SystemUser;
 import com.grocery.configuration.CustomProperty;
 import com.grocery.services.MessageBoardService;
@@ -40,6 +38,9 @@ public class MessageBoardServiceImpl implements MessageBoardService{
 
     @Autowired
     private SystemUserMapper systemUserMapper;
+
+    @Autowired
+    private MessageBoardTitleMessageMapper messageBoardTitleMessageMapper;
 
     @Override
     public List<MessageBoard> getMessageBoardByPaging(Integer pageNum, Integer pageSize) {
@@ -150,4 +151,10 @@ public class MessageBoardServiceImpl implements MessageBoardService{
 
         return messageBoardSubreplyMapper.getCountByMessageBoardId(id) / pageSize + 1;
     }
+
+    @Override
+    public List<MessageBoardTitleMessage> getAllMessageBoardTitleMessageByOrder() {
+        return messageBoardTitleMessageMapper.selectAllHasOrder();
+    }
+
 }

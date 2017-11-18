@@ -36,10 +36,20 @@ public class SharingServiceUtility {
     private ArticleSharingServiceImpl articleSharingService;
 
 
-    public ModelMap proceedTypeAndPageIndex(ModelMap modelMap, String type, String path, Integer pageIndex) {
+    public ModelMap proceedTypeAndPageIndex(ModelMap modelMap, String type, String path, Integer pageIndex, StringBuffer redirectPath) {
 
-        String full = path.replace("{type}",type);
+        String full = path.replace("{type}", type);
         modelMap.addAttribute("CurrentType", type);
+
+        if (redirectPath != null) {
+            if ("photography".equals(type)) {
+                redirectPath.append("/admin/admin_photography");
+            } else if ("messageBoardTitle".equals(type)) {
+                redirectPath.append("/admin/admin_message_board_title");
+            } else {
+                redirectPath.append("/admin/admin_index");
+            }
+        }
 
         switch (type) {
 

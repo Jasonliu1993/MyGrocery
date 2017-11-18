@@ -72,6 +72,8 @@ public class CoreController {
 
         modelMap.addAttribute("MessageBoards", PackingInfo.changeData2Message(messageBoardService.getMessageBoardByPaging(pageNum, Integer.valueOf(customProperty.getMessageBoardPageSize()))));
 
+        modelMap.addAttribute("MessageBoardTitle", PackingInfo.changeData2Message(messageBoardService.getAllMessageBoardTitleMessageByOrder()));
+
         /**
          * 分页导航显示
          */
@@ -87,23 +89,22 @@ public class CoreController {
     }
 
     @GetMapping("/admin")
-    public String admin(ModelMap modelMap, @RequestParam("type") String type, @RequestParam("pageIndex") Integer pageIndex) {
+    public String admin(ModelMap modelMap, @RequestParam("type") String type, @RequestParam(value = "pageIndex", required = false, defaultValue = "1") Integer pageIndex) {
+
+        StringBuffer redirectPath = new StringBuffer();
 
         modelMap.addAttribute("AdminMenus", PackingInfo.changeData2Message(adminService.getAdminMenu()));
 
-        sharingServiceUtility.proceedTypeAndPageIndex(modelMap, type, "/admin?type={type}&pageIndex=", pageIndex);
+        sharingServiceUtility.proceedTypeAndPageIndex(modelMap, type, "/admin?type={type}&pageIndex=", pageIndex, redirectPath);
 
-        if ("photography".equals(type)) {
-            return "/admin/admin_photography";
-        }
 
-        return "/admin/admin_index";
+        return redirectPath.toString();
     }
 
     @GetMapping("/sharing/{type}/{pageIndex}")
     public String sharingIndex(@PathVariable("type") String type, @PathVariable("pageIndex") Integer pageIndex, ModelMap modelMap) {
 
-        sharingServiceUtility.proceedTypeAndPageIndex(modelMap, type, "/sharing/{type}/", pageIndex);
+        sharingServiceUtility.proceedTypeAndPageIndex(modelMap, type, "/sharing/{type}/", pageIndex, null);
 
         return "/sharing/sharing_index";
     }

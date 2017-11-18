@@ -64,7 +64,7 @@
             <div class="border-setting">
                 <div class="jumbotron">
                     <h2>留言板</h2>
-                    <p>茫茫人海中，有你有我。</p>
+                    <p th:each="MessageBoardTitle,MessageBoardTitleStat : ${MessageBoardTitle.data}" th:text="${MessageBoardTitle.getContent()}">茫茫人海中，有你有我。</p>
                     <!--<p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a></p>-->
                     <p><a id="modal-127408" class="btn btn-primary btn-lg" href="#leaveMessageModel" role="button"
                           data-toggle="modal">留言</a></p>
