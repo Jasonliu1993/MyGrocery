@@ -12,7 +12,7 @@ import java.util.Map;
 public class DateUtility {
     private static Map<DateType, ThreadLocal<SimpleDateFormat>> simpleDataFormatThreadLocal = new HashMap<>();
 
-    protected static SimpleDateFormat getSimpleDateFormat(DateType dateType) {
+    private static SimpleDateFormat getSimpleDateFormat(DateType dateType) {
         ThreadLocal<SimpleDateFormat> threadLocal = simpleDataFormatThreadLocal.get(dateType);
 
         if (threadLocal == null) {
