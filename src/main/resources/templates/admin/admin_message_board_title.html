@@ -27,6 +27,8 @@
             src="/plugins/DataTables-1.10.15/media/js/jquery.dataTables.js"></script>
     <script type="text/javascript" language="javascript"
             src="/plugins/DataTables-1.10.15/media/js/dataTables.bootstrap4.js"></script>
+    <script type="text/javascript" language="javascript"
+            src="/plugins/DataTables-1.10.15/media/js/dataTables.foundation.js"></script>
 
     <style>
         .theme {
@@ -68,14 +70,16 @@
 
     <script>
 
-        function addRow(currentButton) {
+        function addRow(table) {
 
-            var row1 = $(currentButton).parent().parent();
+
+            var row1 = $("#editTable").children("tbody").children("tr:last");
             var row2 = row1.clone();
             $(row2.children()[0]).html(null);//把新增的OBID赋值为空
             //$(row2.children()[0]).html(Date.now);//把时间赋值给OBID作为订单行的唯一标示符
             //row2.insertAfter(row1);
             //table.row.add(row2);
+            console.log(table)
             var rowNode = table
                 .row.add(row2)
                 .draw()
@@ -92,12 +96,12 @@
                 dataType: "json",//数据返回类型：xml、json、script
                 cache: false,
                 data: {
-                    'pageIndex': currentRow.parent().parent().first();
+                    'id': currentRow.parent().parent().parent().children("tr:first").children("td:first").children().val(),
                 },//自定义提交的数据
                 success: function (json) {
                     if (json !== null || json !== undefined || json !== '') {
-                        if (pageIndex == json.data) {
-                            $(".next-btn").html('')
+                        if ("Y" == json.data) {
+                            currentRow.parent().parent().remove();
                         }
                     }
                 },
@@ -181,7 +185,7 @@
                     }
                     },
                     {
-                        "data": "flag", sortable: false,sClass: "hidden-class", render: function (data, type, row) {
+                        "data": "flag", sortable: false, sClass: "hidden-class", render: function (data, type, row) {
                         return '<input type="hidden" class="form-control" value="Y" />';
                     }
                     },
@@ -203,7 +207,22 @@
                 }
             });
 
-            $("tbody").delegate("button","click",function(){
+            $("tbody").delegate("button", "click", function () {
+                var id = $(this).parent().parent().parent().children("tr:first").children("td:first").children().val();
+                /*<![CDATA[*/
+                if (id != null && id != undefined && id != '') {
+                    deleteRow($(this));
+                } else {
+                    //如果是没有ID则直接删除这一行
+                    $(this).parent().parent().remove();
+                }
+
+                /*]]>*/
+            })
+
+            $("#addRow").on("click", function () {
+
+                addRow(table);
 
             })
 
@@ -411,26 +430,13 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <!--<tr>
-                            <td>这里是内容1</td>
-                            <td>1</td>
-                            <td>
-                                <button type="button">增加</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>这里是内容2</td>
-                            <td>2</td>
-                            <td>
-                                <button type="button">增加</button>
-                            </td>
-                        </tr>-->
+
                         </tbody>
                     </table>
                 </div>
 
                 <div>
-                    <button type="button" class="btn btn-primary btn-sm set-right">增加一行</button>
+                    <button id="addRow" type="button" class="btn btn-primary btn-sm set-right">增加一行</button>
                     <button type="button" class="btn btn-primary btn-sm set-right">保存</button>
                     <div class="clear-both"></div>
                 </div>
