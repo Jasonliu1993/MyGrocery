@@ -157,4 +157,9 @@ public class MessageBoardServiceImpl implements MessageBoardService{
         return messageBoardTitleMessageMapper.selectAllHasOrder();
     }
 
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED,isolation = Isolation.DEFAULT,timeout=36000,rollbackFor=Exception.class)
+    public void deleteMessageBoardTitleMessageByOrder(Integer id) {
+        messageBoardTitleMessageMapper.deleteByPrimaryKey(id);
+    }
 }

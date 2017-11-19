@@ -3,6 +3,7 @@ package com.grocery.controllers;
 import com.grocery.domain.Message;
 import com.grocery.domain.MessageBoardSubreply;
 import com.grocery.configuration.CustomProperty;
+import com.grocery.domain.MessageBoardTitleMessage;
 import com.grocery.services.MessageBoardService;
 import com.grocery.utilities.PackingInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,7 +64,20 @@ public class MessageBoardController {
     @PostMapping("/getSubReply")
     @ResponseBody
     public Message getSubReply(String messageBoardId4Reply, String pageIndex) {
-        return PackingInfo.changeData2Message(messageBoardService.getSubReply(Integer.valueOf(customProperty.getSubReply()),messageBoardId4Reply));
+        return PackingInfo.changeData2Message(messageBoardService.getSubReply(Integer.valueOf(customProperty.getSubReply()), messageBoardId4Reply));
+    }
+
+    @PostMapping("/getMessageBoardTitleMessages")
+    @ResponseBody
+    public Message getMessageBoardTitleMessages() {
+        return PackingInfo.changeData2Message(messageBoardService.getAllMessageBoardTitleMessageByOrder());
+    }
+
+    @PostMapping("/deleteMessageBoardTitleMessages")
+    @ResponseBody
+    public Message deleteMessageBoardTitleMessages(Integer id) {
+        messageBoardService.deleteMessageBoardTitleMessageByOrder(id);
+        return PackingInfo.changeData2Message("Y");
     }
 
 }

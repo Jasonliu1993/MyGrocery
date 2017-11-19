@@ -19,4 +19,5 @@ public interface MessageBoardService {
     List<MessageBoardSubreply> getMessageBoardSubreplyByPaging(Integer pageIndex, Integer pageSize,String id);
     Integer getSubReply(Integer pageSize,String id);
     List<MessageBoardTitleMessage> getAllMessageBoardTitleMessageByOrder();
+    void deleteMessageBoardTitleMessageByOrder(Integer id);
 }

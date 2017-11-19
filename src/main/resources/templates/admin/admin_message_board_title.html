@@ -13,29 +13,24 @@
     <link href="/css/bootstrap-3.3.7/css/bootstrap.css" rel="stylesheet"/>
     <link href="/css/common/pagination.css" rel="stylesheet"/>
     <link href="/css/common/common.css" rel="stylesheet"/>
-
-    <script type="text/javascript" charset="utf-8" src="/plugins/ueditor-1.4.3/ueditor.config.js"></script>
-    <script type="text/javascript" charset="utf-8" src="/plugins/ueditor-1.4.3/ueditor.all.min.js"></script>
-    <script type="text/javascript" charset="utf-8" src="/plugins/ueditor-1.4.3/ueditor.all.js"></script>
-    <!--建议手动加在语言，避免在ie下有时因为加载语言失败导致编辑器加载失败-->
-    <!--这里加载的语言文件会覆盖你在配置项目里添加的语言类型，比如你在配置项目里配置的是英文，这里加载的中文，那最后就是中文-->
-    <script type="text/javascript" charset="utf-8" src="/plugins/ueditor-1.4.3/lang/zh-cn/zh-cn.js"></script>
+    <link href="/plugins/DataTables-1.10.15/media/css/dataTables.bootstrap4.css" rel="stylesheet"/>
+    <link href="/plugins/DataTables-1.10.15/media/css/jquery.dataTables.css" rel="stylesheet"/>
+    <link href="/plugins/DataTables-1.10.15/media/css/dataTables.jqueryui.css" rel="stylesheet"/>
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="/js/jquery-3.1.1.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="/js/bootstrap-3.3.7/js/bootstrap.js"></script>
 
+    <!--<script type="text/javascript" language="javascript" src="DataTables-1.8.1/media/js/jquery.js"></script>-->
+    <script type="text/javascript" language="javascript"
+            src="/plugins/DataTables-1.10.15/media/js/jquery.dataTables.js"></script>
+    <script type="text/javascript" language="javascript"
+            src="/plugins/DataTables-1.10.15/media/js/dataTables.bootstrap4.js"></script>
+
     <style>
         .theme {
             background-color: #2e3032;
-        }
-
-        .col-center-block {
-            float: none;
-            display: block;
-            margin-left: auto;
-            margin-right: auto;
         }
 
         .set-margin-top {
@@ -56,22 +51,61 @@
             border-radius: 3px;
         }
 
+        .hidden-class {
+            display: none;
+        }
+
+        .set-right {
+            float: right;
+            margin-right: 15px;
+        }
+
         .clear-both {
             clear: both;
-        }
-
-
-        .set-to-left {
-            float: left;
-        }
-
-        .set-null-bottom {
-            margin-bottom: 0;
         }
 
     </style>
 
     <script>
+
+        function addRow(currentButton) {
+
+            var row1 = $(currentButton).parent().parent();
+            var row2 = row1.clone();
+            $(row2.children()[0]).html(null);//把新增的OBID赋值为空
+            //$(row2.children()[0]).html(Date.now);//把时间赋值给OBID作为订单行的唯一标示符
+            //row2.insertAfter(row1);
+            //table.row.add(row2);
+            var rowNode = table
+                .row.add(row2)
+                .draw()
+                .node();
+            row1.after(rowNode);
+        }
+
+        function deleteRow(currentRow) {
+
+            $.ajax({
+                url: '/messageBoard/deleteMessageBoardTitleMessages',
+                type: "POST",//请求方式：get或post
+                scriptCharset: 'utf-8',
+                dataType: "json",//数据返回类型：xml、json、script
+                cache: false,
+                data: {
+                    'pageIndex': currentRow.parent().parent().first();
+                },//自定义提交的数据
+                success: function (json) {
+                    if (json !== null || json !== undefined || json !== '') {
+                        if (pageIndex == json.data) {
+                            $(".next-btn").html('')
+                        }
+                    }
+                },
+                error: function (json) {
+                    alert("Request Error!")
+                }
+            })
+        }
 
         function setAdminMenuActive(currentType) {
             $(".nav-stacked li").each(function () {
@@ -89,13 +123,267 @@
                 setAdminMenuActive($("#currentType").val())
             })
 
+            var table = $("#editTable").dataTable({
+                "bPaginate": false, //开关，是否显示分页器
+                "bInfo": false, //开关，是否显示表格的一些信息
+                "bFilter": false, //开关，是否启用客户端过滤器
+//                "sDom": "<>lfrtip<>",
+//                "bAutoWith": false,
+//                "bDeferRender": false,
+                "bJQueryUI": false, //开关，是否启用JQueryUI风格
+//                "bLengthChange": true, //开关，是否显示每页大小的下拉框
+//                "bProcessing": true,
+//                "bScrollInfinite": false,
+//                "sScrollY": "800px", //是否开启垂直滚动，以及指定滚动区域大小,可设值：'disabled','2000px'
+                "bSort": true, //开关，是否启用各列具有按列排序的功能
+//                "bSortClasses": true,
+//                "bStateSave": false, //开关，是否打开客户端状态记录功能。这个数据是记录在cookies中的，打开了这个记录后，即使刷新一次页面，或重新打开浏览器，之前的状态都是保存下来的- ------当值为true时aoColumnDefs不能隐藏列
+//                "sScrollX": "50%", //是否开启水平滚动，以及指定滚动区域大小,可设值：'disabled','2000%'
+//                "aaSorting": [[0, "asc"]],
+
+//                "aoColumnDefs": [{ "bVisible": false, "aTargets": [0]}]//隐藏列
+//                "sDom": '<"H"if>t<"F"if>',
+                "bAutoWidth": false, //自适应宽度
+//                "aaSorting": [[1, "asc"]],
+                "sPaginationType": "full_numbers",
+                "processing": true,
+                "serverSide": true,
+                "ajax": {
+                    url: "/messageBoard/getMessageBoardTitleMessages",
+                    type: "POST",
+                    dataType: "json",//数据返回类型：xml、json、script
+                    cache: false,
+                    dataSrc: 'data'
+                },
+                "columns": [
+//                    {"data": "id", "bSortable": false},
+//                    {"data": "content"},
+                    {
+                        "data": "id", sortable: false, sClass: "hidden-class", render: function (data, type, row) {
+                        return '<input type="hidden" class="form-control" value="' + data + '" />';
+//                        return console.log(data);
+                    }
+                    }, {
+                        "data": "content", sortable: false, render: function (data, type, row) {
+                            return '<input type="text" class="form-control" value="' + data + '" />';
+//                        return console.log(data);
+                        }
+                    },
+                    {
+                        "data": "orderNum", sortable: false, render: function (data, type, row) {
+                        return '<input type="text" class="form-control" value="' + data + '" />';
+//                        return console.log(data);
+                    }
+                    },
+                    {
+                        "data": "operator", sortable: false, render: function (data, type, row) {
+                        return '<button type="button" class="btn btn-default btn-sm">删除</button>';
+                    }
+                    },
+                    {
+                        "data": "flag", sortable: false,sClass: "hidden-class", render: function (data, type, row) {
+                        return '<input type="hidden" class="form-control" value="Y" />';
+                    }
+                    },
+                ],
+                "oLanguage": {
+                    "sProcessing": "正在加载中......",
+                    "sLengthMenu": "每页显示 _MENU_ 条记录",
+                    "sZeroRecords": "对不起，查询不到相关数据！",
+                    "sEmptyTable": "表中无数据存在！",
+                    "sInfo": "当前显示 _START_ 到 _END_ 条，共 _TOTAL_ 条记录",
+                    "sInfoFiltered": "数据表中共为 _MAX_ 条记录",
+                    "sSearch": "搜索",
+                    "oPaginate": {
+                        "sFirst": "首页",
+                        "sPrevious": "上一页",
+                        "sNext": "下一页",
+                        "sLast": "末页"
+                    }
+                }
+            });
+
+            $("tbody").delegate("button","click",function(){
+
+            })
+
         })
     </script>
 
 </head>
 <body class="theme">
 <div class="container-fluid">
-    <div th:include="common/header"></div>
+
+    <ul class="nav nav-tabs" th:fragment="header">
+
+        <li th:class="${Nav.getCustom1() eq  'Y'} ? 'active'" th:each="Nav,NavStat : ${Nav.data}">
+            <a th:href="@{${Nav.getInterlinkage()}}" th:text="${Nav.getMenuItemName()}">主页</a>
+        </li>
+        <li class="pull-right set-nav-button" th:if="${#strings.isEmpty(session.User)}">
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#login">
+                登录
+            </button>
+        </li>
+        <li class="pull-right set-nav-button" th:if="${#strings.isEmpty(session.User)}">
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#register">
+                注册
+            </button>
+        </li>
+
+        <li class="pull-right set-nav-button" th:if="${! #strings.isEmpty(session.User)}">
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-primary btn-sm">
+                <a href="/authentication/logout" style="color: white;">
+                    [登出]
+                </a>
+            </button>
+        </li>
+
+        <li class="pull-right" th:if="${! #strings.isEmpty(session.User)}">
+            <!-- Button trigger modal -->
+            <a th:text="${session.User.getUserName() + ',欢迎您'}" href="/personalPage/main" id="userstatus"></a>
+        </li>
+    </ul>
+
+    <!-- 登录 -->
+    <div class="modal fade" id="login" tabindex="-1" role="dialog" aria-labelledby="loginLabel"
+         th:if="${#strings.isEmpty(session.User)}">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="loginLabel">登录</h4>
+                </div>
+                <div class="modal-body">
+
+                    <form class="form-horizontal" role="form" action="/authentication/login" id="loginForm"
+                          method="post">
+                        <div class="form-group">
+
+                            <label for="userNameOrEmail" class="col-sm-2 control-label">
+                                账号:
+                            </label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="userNameOrEmail" name="userNameOrEmail"
+                                       placeholder="登录名或者邮箱"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+
+                            <label for="password4log" class="col-sm-2 control-label">
+                                密码:
+                            </label>
+                            <div class="col-sm-10">
+                                <input type="password" class="form-control" id="password4log" name="password4log"
+                                       placeholder="登录密码"/>
+                            </div>
+                        </div>
+                        <input type="hidden" id="currentURL4Login" name="currentURL4Login" value=""/>
+                        <!--<div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <div class="checkbox">
+
+                                    <label>
+                                        <input type="checkbox" /> Remember me
+                                    </label>
+                                </div>
+                            </div>
+                        </div>-->
+                    </form>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary" id="doLogin">登录</button>
+                </div>
+                <script>
+                    $("#doLogin").on("click", function () {
+                        var currentURL = window.location.href;
+                        $("#currentURL4Login").val(currentURL);
+                        $("#loginForm").submit();
+                    })
+                </script>
+            </div>
+        </div>
+    </div>
+
+    <!-- 注册 -->
+    <div class="modal fade" id="register" tabindex="-1" role="dialog" aria-labelledby="registerLabel"
+         th:if="${#strings.isEmpty(session.User)}">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="registerLabel">注册</h4>
+                    <div class="register-error" id="unknowError"></div>
+                </div>
+                <div class="modal-body">
+
+                    <form class="form-horizontal" role="form" action="/authentication/register" id="registerForm"
+                          method="post">
+                        <div class="form-group">
+
+                            <label for="userNameOrEmail" class="col-sm-2 control-label">
+                                用户名:
+                            </label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="userName" name="userName"
+                                       placeholder="用户名"/>
+                            </div>
+                            <div id="errorMessageUser" class="register-error"></div>
+                        </div>
+                        <div class="form-group">
+
+                            <label for="userNameOrEmail" class="col-sm-2 control-label">
+                                邮箱:
+                            </label>
+                            <div class="col-sm-10">
+                                <input type="email" class="form-control" id="activeEmail" name="activeEmail"
+                                       placeholder="邮箱"/>
+                            </div>
+                            <div id="errorMessageEmail" class="register-error"></div>
+                        </div>
+                        <div class="form-group">
+
+                            <label for="password4log" class="col-sm-2 control-label">
+                                密码:
+                            </label>
+                            <div class="col-sm-10">
+                                <input type="password" class="form-control" id="password4Register"
+                                       name="password4Register"
+                                       placeholder="登录密码"/>
+                            </div>
+                            <div id="errorPassword" class="register-error"></div>
+                        </div>
+                        <input type="hidden" id="currentURL4Register" name="currentURL4Register" value=""/>
+                        <!--<div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <div class="checkbox">
+
+                                    <label>
+                                        <input type="checkbox" /> Remember me
+                                    </label>
+                                </div>
+                            </div>
+                        </div>-->
+                    </form>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary disabled" id="doRegister">注册</button>
+                </div>
+                <script src="/js/common/common.js" type="application/javascript"></script>
+            </div>
+        </div>
+    </div>
+
     <div class="row set-margin-top">
         <div class="col-md-2">
             <div class="set-left">
@@ -111,7 +399,41 @@
         </div>
         <div class="col-md-10">
             <div class="content set-margin-top">
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover" id="editTable">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>内容</th>
+                            <th>排序</th>
+                            <th>操作</th>
+                            <th>是否存在</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <!--<tr>
+                            <td>这里是内容1</td>
+                            <td>1</td>
+                            <td>
+                                <button type="button">增加</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>这里是内容2</td>
+                            <td>2</td>
+                            <td>
+                                <button type="button">增加</button>
+                            </td>
+                        </tr>-->
+                        </tbody>
+                    </table>
+                </div>
 
+                <div>
+                    <button type="button" class="btn btn-primary btn-sm set-right">增加一行</button>
+                    <button type="button" class="btn btn-primary btn-sm set-right">保存</button>
+                    <div class="clear-both"></div>
+                </div>
             </div>
         </div>
     </div>
