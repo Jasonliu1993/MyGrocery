@@ -29,6 +29,16 @@
             src="/plugins/DataTables-1.10.15/media/js/dataTables.bootstrap4.js"></script>
     <script type="text/javascript" language="javascript"
             src="/plugins/DataTables-1.10.15/media/js/dataTables.foundation.js"></script>
+    <script type="text/javascript" language="javascript"
+            src="/plugins/DataTables-1.10.15/media/js/dataTables.jqueryui.js"></script>
+    <script type="text/javascript" language="javascript"
+            src="/plugins/DataTables-1.10.15/media/js/dataTables.material.js"></script>
+    <script type="text/javascript" language="javascript"
+            src="/plugins/DataTables-1.10.15/media/js/dataTables.semanticui.js"></script>
+    <script type="text/javascript" language="javascript"
+            src="/plugins/DataTables-1.10.15/media/js/dataTables.uikit.js">
+    </script><script type="text/javascript" language="javascript"
+            src="/js/common/admin_message_board_title.js"></script>
 
     <style>
         .theme {
@@ -70,54 +80,6 @@
 
     <script>
 
-        function addRow(table) {
-
-
-            var row1 = $("#editTable").children("tbody").children("tr:last");
-            var row2 = row1.clone();
-            $(row2.children()[0]).html(null);//把新增的OBID赋值为空
-            //$(row2.children()[0]).html(Date.now);//把时间赋值给OBID作为订单行的唯一标示符
-            //row2.insertAfter(row1);
-            //table.row.add(row2);
-            console.log(table)
-            var rowNode = table
-                .row.add(row2)
-                .draw()
-                .node();
-            row1.after(rowNode);
-        }
-
-        function deleteRow(currentRow) {
-
-            $.ajax({
-                url: '/messageBoard/deleteMessageBoardTitleMessages',
-                type: "POST",//请求方式：get或post
-                scriptCharset: 'utf-8',
-                dataType: "json",//数据返回类型：xml、json、script
-                cache: false,
-                data: {
-                    'id': currentRow.parent().parent().parent().children("tr:first").children("td:first").children().val(),
-                },//自定义提交的数据
-                success: function (json) {
-                    if (json !== null || json !== undefined || json !== '') {
-                        if ("Y" == json.data) {
-                            currentRow.parent().parent().remove();
-                        }
-                    }
-                },
-                error: function (json) {
-                    alert("Request Error!")
-                }
-            })
-        }
-
-        function setAdminMenuActive(currentType) {
-            $(".nav-stacked li").each(function () {
-                $(this).removeClass("active");
-            })
-            $("#" + currentType + "").addClass("active");
-        }
-
         $(document).ready(function () {
             /*    初始化     */
             setAdminMenuActive($("#currentType").val())
@@ -141,7 +103,7 @@
 //                "sScrollY": "800px", //是否开启垂直滚动，以及指定滚动区域大小,可设值：'disabled','2000px'
                 "bSort": true, //开关，是否启用各列具有按列排序的功能
 //                "bSortClasses": true,
-//                "bStateSave": false, //开关，是否打开客户端状态记录功能。这个数据是记录在cookies中的，打开了这个记录后，即使刷新一次页面，或重新打开浏览器，之前的状态都是保存下来的- ------当值为true时aoColumnDefs不能隐藏列
+                "bStateSave": true, //开关，是否打开客户端状态记录功能。这个数据是记录在cookies中的，打开了这个记录后，即使刷新一次页面，或重新打开浏览器，之前的状态都是保存下来的- ------当值为true时aoColumnDefs不能隐藏列
 //                "sScrollX": "50%", //是否开启水平滚动，以及指定滚动区域大小,可设值：'disabled','2000%'
 //                "aaSorting": [[0, "asc"]],
 
@@ -151,7 +113,7 @@
 //                "aaSorting": [[1, "asc"]],
                 "sPaginationType": "full_numbers",
                 "processing": true,
-                "serverSide": true,
+                "serverSide": false,
                 "ajax": {
                     url: "/messageBoard/getMessageBoardTitleMessages",
                     type: "POST",
@@ -160,28 +122,31 @@
                     dataSrc: 'data'
                 },
                 "columns": [
-//                    {"data": "id", "bSortable": false},
-//                    {"data": "content"},
                     {
                         "data": "id", sortable: false, sClass: "hidden-class", render: function (data, type, row) {
+                        data = transforDataToNull(data)
                         return '<input type="hidden" class="form-control" value="' + data + '" />';
-//                        return console.log(data);
                     }
                     }, {
                         "data": "content", sortable: false, render: function (data, type, row) {
+                            data = transforDataToNull(data)
                             return '<input type="text" class="form-control" value="' + data + '" />';
-//                        return console.log(data);
                         }
                     },
                     {
                         "data": "orderNum", sortable: false, render: function (data, type, row) {
+                        data = transforDataToNull(data)
                         return '<input type="text" class="form-control" value="' + data + '" />';
-//                        return console.log(data);
                     }
                     },
                     {
                         "data": "operator", sortable: false, render: function (data, type, row) {
                         return '<button type="button" class="btn btn-default btn-sm">删除</button>';
+                    }
+                    },
+                    {
+                        "data": "status", sortable: false, render: function (data, type, row) {
+                        return '';
                     }
                     },
                     {
@@ -207,14 +172,19 @@
                 }
             });
 
-            $("tbody").delegate("button", "click", function () {
-                var id = $(this).parent().parent().parent().children("tr:first").children("td:first").children().val();
+            $("tbody").delegate("td>button", "click", function () {
+                var id = $(this).parent().prev().prev().prev().children().val();
+                $(this).parent().parent().toggleClass('selected');
+                var table = $('#editTable').DataTable();
                 /*<![CDATA[*/
                 if (id != null && id != undefined && id != '') {
-                    deleteRow($(this));
+
+                    deleteRow($(this), table);
+
                 } else {
-                    //如果是没有ID则直接删除这一行
-                    $(this).parent().parent().remove();
+
+                    table.row('.selected').remove().draw(false);
+
                 }
 
                 /*]]>*/
@@ -223,6 +193,27 @@
             $("#addRow").on("click", function () {
 
                 addRow(table);
+
+            })
+            $("#saveBtn").on("click", function () {
+
+                $("#editTable tbody tr").each(function () {
+
+                    var id = $(this).children("td:first").children().val();
+                    $(this).children("td:first").next().next().next().next().children().remove();
+                    /*<![CDATA[*/
+                    if (id != null && id != undefined && id != '') {
+
+                        updateRow($(this));
+
+                    } else {
+
+                        insertRow($(this));
+
+                    }
+                    /*]]>*/
+                })
+
 
             })
 
@@ -426,6 +417,7 @@
                             <th>内容</th>
                             <th>排序</th>
                             <th>操作</th>
+                            <th>状态</th>
                             <th>是否存在</th>
                         </tr>
                         </thead>
@@ -437,7 +429,7 @@
 
                 <div>
                     <button id="addRow" type="button" class="btn btn-primary btn-sm set-right">增加一行</button>
-                    <button type="button" class="btn btn-primary btn-sm set-right">保存</button>
+                    <button id="saveBtn" type="button" class="btn btn-primary btn-sm set-right">保存</button>
                     <div class="clear-both"></div>
                 </div>
             </div>

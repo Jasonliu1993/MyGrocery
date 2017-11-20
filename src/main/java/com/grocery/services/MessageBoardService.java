@@ -20,4 +20,6 @@ public interface MessageBoardService {
     Integer getSubReply(Integer pageSize,String id);
     List<MessageBoardTitleMessage> getAllMessageBoardTitleMessageByOrder();
     void deleteMessageBoardTitleMessageByOrder(Integer id);
+    MessageBoardTitleMessage updateMessageBoardTitleMessage(Integer id,String content,Integer orderNum);
+    MessageBoardTitleMessage insertMessageBoardTitleMessage(String content,Integer orderNum);
 }

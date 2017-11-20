@@ -3,7 +3,6 @@ package com.grocery.controllers;
 import com.grocery.domain.Message;
 import com.grocery.domain.MessageBoardSubreply;
 import com.grocery.configuration.CustomProperty;
-import com.grocery.domain.MessageBoardTitleMessage;
 import com.grocery.services.MessageBoardService;
 import com.grocery.utilities.PackingInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,6 +77,16 @@ public class MessageBoardController {
     public Message deleteMessageBoardTitleMessages(Integer id) {
         messageBoardService.deleteMessageBoardTitleMessageByOrder(id);
         return PackingInfo.changeData2Message("Y");
+    }
+    @PostMapping("/updateMessageBoardTitleMessage")
+    @ResponseBody
+    public Message updateMessageBoardTitleMessage(Integer id,String content,Integer orderNum) {
+        return PackingInfo.changeData2Message(messageBoardService.updateMessageBoardTitleMessage(id,content,orderNum));
+    }
+    @PostMapping("/insertMessageBoardTitleMessage")
+    @ResponseBody
+    public Message insertMessageBoardTitleMessage(String content,Integer orderNum) {
+        return PackingInfo.changeData2Message(messageBoardService.insertMessageBoardTitleMessage(content,orderNum));
     }
 
 }

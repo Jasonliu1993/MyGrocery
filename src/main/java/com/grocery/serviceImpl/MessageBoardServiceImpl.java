@@ -162,4 +162,38 @@ public class MessageBoardServiceImpl implements MessageBoardService{
     public void deleteMessageBoardTitleMessageByOrder(Integer id) {
         messageBoardTitleMessageMapper.deleteByPrimaryKey(id);
     }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED,isolation = Isolation.DEFAULT,timeout=36000,rollbackFor=Exception.class)
+    public MessageBoardTitleMessage updateMessageBoardTitleMessage(Integer id, String content, Integer orderNum) {
+
+        MessageBoardTitleMessage messageBoardTitleMessage = new MessageBoardTitleMessage();
+
+        messageBoardTitleMessage.setId(id);
+        messageBoardTitleMessage.setContent(content);
+        messageBoardTitleMessage.setOrderNum(orderNum);
+        messageBoardTitleMessage.setCreateDatetime(DateUtility.getCurrentDate());
+        messageBoardTitleMessage.setVersion(messageBoardTitleMessageMapper.selectByPrimaryKey(id).getVersion() + 1);
+
+        messageBoardTitleMessageMapper.updateByPrimaryKey(messageBoardTitleMessage);
+
+        return messageBoardTitleMessage;
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED,isolation = Isolation.DEFAULT,timeout=36000,rollbackFor=Exception.class)
+    public MessageBoardTitleMessage insertMessageBoardTitleMessage(String content, Integer orderNum) {
+
+        MessageBoardTitleMessage messageBoardTitleMessage = new MessageBoardTitleMessage();
+
+        messageBoardTitleMessage.setVersion(1);
+        messageBoardTitleMessage.setContent(content);
+        messageBoardTitleMessage.setOrderNum(orderNum);
+        messageBoardTitleMessage.setCreateDatetime(DateUtility.getCurrentDate());
+
+        messageBoardTitleMessageMapper.insertSelective(messageBoardTitleMessage);
+
+
+        return messageBoardTitleMessage;
+    }
 }
