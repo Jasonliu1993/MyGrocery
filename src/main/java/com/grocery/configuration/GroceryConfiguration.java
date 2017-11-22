@@ -2,6 +2,7 @@ package com.grocery.configuration;
 
 import com.grocery.interceptor.GroceryInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
@@ -23,6 +24,9 @@ public class GroceryConfiguration extends WebMvcConfigurerAdapter{
 
     @Autowired
     private GroceryInterceptor groceryInterceptor;
+
+    @Autowired
+    private CustomProperty customProperty;
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
@@ -50,6 +54,16 @@ public class GroceryConfiguration extends WebMvcConfigurerAdapter{
         resolver.setMaxInMemorySize(40960);
         resolver.setMaxUploadSize(50*1024*1024);//上传文件大小 50M 50*1024*1024
         return resolver;
+    }
+
+    @Bean
+    public ServletRegistrationBean getServletRegistrationBean() {
+
+        ServletRegistrationBean servletRegistrationBean = new ServletRegistrationBean(new DruidStatViewServlet(),"/druid/*");
+
+        servletRegistrationBean.setInitParameters(customProperty.getDruidConfig());
+
+        return servletRegistrationBean;
     }
 
 }

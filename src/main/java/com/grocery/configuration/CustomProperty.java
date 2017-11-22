@@ -3,8 +3,8 @@ package com.grocery.configuration;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
-import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Jason on 14/10/2017.
@@ -19,6 +19,7 @@ public class CustomProperty {
     private String subReply;
     private String adminPageSize;
     private List<String> loginOnly;
+    private Map<String,String>  druidConfig;
 
     public String getPhotographyDetailPageSize() {
         return photographyDetailPageSize;
@@ -66,5 +67,13 @@ public class CustomProperty {
 
     public void setLoginOnly(List<String> loginOnly) {
         this.loginOnly = loginOnly;
+    }
+
+    public Map<String, String> getDruidConfig() {
+        return druidConfig;
+    }
+
+    public void setDruidConfig(Map<String, String> druidConfig) {
+        this.druidConfig = druidConfig;
     }
 }
