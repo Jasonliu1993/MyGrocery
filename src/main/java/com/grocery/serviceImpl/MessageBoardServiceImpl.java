@@ -1,5 +1,7 @@
 package com.grocery.serviceImpl;
 
+import com.grocery.Messagehandler.CoreSender;
+import com.grocery.Messagehandler.MessageFromType;
 import com.grocery.dao.*;
 import com.grocery.domain.MessageBoard;
 import com.grocery.domain.MessageBoardSubreply;
@@ -7,6 +9,7 @@ import com.grocery.domain.MessageBoardTitleMessage;
 import com.grocery.domain.SystemUser;
 import com.grocery.configuration.CustomProperty;
 import com.grocery.services.MessageBoardService;
+import com.grocery.utilities.ApplicationContextUtility;
 import com.grocery.utilities.DateUtility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -112,6 +115,7 @@ public class MessageBoardServiceImpl implements MessageBoardService{
     @Transactional(propagation = Propagation.REQUIRED,isolation = Isolation.DEFAULT,timeout=36000,rollbackFor=Exception.class)
     public MessageBoardSubreply saveMessageBoardSubreply(String messageBoardId4Reply, String replyTo, String messageText, HttpSession session) {
         MessageBoardSubreply messageBoardSubreply = new MessageBoardSubreply();
+        SystemUser replyToUser = null;
 
         messageBoardSubreply.setVersion(1);
         messageBoardSubreply.setUserid(((SystemUser)session.getAttribute("User")).getId());
@@ -120,7 +124,12 @@ public class MessageBoardServiceImpl implements MessageBoardService{
         messageBoardSubreply.setContent(messageText);
         if (!"".equals(replyTo)) {
             messageBoardSubreply.setReplyUserId(Integer.valueOf(replyTo));
-            messageBoardSubreply.setReplyUserName(systemUserMapper.selectByPrimaryKey(Integer.valueOf(replyTo)).getUserName());
+
+            replyToUser = systemUserMapper.selectByPrimaryKey(Integer.valueOf(replyTo));
+
+            messageBoardSubreply.setReplyUserName(replyToUser.getUserName());
+
+
         }
         messageBoardSubreply.setParentRefId(Integer.valueOf(messageBoardId4Reply));
         messageBoardSubreply.setCreateDatetime(DateUtility.getCurrentDate());
@@ -128,6 +137,14 @@ public class MessageBoardServiceImpl implements MessageBoardService{
         messageBoardSubreplyMapper.insertSelective(messageBoardSubreply);
 
         messageBoardSubreply.setCustom1(personalInfoMapper.selectByPrimaryKey(messageBoardSubreply.getUserid()).getAvator().toString());
+
+        CoreSender coreSender = (CoreSender) ApplicationContextUtility.getBean("coreSender");
+
+        if (replyToUser == null) {
+            replyToUser = systemUserMapper.selectByPrimaryKey(messageBoardMapper.selectByPrimaryKey(Integer.valueOf(messageBoardId4Reply)).getUserid());
+        }
+
+        coreSender.send((SystemUser)session.getAttribute("User"),replyToUser,messageText, MessageFromType.MESSAGE_BOARD_SUBREPLY);
 
         return messageBoardSubreply;
     }

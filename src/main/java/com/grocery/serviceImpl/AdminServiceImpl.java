@@ -226,6 +226,7 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
+    @Transactional
     public void updatePhotography(String comments, String theme, String photoRefId, Integer id) {
         PhotographyDetail photographyDetail = new PhotographyDetail();
 

@@ -1,7 +1,8 @@
 package com.grocery.configuration;
 
+import com.grocery.Messagehandler.InstationSenderProviderFactory;
+import com.grocery.Messagehandler.CoreSender;
 import com.grocery.interceptor.GroceryCoreInterceptor;
-import com.grocery.interceptor.GroceryWebSocketInterceptor;
 import com.grocery.webSocket.WebSocketHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
@@ -77,5 +78,14 @@ public class GroceryConfiguration extends WebMvcConfigurerAdapter implements Web
     public void registerWebSocketHandlers(WebSocketHandlerRegistry webSocketHandlerRegistry) {
             webSocketHandlerRegistry.addHandler(webSocketHandler,"");
 
+    }
+
+    @Bean
+    public CoreSender getProviderBuilder() {
+        CoreSender providerBuilder = new CoreSender();
+
+        providerBuilder.addProviderFactories("instatioinSenderProviderFactory",new InstationSenderProviderFactory());
+
+        return providerBuilder;
     }
 }
