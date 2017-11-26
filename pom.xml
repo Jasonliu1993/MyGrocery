@@ -11,18 +11,27 @@
     <name>grocery</name>
     <description>My personal Website</description>
 
-    <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>1.5.7.RELEASE</version>
-        <relativePath/> <!-- lookup parent from repository -->
-    </parent>
-
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
+        <druid.version>1.1.5</druid.version>
+        <mybatis-spring-boot-starter>1.3.1</mybatis-spring-boot-starter>
+        <mysql-connector-java>5.1.35</mysql-connector-java>
+        <commons-codec>1.6</commons-codec>
+        <nekohtml>1.9.22</nekohtml>
+        <commons-io>2.4</commons-io>
+        <commons-fileupload>1.3.1</commons-fileupload>
+        <mybatis-generator-maven-plugin>1.3.5</mybatis-generator-maven-plugin>
     </properties>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>1.5.8.RELEASE</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+
 
     <dependencies>
         <dependency>
@@ -50,20 +59,26 @@
         <dependency>
             <groupId>org.mybatis.spring.boot</groupId>
             <artifactId>mybatis-spring-boot-starter</artifactId>
-            <version>1.3.0</version>
+            <version>${mybatis-spring-boot-starter}</version>
+        </dependency>
+
+        <!--添加对websocket的支持-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-websocket</artifactId>
         </dependency>
 
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>5.1.35</version>
+            <version>${mysql-connector-java}</version>
         </dependency>
 
         <!-- alibaba的druid数据库连接池 -->
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>druid</artifactId>
-            <version>1.0.11</version>
+            <version>${druid.version}</version>
         </dependency>
 
         <dependency>
@@ -87,17 +102,17 @@
         </dependency>
 
         <!-- 分页插件 -->
-        <dependency>
+        <!--<dependency>
             <groupId>com.github.pagehelper</groupId>
             <artifactId>pagehelper-spring-boot-starter</artifactId>
             <version>1.1.2</version>
-        </dependency>
+        </dependency>-->
         
         <!-- alibaba的druid数据库连接池 -->
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>druid-spring-boot-starter</artifactId>
-            <version>1.1.0</version>
+            <version>${druid.version}</version>
         </dependency>
 
         <dependency>
@@ -127,14 +142,14 @@
         <dependency>
             <groupId>commons-codec</groupId>
             <artifactId>commons-codec</artifactId>
-            <version>1.6</version>
+            <version>${commons-codec}</version>
         </dependency>
 
         <!--减小thymeleaf对HTML的校验-->
         <dependency>
             <groupId>net.sourceforge.nekohtml</groupId>
             <artifactId>nekohtml</artifactId>
-            <version>1.9.22</version>
+            <version>${nekohtml}</version>
         </dependency>
 
         <!--百度UEditor 坑太多直接引入源码。。-->
@@ -148,15 +163,16 @@
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
-            <version>2.4</version>
+            <version>${commons-io}</version>
         </dependency>
 
         <dependency>
             <groupId>commons-fileupload</groupId>
             <artifactId>commons-fileupload</artifactId>
-            <version>1.3.1</version>
+            <version>${commons-fileupload}</version>
         </dependency>
         <!--UEditor依赖包结束-->
+
     </dependencies>
 
     <build>
@@ -173,7 +189,7 @@
             <plugin>
                 <groupId>org.mybatis.generator</groupId>
                 <artifactId>mybatis-generator-maven-plugin</artifactId>
-                <version>1.3.2</version>
+                <version>${mybatis-generator-maven-plugin}</version>
                 <configuration>
                     <configurationFile>${basedir}/src/main/resources/generator/generatorConfig.xml</configurationFile>
                     <overwrite>true</overwrite>

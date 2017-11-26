@@ -1,6 +1,8 @@
 package com.grocery.configuration;
 
-import com.grocery.interceptor.GroceryInterceptor;
+import com.grocery.interceptor.GroceryCoreInterceptor;
+import com.grocery.interceptor.GroceryWebSocketInterceptor;
+import com.grocery.webSocket.WebSocketHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -12,6 +14,8 @@ import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
+import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
 
 import javax.servlet.ServletRequestListener;
 
@@ -20,17 +24,20 @@ import javax.servlet.ServletRequestListener;
  */
 
 @Configuration
-public class GroceryConfiguration extends WebMvcConfigurerAdapter{
+public class GroceryConfiguration extends WebMvcConfigurerAdapter implements WebSocketConfigurer{
 
     @Autowired
-    private GroceryInterceptor groceryInterceptor;
+    private GroceryCoreInterceptor groceryCoreInterceptor;
 
     @Autowired
     private CustomProperty customProperty;
 
+    @Autowired
+    private WebSocketHandler webSocketHandler;
+
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(groceryInterceptor);
+        registry.addInterceptor(groceryCoreInterceptor);
         super.addInterceptors(registry);
     }
 
@@ -66,4 +73,9 @@ public class GroceryConfiguration extends WebMvcConfigurerAdapter{
         return servletRegistrationBean;
     }
 
+    @Override
+    public void registerWebSocketHandlers(WebSocketHandlerRegistry webSocketHandlerRegistry) {
+            webSocketHandlerRegistry.addHandler(webSocketHandler,"");
+
+    }
 }

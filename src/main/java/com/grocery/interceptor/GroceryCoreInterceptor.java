@@ -20,7 +20,7 @@ import java.util.List;
  */
 
 @Component
-public class GroceryInterceptor implements HandlerInterceptor {
+public class GroceryCoreInterceptor implements HandlerInterceptor {
 
     @Autowired
     private IndexService indexService;
