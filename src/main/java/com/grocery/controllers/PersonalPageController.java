@@ -33,4 +33,12 @@ public class PersonalPageController {
         return personalDataService.updatePersonalInfo(newInfo, object);
     }
 
+    @GetMapping("/messagBoxMain")
+    public String messagBoxMain(ModelMap modelMap) {
+
+        modelMap.addAttribute("MessageBoxMenus", PackingInfo.changeData2Message(personalDataService.getMessageBoxMenuOrder()));
+
+        return "/personal-data/message_box";
+    }
+
 }

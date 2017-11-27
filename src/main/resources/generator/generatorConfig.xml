@@ -124,5 +124,10 @@
                enableUpdateByExample="false">
             <property name="useActualColumnNames" value="false"/>
         </table>-->
+        <!--<table tableName="MESSAGE_BOX_MENU" enableCountByExample="false" enableDeleteByExample="false"
+               enableSelectByExample="false"
+               enableUpdateByExample="false">
+            <property name="useActualColumnNames" value="false"/>
+        </table>-->
     </context>
 </generatorConfiguration>

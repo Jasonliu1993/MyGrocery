@@ -3,6 +3,7 @@ server:
 
 spring:
     datasource:
+        name: Grocery
 
         # 使用druid数据源
         type: com.alibaba.druid.pool.DruidDataSource
@@ -69,5 +70,4 @@ CustomProps:
 
     druidConfig:
 
-      #禁用HTML页面上的“Reset All”功能
       resetEnable: false

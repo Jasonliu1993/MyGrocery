@@ -1,9 +1,6 @@
 package com.grocery.serviceImpl;
 
-import com.grocery.dao.AvatorMapper;
-import com.grocery.dao.PersonalInfoMapper;
-import com.grocery.dao.PersonalMenuMapper;
-import com.grocery.dao.SystemUserMapper;
+import com.grocery.dao.*;
 import com.grocery.domain.*;
 import com.grocery.services.PersonalDataService;
 import com.grocery.utilities.DateUtility;
@@ -40,9 +37,17 @@ public class PersonalDataServiceImpl implements PersonalDataService {
     @Autowired
     private SystemUserMapper systemUserMapper;
 
+    @Autowired
+    private MessageBoxMenuMapper messageBoxMenuMapper;
+
     @Override
     public List<PersonalMenu> getPersonalMenuOrder() {
         return personalMenuMapper.selectPersonalMenuOrder();
+    }
+
+    @Override
+    public List<MessageBoxMenu> getMessageBoxMenuOrder() {
+        return messageBoxMenuMapper.selectMessageBoxMenuOrder();
     }
 
     @Transactional

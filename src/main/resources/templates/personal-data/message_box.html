@@ -32,146 +32,8 @@
     <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" type="text/javascript"></script>-->
     <script src="/js/bootstrap-3.3.7/js/bootstrap.js" type="text/javascript"></script>
 
-    <style>
-
-
-    </style>
-
     <script>
-        var first = true;
 
-        $(document).ready(function () {
-            var baseURL = window.location.host;
-            var protocol = window.location.protocol;
-            var path = window.location.pathname;
-
-            /*浏览器返回事件*/
-            if (window.history && window.history.pushState) {
-//                window.history.go(-1);
-                var URI = window.location.pathname;
-
-                if (first) {
-                    var index = path.length - 1;
-                    console.log("运行avator");
-                    setAdminMenuActive("avator");
-                    if (path.lastIndexOf("/") != index) {
-
-                        window.history.pushState('forward', null, URI + '/#avator');
-                    } else {
-                        window.history.pushState('forward', null, URI + '#avator');
-
-                    }
-                    first = false;
-                }
-
-                $(window).on('popstate', function () {
-                    if (!first) {
-                        var hashLocation = location.hash;
-                        var hashSplit = hashLocation.split("#");
-                        var hashName = hashSplit[1];
-
-                        console.log(hashName);
-                        setAdminMenuActive(hashName);
-
-                    }
-
-                });
-
-
-            }
-
-            $(".nav-stacked li").on("click", function () {
-                $("#currentType").val($(this).attr("id"));
-                setAdminMenuActive($("#currentType").val())
-            })
-
-            $("#imageUpload").fileinput({
-                theme: 'fa',
-                'uploadUrl': '/image/saveImage',
-                uploadExtraData: {kvId: '10'},
-                uploadAsync: true,
-                showUpload: true,
-                showCaption: true,
-                showPreview: true,
-                showUploadedThumbs: true,
-                fileType: "any",
-                previewFileIcon: "<i class='glyphicon glyphicon-king'></i>",
-                overwriteInitial: false,
-                initialPreviewAsData: true,
-                maxFileCount: 1,
-                initialPreview: [
-                    protocol + "//" + baseURL + "/image/avator/" + $("#id").val(),
-                ],
-
-            }).on("filebatchselected", function (event, files) {
-                $(this).fileinput("upload");
-            })
-                .on("fileuploaded", function (event, data) {
-                    if (data.response) {
-//                        console.log(data)
-                        /*上传成功时的回调函数*/
-                        $("#photoRefId").val((data.response).imageId);
-                    }
-                });
-
-            /*做email的检查*/
-            $("#inputEmail").on("blur", function () {
-                if (checkInputEmailIsNotNull()) {
-                    authInfo("Email", $("#inputEmail").val(), "emailMessage", "modify");
-                } else {
-                    $("#emailMessage").text("邮箱不能为空");
-                    $("#emailButton").addClass("disabled");
-                    $("#emailButton").unbind("click");
-                }
-            })
-
-            /*做UserName的检查*/
-            $("#inputInfo").on("blur", function () {
-                if (checkInputUserNameIsNotNull()) {
-                    authInfo("UserName", $("#inputInfo").val(), "infoMessage", "modify");
-                } else {
-                    $("#infoMessage").text("用户名不能为空");
-                    $("#infoButton").addClass("disabled");
-                    $("#infoButton").unbind("click");
-                }
-            })
-
-            /*做OldPassword的检查*/
-            $("#inputOldPassword").on("blur", function () {
-                if (checkInputOldPasswordNotNull("inputOldPassword")) {
-                    authInfo("Password", $("#inputOldPassword").val(), "OldPasswordMessage", "modify");
-                } else {
-                    $("#OldPasswordMessage").text("旧密码不能为空");
-                    $("#passwordButton").addClass("disabled");
-                    $("#passwordButton").unbind("click");
-                }
-            })
-
-            /*做NewPassword的检查*/
-            $("#inputNewPassword").on("blur", function () {
-                if (checkInputNewPasswordNotNull("inputNewPassword")) {
-                    $("#NewPasswordMessage").text('');
-                    checkNewPasswordAndConfirmPassword("inputNewPassword", "NewPasswordMessage", "inputConfirmPassword", "ConfirmPasswordMessage", false);
-                } else {
-                    $("#NewPasswordMessage").text("新密码不能为空");
-                    $("#passwordButton").addClass("disabled");
-                    $("#passwordButton").unbind("click");
-                }
-            })
-
-            /*做NewPassword的检查*/
-            $("#inputConfirmPassword").on("blur", function () {
-                if (checkInputConfirmPasswordNotNull("inputConfirmPassword")) {
-                    $("#ConfirmPasswordMessage").text('');
-                    checkNewPasswordAndConfirmPassword("inputNewPassword", "NewPasswordMessage", "inputConfirmPassword", "ConfirmPasswordMessage", false);
-                } else {
-                    $("#ConfirmPasswordMessage").text("确认密码不能为空");
-                    $("#passwordButton").addClass("disabled");
-                    $("#passwordButton").unbind("click");
-                }
-            })
-
-        });
     </script>
 
 </head>
@@ -184,10 +46,10 @@
         <div class="col-md-2">
             <div class="set-left">
                 <ul class="nav nav-pills nav-stacked">
-                    <li role="presentation" th:id="${PersonalMenu.getLinkMatching()}"
-                        th:each="PersonalMenu,PersonalMenuStatus : ${PersonalMenus.data}"><a
-                            th:href="@{${PersonalMenu.getInterlinkage()}}"
-                            th:text="${PersonalMenu.getMenuItemName()}">Home</a></li>
+                    <li role="presentation" th:id="${MessageBoxMenu.getLinkMatching()}"
+                        th:each="MessageBoxMenu,MessageBoxMenuStatus : ${MessageBoxMenus.data}"><a
+                            th:href="@{${MessageBoxMenu.getInterlinkage()}}"
+                            th:text="${MessageBoxMenu.getMenuItemName()}">Home</a></li>
                     <!--<li role="presentation" class="active"><a href="#">Profile</a></li>
                     <li role="presentation"><a href="#">Messages</a></li>-->
                 </ul>
@@ -195,93 +57,8 @@
         </div>
         <input type="hidden" id="id" th:value="${session.User.getPersonalInfo().getAvator()}">
         <div class="col-md-10">
-            <div class="content" id="avatorUpload">
-                <h3 style="text-align: center">以最后一个上传的为准</h3>
-                <form enctype="multipart/form-data">
-                    <!--<div class="file-loading">
-                        <input id="imageUpload" type="file" data-upload-url="/admin/savePhotographyImage" data-min-file-count="1">
-                    </div>-->
-                    <div class="file-loading">
-                        <input id="imageUpload" type="file" data-min-file-count="1">
-                    </div>
-                </form>
-            </div>
-            <div class="content" id="emailChange">
-                <h3 style="text-align: center">邮箱修改</h3>
-                <div class="form-horizontal">
-                    <div class="form-group">
-                        <label for="inputEmail" class="col-sm-2 control-label">邮箱</label>
-                        <div class="col-sm-8">
-                            <input type="email" class="form-control" id="inputEmail" placeholder="邮箱"
-                                   th:value="${session.User.getEmail()}">
-                        </div>
-                        <div id="emailMessage" class="col-sm-2" style="color: red;">
+            <div class="content" >
 
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-sm-offset-2 col-sm-10">
-                            <button id="emailButton" type="button" class="btn btn-primary disabled">保存</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="content" id="infoChange">
-                <h3 style="text-align: center">个人信息修改</h3>
-                <div class="form-horizontal">
-                    <div class="form-group">
-                        <label for="inputInfo" class="col-sm-2 control-label">用户名</label>
-                        <div class="col-sm-8">
-                            <input type="text" class="form-control" id="inputInfo" placeholder="用户名"
-                                   th:value="${session.User.getUserName()}">
-                        </div>
-                        <div id="infoMessage" class="col-sm-2" style="color: red;">
-
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-sm-offset-2 col-sm-10">
-                            <button id="infoButton" type="button" class="btn btn-primary disabled">保存</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="content" id="passwordChange">
-                <h3 style="text-align: center">密码修改</h3>
-                <div class="form-horizontal">
-                    <div class="form-group">
-                        <label for="inputOldPassword" class="col-sm-2 control-label">旧密码</label>
-                        <div class="col-sm-8">
-                            <input type="password" class="form-control" id="inputOldPassword" placeholder="旧密码">
-                        </div>
-                        <div id="OldPasswordMessage" class="col-sm-2" style="color: red;">
-
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="inputNewPassword" class="col-sm-2 control-label">新密码</label>
-                        <div class="col-sm-8">
-                            <input type="password" class="form-control" id="inputNewPassword" placeholder="新密码">
-                        </div>
-                        <div id="NewPasswordMessage" class="col-sm-2" style="color: red;">
-
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="inputConfirmPassword" class="col-sm-2 control-label">确认密码</label>
-                        <div class="col-sm-8">
-                            <input type="password" class="form-control" id="inputConfirmPassword" placeholder="确认密码">
-                        </div>
-                        <div id="ConfirmPasswordMessage" class="col-sm-2" style="color: red;">
-
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-sm-offset-2 col-sm-10">
-                            <button id="passwordButton" type="button" class="btn btn-primary disabled">保存</button>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
