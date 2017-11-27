@@ -1,6 +1,6 @@
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-        <!--<script src="/js/jquery-3.1.1.min.js"></script>-->
-        <ul class="nav nav-tabs" th:fragment="header">
+<!--<script src="/js/jquery-3.1.1.min.js"></script>-->
+<ul class="nav nav-pills" th:fragment="header">
 
     <li th:class="${Nav.getCustom1() eq  'Y'} ? 'active'" th:each="Nav,NavStat : ${Nav.data}">
         <a th:href="@{${Nav.getInterlinkage()}}" th:text="${Nav.getMenuItemName()}">主页</a>
@@ -33,9 +33,18 @@
         </button>
     </li>
 
-    <li class="pull-right" th:if="${! #strings.isEmpty(session.User)}">
+    <li class="pull-right set-nav-button" th:if="${! #strings.isEmpty(session.User)}">
         <!-- Button trigger modal -->
-        <a th:text="${session.User.getUserName() + ',欢迎您'}" href="/personalPage/main" id="userstatus"></a>
+        <div class="dropdown">
+            <button class="btn btn-default btn-sm dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" >
+                <span th:text="${session.User.getUserName() + ',欢迎您'}">Dropdown</span>
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                <li><a href="/personalPage/main">个人信息</a></li>
+                <li><a href="#">消息</a></li>
+            </ul>
+        </div>
     </li>
 </ul>
 

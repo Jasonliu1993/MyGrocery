@@ -80,7 +80,7 @@ public class GroceryConfiguration extends WebMvcConfigurerAdapter implements Web
 
     }
 
-    @Bean
+    @Bean(name = "coreSender")
     public CoreSender getProviderBuilder() {
         CoreSender providerBuilder = new CoreSender();
 
