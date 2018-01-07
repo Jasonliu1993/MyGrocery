@@ -82,9 +82,9 @@ CustomProps:
     #设置留言板页面分页时一个页面显示多少个数据
     messageBoardPageSize: 20
     #设置留言板子回复页面分页时一个页面显示多少个数据
-    subReply: 10
+    subReply: 20
     #管理页面分页时一个页面显示多少个数据
-    adminPageSize: 10
+    adminPageSize: 20
     #设置分页时导航条显示多少个页签
     paginationDisplayNum: 5
     loginOnly:
