@@ -16,22 +16,22 @@ public class RedisConfiguration extends CachingConfigurerSupport {
 
     Logger logger = LoggerFactory.getLogger(RedisConfiguration.class);
 
-    @Value("${spring.redis.host}")
+    @Value("${spring.cache.host}")
     private String host;
 
-    @Value("${spring.redis.port}")
+    @Value("${spring.cache.port}")
     private int port;
 
-    @Value("${spring.redis.timeout}")
+    @Value("${spring.cache.timeout}")
     private int timeout;
 
-    @Value("${spring.redis.pool.max-idle}")
+    @Value("${spring.cache.pool.max-idle}")
     private int maxIdle;
 
-    @Value("${spring.redis.pool.max-wait}")
+    @Value("${spring.cache.pool.max-wait}")
     private long maxWaitMillis;
 
-    @Value("${spring.redis.password}")
+    @Value("${spring.cache.password}")
     private String password;
 
     @Bean
