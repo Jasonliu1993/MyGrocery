@@ -29,7 +29,6 @@ public class LoggingMessage {
     public void around(ProceedingJoinPoint proceedingJoinPoint) {
         HttpServletRequest Request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
 
-
         logger.info(proceedingJoinPoint.getSignature().getDeclaringTypeName());
     }
 

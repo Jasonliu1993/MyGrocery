@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @MapperScan(value = "com.grocery.dao")
 public class GroceryApplication {
 
-	public static void main(String[] args) {
+    public static void main(String[] args) {
         SpringApplication.run(GroceryApplication.class, args);
-	}
+    }
 }
