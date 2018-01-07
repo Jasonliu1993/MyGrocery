@@ -69,10 +69,22 @@
         </dependency>
 
         <!--添加对Mongodb的支持-->
-        <dependency>
+        <!--<dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-mongodb</artifactId>
+        </dependency>-->
+
+        <!--引入jedis开始-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-redis</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+        </dependency>
+        <!--引入jedis结束-->
 
         <dependency>
             <groupId>mysql</groupId>
