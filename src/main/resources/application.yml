@@ -5,7 +5,8 @@ spring:
     datasource:
         name: Grocery
 
-        #password: root
+
+
         # 使用druid数据源
         type: com.alibaba.druid.pool.DruidDataSource
         driver-class-name: com.mysql.jdbc.Driver
@@ -44,7 +45,7 @@ spring:
         # Redis服务器连接端口
         port: 6379
         # Redis服务器连接密码（默认为空）
-        password: redis
+        password:
         # 连接超时时间（毫秒）
         timeout: 0
         # 连接池最大连接数（使用负值表示没有限制）
@@ -92,5 +93,4 @@ CustomProps:
 
     druidConfig:
 
-      #禁用HTML页面上的“Reset All”功能
-      resetEnable: false
+          resetEnable: false
