@@ -1,8 +1,7 @@
 package com.grocery.services;
 
 import com.grocery.domain.AdminMenu;
-import com.grocery.domain.Message;
-import com.grocery.domain.TechSharing;
+import com.grocery.dto.Message;
 
 import java.util.List;
 

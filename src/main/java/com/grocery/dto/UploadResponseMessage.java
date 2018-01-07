@@ -1,4 +1,4 @@
-package com.grocery.domain;
+package com.grocery.dto;
 
 /**
  * Created by Jason on 23/10/2017.

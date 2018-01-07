@@ -1,6 +1,6 @@
 package com.grocery.controllers;
 
-import com.grocery.domain.Message;
+import com.grocery.dto.Message;
 import com.grocery.domain.SystemUser;
 import com.grocery.services.IndexService;
 import com.grocery.utilities.EncryptionUtility;

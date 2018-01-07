@@ -1,7 +1,7 @@
 package com.grocery.services;
 
 import com.grocery.domain.FileInputResponseMessage;
-import com.grocery.domain.Message;
+import com.grocery.dto.Message;
 import com.grocery.domain.MessageBoxMenu;
 import com.grocery.domain.PersonalMenu;
 import org.springframework.web.multipart.MultipartFile;

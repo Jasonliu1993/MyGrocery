@@ -1,6 +1,6 @@
 package com.grocery.aop;
 
-import com.grocery.domain.Message;
+import com.grocery.dto.Message;
 import com.grocery.exception.ErrorException;
 import com.grocery.exception.StatusCode;
 import com.grocery.utilities.PackingInfo;

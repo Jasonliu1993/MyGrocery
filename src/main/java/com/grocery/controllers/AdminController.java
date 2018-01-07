@@ -3,7 +3,7 @@ package com.grocery.controllers;
 import com.baidu.ueditor.ActionEnter;
 import com.grocery.domain.FileInputResponseMessage;
 import com.grocery.domain.Sharing;
-import com.grocery.domain.UploadResponseMessage;
+import com.grocery.dto.UploadResponseMessage;
 import com.grocery.services.AdminService;
 import com.grocery.services.ImageService;
 import com.grocery.services.PhotographyService;

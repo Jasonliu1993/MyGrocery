@@ -1,7 +1,7 @@
 package com.grocery.services;
 
 import com.grocery.domain.FileInputResponseMessage;
-import com.grocery.domain.UploadResponseMessage;
+import com.grocery.dto.UploadResponseMessage;
 import org.springframework.web.multipart.MultipartFile;
 
 /**

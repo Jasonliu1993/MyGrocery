@@ -1,6 +1,6 @@
 package com.grocery.controllers;
 
-import com.grocery.domain.Message;
+import com.grocery.dto.Message;
 import com.grocery.domain.MessageBoardSubreply;
 import com.grocery.configuration.CustomProperty;
 import com.grocery.services.MessageBoardService;

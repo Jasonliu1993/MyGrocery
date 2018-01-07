@@ -1,13 +1,12 @@
 package com.grocery.controllers;
 
-import com.grocery.domain.Message;
+import com.grocery.dto.Message;
 import com.grocery.services.PersonalDataService;
 import com.grocery.utilities.PackingInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 /**
  * Created by Jason on 11/11/2017.

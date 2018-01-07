@@ -7,7 +7,7 @@ import com.grocery.dao.SharingImagesMapper;
 import com.grocery.domain.FileInputResponseMessage;
 import com.grocery.domain.PhotographyPhoto;
 import com.grocery.domain.SharingImages;
-import com.grocery.domain.UploadResponseMessage;
+import com.grocery.dto.UploadResponseMessage;
 import com.grocery.services.ImageService;
 import com.grocery.utilities.DateUtility;
 import org.slf4j.Logger;
