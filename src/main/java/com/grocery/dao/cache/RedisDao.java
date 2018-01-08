@@ -1,6 +1,5 @@
 package com.grocery.dao.cache;
 
-import com.dyuproject.protostuff.runtime.RuntimeSchema;
 import com.grocery.domain.NavigatationMenu;
 import com.grocery.utilities.SerializationUtility;
 import org.slf4j.Logger;
