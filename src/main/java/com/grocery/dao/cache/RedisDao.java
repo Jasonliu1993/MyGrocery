@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
+import java.util.LinkedList;
 import java.util.List;
 
 @Repository
@@ -24,16 +25,21 @@ public class RedisDao {
         Jedis jedis = null;
 
         try {
-            String key = "navigatationMenus";
+            String key = "NavigatationMenus:1";
             int timeout = 60 * 60;
 
-            byte[] bytes = SerializationUtility.serializeList(new SerializationUtility.CacheList(navigatationMenus));
+            byte[] bytes = SerializationUtility.serializeList(navigatationMenus);
 
             jedis = jedisPool.getResource();
-            return jedis.setex(key.getBytes(),timeout,bytes);
+
+            return jedis.setex(key.getBytes(), timeout, bytes);
 
         } catch (Exception e) {
-            logger.error(e.getMessage(),e);
+            logger.error(e.getMessage(), e);
+        } finally {
+            if (jedis != null) {
+                jedis.close();
+            }
         }
 
         return "failed";
@@ -47,14 +53,14 @@ public class RedisDao {
         try {
             jedis = jedisPool.getResource();
 
-            String key = "navigatationMenus";
+            String key = "NavigatationMenus:1";
 
             byte[] bytes = jedis.get(key.getBytes());
 
-            navigatationMenus = SerializationUtility.unSerializeList(bytes,new SerializationUtility.CacheList<NavigatationMenu>()).getList();
+            navigatationMenus = SerializationUtility.unSerializeList(bytes);
 
         } catch (Exception e) {
-            logger.error(e.getMessage(),e);
+            logger.error(e.getMessage(), e);
         } finally {
             if (jedis != null) {
                 jedis.close();

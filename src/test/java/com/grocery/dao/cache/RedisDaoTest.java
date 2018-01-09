@@ -8,11 +8,7 @@ import org.junit.runner.RunWith;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 
 import java.util.List;
 
@@ -31,19 +27,22 @@ public class RedisDaoTest {
     @Autowired
     private NavigatationMenuMapper navigatationMenuMapper;
 
-    /*@Autowired
-    private RedisDao redisDao;*/
+    @Autowired
+    private RedisDao redisDao;
 
     @Test
     public void putNavigatationMenu() throws Exception {
 
         List<NavigatationMenu> navigatationMenus = navigatationMenuMapper.selectAll();
-//        redisDao.putNavigatationMenu(navigatationMenus);
+        redisDao.putNavigatationMenu(navigatationMenus);
 
     }
 
     @Test
     public void getNavigatationMenus() throws Exception {
+
+        System.out.println(redisDao.getNavigatationMenus());
+
     }
 
 }

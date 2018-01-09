@@ -4,6 +4,7 @@ import com.dyuproject.protostuff.LinkedBuffer;
 import com.dyuproject.protostuff.ProtostuffIOUtil;
 import com.dyuproject.protostuff.runtime.RuntimeSchema;
 
+import java.util.LinkedList;
 import java.util.List;
 
 public class SerializationUtility {
@@ -14,7 +15,7 @@ public class SerializationUtility {
 
         schema = RuntimeSchema.createFrom(object.getClass());
 
-        return ProtostuffIOUtil.toByteArray(object,schema, LinkedBuffer.allocate(LinkedBuffer.DEFAULT_BUFFER_SIZE));
+        return ProtostuffIOUtil.toByteArray(object, schema, LinkedBuffer.allocate(LinkedBuffer.DEFAULT_BUFFER_SIZE));
     }
 
     public static Object unSerializeObject(byte[] bytes, Object object) {
@@ -23,27 +24,31 @@ public class SerializationUtility {
 
         object = schema.newMessage();
 
-        ProtostuffIOUtil.mergeFrom(bytes,object,schema);
+        ProtostuffIOUtil.mergeFrom(bytes, object, schema);
 
         return object;
     }
 
-    public static byte[] serializeList(CacheList cacheList) {
+    public static byte[] serializeList(List list) {
+
+        CacheList cacheList = new CacheList(list);
 
         schema = RuntimeSchema.createFrom(cacheList.getClass());
 
-        return ProtostuffIOUtil.toByteArray(cacheList,schema, LinkedBuffer.allocate(LinkedBuffer.DEFAULT_BUFFER_SIZE));
+        return ProtostuffIOUtil.toByteArray(cacheList, schema, LinkedBuffer.allocate(LinkedBuffer.DEFAULT_BUFFER_SIZE));
     }
 
-    public static CacheList unSerializeList(byte[] bytes, CacheList cacheList) {
+    public static List unSerializeList(byte[] bytes) {
+
+        CacheList cacheList = new CacheList(new LinkedList());
 
         schema = RuntimeSchema.createFrom(cacheList.getClass());
 
         CacheList cacheListTemp = (CacheList) schema.newMessage();
 
-        ProtostuffIOUtil.mergeFrom(bytes,cacheListTemp,schema);
+        ProtostuffIOUtil.mergeFrom(bytes, cacheListTemp, schema);
 
-        return cacheList;
+        return cacheListTemp.getList();
     }
 
     public static class CacheList<T> {

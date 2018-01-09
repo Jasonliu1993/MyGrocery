@@ -43,10 +43,10 @@ public class GroceryApplicationTests {
 	public void testNavDao() {
 //		Assert.assertEquals(navigatationMenuMapper.selectAll().get(0).getMenuItemName(),"主页");
 //		Assert.assertEquals(navigatationMenuMapper.selectAll().get(0).getInterlinkage(),"/index");
-        List<AdminMenu> adminMenus = adminService.getAdminMenu();
+        /*List<AdminMenu> adminMenus = adminService.getAdminMenu();
         for(AdminMenu adminMenu : adminMenus) {
             System.out.println(adminMenu.getMenuItemName());
-        }
+        }*/
 	}
 
 	@Test

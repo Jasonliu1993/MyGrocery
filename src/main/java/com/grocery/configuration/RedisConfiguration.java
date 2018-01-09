@@ -28,6 +28,9 @@ public class RedisConfiguration {
     @Value("${spring.redis.pool.max-wait}")
     private long maxWaitMillis;
 
+    @Value("${spring.redis.pool.max-active}")
+    private int maxActive;
+
     @Value("${spring.redis.password}")
     private String password;
 
@@ -38,8 +41,9 @@ public class RedisConfiguration {
         JedisPoolConfig jedisPoolConfig = new JedisPoolConfig();
         jedisPoolConfig.setMaxIdle(maxIdle);
         jedisPoolConfig.setMaxWaitMillis(maxWaitMillis);
+        jedisPoolConfig.setMaxTotal(maxActive);
 
-        JedisPool jedisPool = new JedisPool(jedisPoolConfig, host, port, timeout, password);
+        JedisPool jedisPool = new JedisPool(jedisPoolConfig, host, port, timeout);
 
         return jedisPool;
     }
