@@ -4,6 +4,7 @@ import com.grocery.dao.AuthenticationMapper;
 import com.grocery.dao.NavigatationMenuMapper;
 import com.grocery.dao.PersonalInfoMapper;
 import com.grocery.dao.SystemUserMapper;
+import com.grocery.dao.cache.RedisDao;
 import com.grocery.domain.*;
 import com.grocery.services.IndexService;
 import com.grocery.utilities.DateUtility;
@@ -39,9 +40,18 @@ public class IndexServiceImpl implements IndexService {
     @Autowired
     private PersonalInfoMapper personalInfoMapper;
 
+    @Autowired
+    private RedisDao redisDao;
+
     @Override
     public List<NavigatationMenu> getNavMenu(String path) {
-        List<NavigatationMenu> navigatationMenus = navigatationMenuMapper.selectAll();
+        List<NavigatationMenu> navigatationMenus = redisDao.getNavigatationMenus();
+
+        if (navigatationMenus == null) {
+            navigatationMenus = navigatationMenuMapper.selectAll();
+
+            redisDao.putNavigatationMenu(navigatationMenus);
+        }
 
         /**
          * 标识是在哪个页面，将导航条设置成高亮
