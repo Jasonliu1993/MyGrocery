@@ -1,4 +1,4 @@
-package com.grocery.Messagehandler;
+package com.grocery.messageHandler;
 
 import com.grocery.domain.SystemUser;
 

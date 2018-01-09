@@ -1,7 +1,7 @@
 package com.grocery.configuration;
 
-import com.grocery.Messagehandler.InstationSenderProviderFactory;
-import com.grocery.Messagehandler.CoreSender;
+import com.grocery.messageHandler.InstationSenderProviderFactory;
+import com.grocery.messageHandler.CoreSender;
 import com.grocery.interceptor.GroceryCoreInterceptor;
 import com.grocery.webSocket.WebSocketHandler;
 import org.springframework.beans.factory.annotation.Autowired;

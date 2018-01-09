@@ -1,7 +1,7 @@
 package com.grocery.serviceImpl;
 
-import com.grocery.Messagehandler.CoreSender;
-import com.grocery.Messagehandler.MessageFromType;
+import com.grocery.messageHandler.CoreSender;
+import com.grocery.messageHandler.MessageFromType;
 import com.grocery.dao.*;
 import com.grocery.domain.MessageBoard;
 import com.grocery.domain.MessageBoardSubreply;

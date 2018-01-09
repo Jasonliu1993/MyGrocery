@@ -1,4 +1,4 @@
-package com.grocery.Messagehandler;
+package com.grocery.messageHandler;
 
 public enum MessageFromType {
 
