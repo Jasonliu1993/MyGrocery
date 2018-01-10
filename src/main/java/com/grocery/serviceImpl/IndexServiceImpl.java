@@ -1,12 +1,11 @@
 package com.grocery.serviceImpl;
 
-import com.grocery.dao.AuthenticationMapper;
-import com.grocery.dao.NavigatationMenuMapper;
-import com.grocery.dao.PersonalInfoMapper;
-import com.grocery.dao.SystemUserMapper;
+import com.grocery.dao.*;
 import com.grocery.dao.cache.RedisDao;
 import com.grocery.domain.*;
 import com.grocery.services.IndexService;
+import com.grocery.utilities.ClientInfoUtility;
+import com.grocery.utilities.DateType;
 import com.grocery.utilities.DateUtility;
 import com.grocery.utilities.EncryptionUtility;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +18,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -42,6 +42,9 @@ public class IndexServiceImpl implements IndexService {
 
     @Autowired
     private RedisDao redisDao;
+
+    @Autowired
+    private ClientInfoMapper clientInfoMapper;
 
     @Override
     public List<NavigatationMenu> getNavMenu(String path) {
@@ -157,5 +160,36 @@ public class IndexServiceImpl implements IndexService {
         }
 
         return authInfo;
+    }
+
+    @Override
+    @Transactional
+    public void loggingInfo() {
+
+        HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
+        HttpSession session = request.getSession();
+
+        String ip = ClientInfoUtility.getIpAddr(request);
+        ClientInfo clientInfo = null;
+
+        if ((clientInfo = clientInfoMapper.selectByIp(ip)) != null) {
+            clientInfo.setCreateDatetime(new Date());
+            clientInfo.setVersion(clientInfo.getVersion() + 1);
+
+            clientInfoMapper.updateByPrimaryKey(clientInfo);
+        } else {
+            clientInfo = new ClientInfo();
+            clientInfo.setVersion(0);
+            clientInfo.setSession(session.getId());
+            clientInfo.setCreateDatetime(new Date());
+            clientInfo.setLastAccessedTime(DateUtility.getFormattedDateByDate(DateType.YMDHMS_,new Date(session.getLastAccessedTime())));
+            clientInfo.setVisitorBrowserVersion(ClientInfoUtility.getRequestBrowserInfo(request));
+            clientInfo.setVisitorIp(ip);
+            clientInfo.setVisitorHostName(ClientInfoUtility.getHostName(ip));
+            clientInfo.setVisitorSystemVersion(ClientInfoUtility.getRequestSystemInfo(request));
+
+            clientInfoMapper.insert(clientInfo);
+        }
+
     }
 }

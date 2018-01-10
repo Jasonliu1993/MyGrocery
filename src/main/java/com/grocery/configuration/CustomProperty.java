@@ -20,6 +20,7 @@ public class CustomProperty {
     private String adminPageSize;
     private List<String> loginOnly;
     private Map<String,String>  druidConfig;
+    private String visitorInfoPageSize;
 
     public String getPhotographyDetailPageSize() {
         return photographyDetailPageSize;
@@ -75,5 +76,13 @@ public class CustomProperty {
 
     public void setDruidConfig(Map<String, String> druidConfig) {
         this.druidConfig = druidConfig;
+    }
+
+    public String getVisitorInfoPageSize() {
+        return visitorInfoPageSize;
+    }
+
+    public void setVisitorInfoPageSize(String visitorInfoPageSize) {
+        this.visitorInfoPageSize = visitorInfoPageSize;
     }
 }

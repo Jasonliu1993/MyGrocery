@@ -1,6 +1,7 @@
 package com.grocery.services;
 
 import com.grocery.domain.AdminMenu;
+import com.grocery.domain.ClientInfo;
 import com.grocery.dto.Message;
 
 import java.util.List;
@@ -19,4 +20,7 @@ public interface AdminService {
 
     void updateArticle(String editorContent, String type, String title, Integer id);
     void updatePhotography(String comments, String theme,String photoRefId, Integer id);
+
+    List<ClientInfo> getClientInfoByPaging(Integer pageIndex, Integer pageSize);
+    Integer getVisitorInfoCount();
 }

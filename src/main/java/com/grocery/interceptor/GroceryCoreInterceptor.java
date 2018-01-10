@@ -7,6 +7,7 @@ import com.grocery.services.IndexService;
 import com.grocery.utilities.PackingInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -86,6 +87,11 @@ public class GroceryCoreInterceptor implements HandlerInterceptor {
         } else {
             navigatationMenus.remove(navigatationMenus.remove(navigatationMenus.size() - 1));
             request.setAttribute("Nav", PackingInfo.changeData2Message(navigatationMenus));
+        }
+
+        /*记录用户访问信息*/
+        if (session != null) {
+            indexService.loggingInfo();
         }
 
     }

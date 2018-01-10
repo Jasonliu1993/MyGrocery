@@ -14,4 +14,5 @@ public interface IndexService {
     SystemUser loginAuthentication(String userName, String password);
     SystemUser registerAuthentication(String userName, String password4Register, String activeEmail);
     AuthInfo doAuthInfo(String object, String content);
+    void loggingInfo();
 }

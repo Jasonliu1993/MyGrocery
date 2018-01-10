@@ -2,6 +2,7 @@ package com.grocery.utilities;
 
 import com.grocery.configuration.CustomProperty;
 import com.grocery.serviceImpl.*;
+import com.grocery.services.AdminService;
 import com.grocery.services.PhotographyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -35,6 +36,9 @@ public class SharingServiceUtility {
     @Autowired
     private ArticleSharingServiceImpl articleSharingService;
 
+    @Autowired
+    private AdminService adminService;
+
 
     public ModelMap proceedTypeAndPageIndex(ModelMap modelMap, String type, String path, Integer pageIndex, StringBuffer redirectPath) {
 
@@ -46,6 +50,8 @@ public class SharingServiceUtility {
                 redirectPath.append("/admin/admin_photography");
             } else if ("messageBoardTitle".equals(type)) {
                 redirectPath.append("/admin/admin_message_board_title");
+            } else if ("visitorInfo".equals(type)) {
+                redirectPath.append("/admin/admin_visitor_info");
             } else {
                 redirectPath.append("/admin/admin_index");
             }
@@ -118,6 +124,19 @@ public class SharingServiceUtility {
                         customProperty.getAdminPageSize())));
 
                 break;
+
+            case "visitorInfo":
+                modelMap.addAttribute("VisitorInfoPagings", PackingInfo.changeData2Message(adminService.getClientInfoByPaging(pageIndex, Integer.valueOf(customProperty.getVisitorInfoPageSize()))));
+
+                modelMap.addAttribute("Paginations", PackingInfo.changeData2Message(new PaginationUtility(
+                        pageIndex.toString(),
+                        customProperty.getPaginationDisplayNum(),
+                        full,
+                        false,
+                        String.valueOf(adminService.getVisitorInfoCount()),
+                        customProperty.getAdminPageSize())));
+                break;
+
             default:
                 modelMap.addAttribute("SharingPagings", PackingInfo.changeData2Message(techSharingService.getSharingByPaging(pageIndex, Integer.valueOf(customProperty.getAdminPageSize()))));
 

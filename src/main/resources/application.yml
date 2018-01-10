@@ -90,6 +90,8 @@ CustomProps:
     paginationDisplayNum: 5
     loginOnly:
       - /personalPage/main
+    #设置访问者页面但也显示多少数据
+    visitorInfoPageSize: 20
 
     druidConfig:
 

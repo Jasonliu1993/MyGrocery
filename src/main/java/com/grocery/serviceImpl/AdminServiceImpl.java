@@ -41,6 +41,9 @@ public class AdminServiceImpl implements AdminService {
     @Autowired
     private PhotographyDetailMapper photographyDetailMapper;
 
+    @Autowired
+    private ClientInfoMapper clientInfoMapper;
+
     @Override
     @Transactional
     public void saveArticle(String editorContent, String type, String title) {
@@ -239,5 +242,15 @@ public class AdminServiceImpl implements AdminService {
         photographyDetail.setCreateDatetime(DateUtility.getCurrentDate());
 
         photographyDetailMapper.updateByPrimaryKeySelective(photographyDetail);
+    }
+
+    @Override
+    public List<ClientInfo> getClientInfoByPaging(Integer pageIndex, Integer pageSize) {
+        return clientInfoMapper.selectClientInfoByPaging((pageIndex - 1) * pageSize,pageSize);
+    }
+
+    @Override
+    public Integer getVisitorInfoCount() {
+        return clientInfoMapper.getCount();
     }
 }

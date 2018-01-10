@@ -6,7 +6,7 @@
 
     <!-- !!!! Driver Class Path !!!! -->
     <classPathEntry
-            location="/Users/Jason/Documents/Workspaces/IDEA/grocery/target/grocery-0.0.1-SNAPSHOT/WEB-INF/lib/mysql-connector-java-5.1.35.jar"/>
+            location="/Users/Jason/Documents/Workspaces/IDEA/grocery/target/blog.core-1.0.1/WEB-INF/lib/mysql-connector-java-5.1.35.jar"/>
 
     <context id="context" targetRuntime="MyBatis3">
         <commentGenerator>
@@ -125,6 +125,11 @@
             <property name="useActualColumnNames" value="false"/>
         </table>-->
         <!--<table tableName="MESSAGE_BOX_MENU" enableCountByExample="false" enableDeleteByExample="false"
+               enableSelectByExample="false"
+               enableUpdateByExample="false">
+            <property name="useActualColumnNames" value="false"/>
+        </table>-->
+        <!--<table tableName="CLIENT_INFO" enableCountByExample="false" enableDeleteByExample="false"
                enableSelectByExample="false"
                enableUpdateByExample="false">
             <property name="useActualColumnNames" value="false"/>
