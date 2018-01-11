@@ -4,7 +4,10 @@ import com.grocery.messageHandler.InstationSenderProviderFactory;
 import com.grocery.messageHandler.CoreSender;
 import com.grocery.interceptor.GroceryCoreInterceptor;
 import com.grocery.webSocket.WebSocketHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,7 +28,9 @@ import javax.servlet.ServletRequestListener;
  */
 
 @Configuration
-public class GroceryConfiguration extends WebMvcConfigurerAdapter implements WebSocketConfigurer{
+public class GroceryConfiguration extends WebMvcConfigurerAdapter implements WebSocketConfigurer {
+
+    private final Logger logger = LoggerFactory.getLogger(GroceryConfiguration.class);
 
     @Autowired
     private GroceryCoreInterceptor groceryCoreInterceptor;
@@ -43,7 +48,7 @@ public class GroceryConfiguration extends WebMvcConfigurerAdapter implements Web
     }
 
     @Bean
-    public ServletRequestListener createServletRequestListener(){
+    public ServletRequestListener createServletRequestListener() {
         return new RequestContextListener();
     }
 
@@ -54,38 +59,42 @@ public class GroceryConfiguration extends WebMvcConfigurerAdapter implements Web
         super.addViewControllers(registry);
     }
 
-    //    @Bean(name = "multipartResolver")
-    public MultipartResolver multipartResolver(){
+   /* @Bean(name = "multipartResolver")
+    public MultipartResolver multipartResolver() {
         CommonsMultipartResolver resolver = new CommonsMultipartResolver();
         resolver.setDefaultEncoding("UTF-8");
         resolver.setResolveLazily(true);//resolveLazily属性启用是为了推迟文件解析，以在在UploadAction中捕获文件大小异常
         resolver.setMaxInMemorySize(40960);
-        resolver.setMaxUploadSize(50*1024*1024);//上传文件大小 50M 50*1024*1024
+        resolver.setMaxUploadSize(50 * 1024 * 1024);//上传文件大小 50M 50*1024*1024
         return resolver;
-    }
+    }*/
 
     @Bean
     public ServletRegistrationBean getServletRegistrationBean() {
-
-        ServletRegistrationBean servletRegistrationBean = new ServletRegistrationBean(new DruidStatViewServlet(),"/druid/*");
-
+        ServletRegistrationBean servletRegistrationBean = new ServletRegistrationBean(new DruidStatViewServlet(), "/druid/*");
         servletRegistrationBean.setInitParameters(customProperty.getDruidConfig());
-
         return servletRegistrationBean;
+    }
+
+    @Bean
+    public FilterRegistrationBean getFilterRegistration() {
+        FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean();
+        filterRegistrationBean.setFilter(new DruidStatFilter());
+        filterRegistrationBean.setName("druidWebStatFilter");
+        filterRegistrationBean.addUrlPatterns(customProperty.getDruidConfig().get("filterUrlPatterns"));
+        filterRegistrationBean.addInitParameter("exclusions", customProperty.getDruidConfig().get("filterInitParameter"));
+        return filterRegistrationBean;
     }
 
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry webSocketHandlerRegistry) {
-            webSocketHandlerRegistry.addHandler(webSocketHandler,"");
-
+        webSocketHandlerRegistry.addHandler(webSocketHandler, "");
     }
 
     @Bean(name = "coreSender")
     public CoreSender getProviderBuilder() {
         CoreSender providerBuilder = new CoreSender();
-
-        providerBuilder.addProviderFactories("instatioinSenderProviderFactory",new InstationSenderProviderFactory());
-
+        providerBuilder.addProviderFactories("instatioinSenderProviderFactory", new InstationSenderProviderFactory());
         return providerBuilder;
     }
 }

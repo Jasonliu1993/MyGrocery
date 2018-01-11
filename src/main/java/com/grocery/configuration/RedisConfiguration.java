@@ -13,6 +13,9 @@ public class RedisConfiguration {
 
     Logger logger = LoggerFactory.getLogger(RedisConfiguration.class);
 
+    @Value("${spring.redis.database}")
+    private String database;
+
     @Value("${spring.redis.host}")
     private String host;
 
@@ -24,6 +27,9 @@ public class RedisConfiguration {
 
     @Value("${spring.redis.pool.max-idle}")
     private int maxIdle;
+
+    @Value("${spring.redis.pool.min-idle}")
+    private int minIdle;
 
     @Value("${spring.redis.pool.max-wait}")
     private long maxWaitMillis;
@@ -42,6 +48,7 @@ public class RedisConfiguration {
         jedisPoolConfig.setMaxIdle(maxIdle);
         jedisPoolConfig.setMaxWaitMillis(maxWaitMillis);
         jedisPoolConfig.setMaxTotal(maxActive);
+        jedisPoolConfig.setMinIdle(minIdle);
 
         JedisPool jedisPool = new JedisPool(jedisPoolConfig, host, port, timeout);
 

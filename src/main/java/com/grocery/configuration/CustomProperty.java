@@ -1,5 +1,7 @@
 package com.grocery.configuration;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
@@ -13,6 +15,9 @@ import java.util.Map;
 @Component
 @ConfigurationProperties(prefix = "CustomProps")
 public class CustomProperty {
+
+    private final Logger logger = LoggerFactory.getLogger(CustomProperty.class);
+
     private String photographyDetailPageSize;
     private String paginationDisplayNum;
     private String messageBoardPageSize;
@@ -85,4 +90,5 @@ public class CustomProperty {
     public void setVisitorInfoPageSize(String visitorInfoPageSize) {
         this.visitorInfoPageSize = visitorInfoPageSize;
     }
+
 }

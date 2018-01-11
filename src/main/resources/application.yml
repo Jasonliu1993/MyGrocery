@@ -97,3 +97,7 @@ CustomProps:
 
           #禁用HTML页面上的“Reset All”功能
           resetEnable: false
+          #过滤所有路径
+          filterUrlPatterns: /*
+          #除了图片还有druid路径下的数据
+          filterInitParameter: "*.js,*.gif,*.jpg,*.bmp,*.png,*.css,*.ico,/druid/*"
