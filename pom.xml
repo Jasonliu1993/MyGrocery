@@ -124,6 +124,13 @@
         </dependency>
         <!--导入Protostuff序列化框架 - 结束-->
 
+        <!--引入activeMQ开始-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-activemq</artifactId>
+        </dependency>
+        <!--引入activeMQ结束-->
+
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>

@@ -7,6 +7,7 @@ import com.grocery.domain.InstationSenderMapping;
 import com.grocery.domain.SystemUser;
 import com.grocery.utilities.ApplicationContextUtility;
 import com.grocery.utilities.DateUtility;
+import org.springframework.transaction.annotation.Transactional;
 
 public class InstationSender extends SenderAdapter {
 
@@ -20,6 +21,7 @@ public class InstationSender extends SenderAdapter {
     }
 
     @Override
+    @Transactional
     public void send(SystemUser sender, SystemUser receiver, String content, MessageFromType messageFromType) {
         InstationSenderContent instationSenderContent = new InstationSenderContent();
         InstationSenderMapping instationSenderMapping = new InstationSenderMapping();
