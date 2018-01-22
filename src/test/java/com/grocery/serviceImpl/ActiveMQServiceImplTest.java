@@ -1,5 +1,8 @@
 package com.grocery.serviceImpl;
 
+import com.alibaba.fastjson.JSON;
+import com.grocery.dto.EmailSendType;
+import com.grocery.dto.SimpleEmail;
 import com.grocery.services.ActiveMQService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,7 +22,19 @@ public class ActiveMQServiceImplTest {
     @Test
     public void sendMessage() throws Exception {
 
-        activeMQService.sendMessage("topic","test");
+
+        SimpleEmail simpleEmail = new SimpleEmail();
+
+        simpleEmail.setSendFrom("jasonliupm@163.com");
+        simpleEmail.setSendTo("1034928615@qq.com");
+        simpleEmail.setSubject("吃饭");
+        simpleEmail.setContent("明天一起吃饭吧！");
+        EmailSendType<SimpleEmail> emailEmailSendType = new EmailSendType<>();
+        emailEmailSendType.setEmailType("SimplyEmail");
+        emailEmailSendType.setIncludAttachment(false);
+        emailEmailSendType.setData(simpleEmail);
+
+        activeMQService.sendMessage(ActiveMQType.TOPIC, JSON.toJSONString(emailEmailSendType));
 
     }
 

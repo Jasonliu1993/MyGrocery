@@ -21,10 +21,10 @@ public class ActiveMQServiceImpl implements ActiveMQService {
     private JmsTemplate jmsTemplate;
 
     @Override
-    public void sendMessage(String type, final String message) {
+    public void sendMessage(ActiveMQType type, final String message) {
         Destination destination = null;
 
-        switch (type) {
+        switch (type.getType()) {
             case "topic":
                 destination = topic;
                 break;
@@ -39,10 +39,10 @@ public class ActiveMQServiceImpl implements ActiveMQService {
     }
 
     @Override
-    public void sendMessage(String type, final Email message) {
+    public void sendMessage(ActiveMQType type, final Email message) {
         Destination destination = null;
 
-        switch (type) {
+        switch (type.getType()) {
             case "topic":
                 destination = topic;
                 break;

@@ -12,23 +12,29 @@ import javax.jms.Topic;
 @Configuration
 public class ActiveMQConfig {
 
-    @Value("CustomProps.emailTopicName")
-    private String topicName;
+    @Value("${CustomProps.emailTopicText}")
+    private String emailTopicText;
 
-    @Value("CustomProps.queueName")
-    private String queueName;
+    @Value("${CustomProps.emailTopicObject}")
+    private String emailTopicObject;
+
+    @Value("${CustomProps.emailQueueName}")
+    private String emailQueueName;
+
+    @Value("${CustomProps.emailQueueObject}")
+    private String emailQueueObject;
 
     @Bean
     public Topic getTopicDestination() {
 
-        return new ActiveMQTopic(topicName);
+        return new ActiveMQTopic(emailTopicText);
 
     }
 
     @Bean
     public Queue getQueueDestination() {
 
-        return new ActiveMQQueue(queueName);
+        return new ActiveMQQueue(emailQueueName);
 
     }
 

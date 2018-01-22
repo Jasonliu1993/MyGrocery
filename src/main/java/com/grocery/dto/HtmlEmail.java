@@ -1,10 +1,7 @@
 package com.grocery.dto;
 
-import java.io.Serializable;
 
-public class HtmlEmail extends Email implements Serializable{
-
-    private static final long serialVersionUID = 7247714666080613254L;
+public class HtmlEmail extends Email {
 
     /**
      *
